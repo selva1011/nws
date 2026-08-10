@@ -30,7 +30,7 @@ export default function ServicesPage() {
           Our Services
         </h1>
 
-        <p className="mt-4 text-gray-600">
+        <p className="mt-4 text-[var(--color-neutral)]">
           Professional solutions designed for your requirements.
         </p>
       </div>
@@ -40,14 +40,14 @@ export default function ServicesPage() {
         {services.map((service) => (
           <article
             key={service.title}
-            className="rounded-xl border border-gray-200 p-8"
+            className="rounded-xl border border-[var(--color-border)] bg-[var(--color-base)] p-8"
           >
 
             <h2 className="text-xl font-bold">
               {service.title}
             </h2>
 
-            <p className="mt-4 text-gray-600">
+            <p className="mt-4 text-[var(--color-neutral)]">
               {service.description}
             </p>
 

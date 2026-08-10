@@ -46,7 +46,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-950 antialiased">
+      <body className="min-h-screen bg-[var(--color-background)] text-[var(--color-secondary)] antialiased">
         <div className="isolate">
           <Header />
 

@@ -3,17 +3,17 @@ import Link from "next/link";
 export default function HomePage() {
   return (
     <>
-      <section className="bg-gray-50">
+      <section className="bg-[var(--color-light-base)]">
         <div className="mx-auto max-w-7xl px-6 py-32 text-center">
 
-          <h1 className="text-5xl font-bold tracking-tight text-gray-900 md:text-6xl">
+          <h1 className="text-5xl font-bold tracking-tight text-[var(--color-secondary)] md:text-6xl">
             Professional Services
-            <span className="block text-blue-600">
+            <span className="block text-[var(--color-primary)]">
               Built Around Your Needs
             </span>
           </h1>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-[var(--color-neutral)]">
             We provide reliable and professional services to businesses
             and customers across Chennai.
           </p>
@@ -48,22 +48,22 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="rounded-xl border p-8">
-            <h3 className="text-xl font-semibold">
+          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-base)] p-8">
+            <h3 className="text-xl font-semibold text-[var(--color-secondary)]">
               Service Two
             </h3>
 
-            <p className="mt-3 text-gray-600">
+            <p className="mt-3 text-[var(--color-neutral)]">
               Description about your second service goes here.
             </p>
           </div>
 
-          <div className="rounded-xl border p-8">
-            <h3 className="text-xl font-semibold">
+          <div className="rounded-xl border border-[var(--color-border)] bg-[var(--color-base)] p-8">
+            <h3 className="text-xl font-semibold text-[var(--color-secondary)]">
               Service Three
             </h3>
 
-            <p className="mt-3 text-gray-600">
+            <p className="mt-3 text-[var(--color-neutral)]">
               Description about your third service goes here.
             </p>
           </div>

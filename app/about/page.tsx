@@ -14,7 +14,7 @@ export default function AboutPage() {
         About Us
       </h1>
 
-      <p className="mt-6 text-lg leading-8 text-gray-600">
+      <p className="mt-6 text-lg leading-8 text-[var(--color-neutral)]">
         We are a professional company focused on providing reliable,
         high-quality services to our customers.
       </p>
@@ -23,7 +23,7 @@ export default function AboutPage() {
         Why Choose Us?
       </h2>
 
-      <p className="mt-4 leading-7 text-gray-600">
+      <p className="mt-4 leading-7 text-[var(--color-neutral)]">
         We focus on quality, transparency and customer satisfaction.
       </p>
 

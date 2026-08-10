@@ -16,7 +16,7 @@ export default function ContactPage() {
           Contact Us
         </h1>
 
-        <p className="mt-4 text-gray-600">
+        <p className="mt-4 text-[var(--color-neutral)]">
           Have a question? Send us a message and we'll get back to you.
         </p>
       </div>
