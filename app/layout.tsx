@@ -2,32 +2,34 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import PageTransition from "@/components/PageTransition";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.example.com"),
 
   title: {
-    default: "My Business | Chennai",
-    template: "%s | My Business",
+    default: "Workspace Solutions | Chennai",
+    template: "%s | Workspace Solutions",
   },
 
   description:
-    "Professional services in Chennai. Contact us today to learn more about our services.",
+    "High-end workspace and office solutions in Chennai. Premium design, reliable delivery, and sales-ready support.",
 
   keywords: [
-    "business Chennai",
-    "services Chennai",
-    "my business",
+    "workspace solutions",
+    "office services",
+    "Chennai workspace",
+    "corporate interiors",
   ],
 
   authors: [{ name: "My Business" }],
 
   openGraph: {
-    title: "My Business",
+    title: "Workspace Solutions",
     description:
-      "Professional services in Chennai. Contact us today.",
+      "High-end workspace and office solutions in Chennai.",
     url: "https://www.example.com",
-    siteName: "My Business",
+    siteName: "Workspace Solutions",
     type: "website",
   },
 
@@ -44,12 +46,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <Header />
+      <body className="min-h-screen bg-slate-50 text-slate-950 antialiased">
+        <div className="isolate">
+          <Header />
 
-        <main>{children}</main>
+          <main className="transition-colors duration-500">
+            <PageTransition>{children}</PageTransition>
+          </main>
 
-        <Footer />
+          <Footer />
+        </div>
       </body>
     </html>
   );
