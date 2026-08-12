@@ -1,103 +1,13 @@
 @import "tailwindcss";
 
-:root {
-  color-scheme: light;
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-  --color-primary: #0789D1;
-  --color-primary-rgb: 7, 137, 209;
-  --color-secondary: #263844;
-  --color-base: #FFFFFF;
-  --color-dark-base: #172832;
-  --color-light-base: #F4F7F9;
-  --color-neutral: #64747E;
-  --color-border: rgba(38, 56, 68, 0.12);
-  --color-text: var(--color-secondary);
-  --color-surface: var(--color-base);
-  --color-background: var(--color-light-base);
-}
-
-@layer utilities {
-  .bg-primary { background-color: var(--color-primary); }
-  .text-primary { color: var(--color-primary); }
-  .border-primary { border-color: var(--color-primary); }
-
-  .bg-secondary { background-color: var(--color-secondary); }
-  .text-secondary { color: var(--color-secondary); }
-  .border-secondary { border-color: var(--color-secondary); }
-
-  .bg-base { background-color: var(--color-base); }
-  .text-base { color: var(--color-base); }
-
-  .bg-dark-base { background-color: var(--color-dark-base); }
-  .text-dark-base { color: var(--color-dark-base); }
-
-  .bg-light-base { background-color: var(--color-light-base); }
-  .text-light-base { color: var(--color-light-base); }
-
-  .bg-neutral { background-color: var(--color-neutral); }
-  .text-neutral { color: var(--color-neutral); }
-
-  .border-neutral { border-color: var(--color-neutral); }
-}
-
-html {
-  scroll-behavior: smooth;
-  background: var(--color-background);
-}
-
-body {
-  min-height: 100vh;
-  margin: 0;
-  background: var(--color-background);
-  color: var(--color-text);
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", sans-serif;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-::selection {
-  background: rgba(15, 75, 141, 0.16);
-}
-
-main {
-  isolation: isolate;
-}
-
-main > * {
-  view-transition-name: page;
-  view-transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-  view-transition-duration: 0.45s;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-@layer base {
-  body {
-    background-image:
-      radial-gradient(circle at top left, rgba(56, 189, 248, 0.1), transparent 28%),
-      radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.08), transparent 24%);
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    letter-spacing: -0.02em;
-  }
-
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.88);
-    border: 1px solid rgba(148, 163, 184, 0.18);
-    box-shadow: 0 30px 80px rgba(15, 23, 42, 0.08);
-    backdrop-filter: blur(18px);
-  }
-
-  .transition-fade {
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-}
+:root { --cyan:#00A7C4; }
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { margin:0; color:#0f172a; background:#fff; font-family:Arial, Helvetica, sans-serif; }
+.nav-link { position:relative; transition:color .2s; }
+.nav-link:after { background:#00A7C4; bottom:-8px; content:""; height:2px; left:0; position:absolute; transform:scaleX(0); transform-origin:left; transition:transform .2s; width:100%; }
+.nav-link:hover { color:#00A7C4; }.nav-link:hover:after{transform:scaleX(1)}
+.eyebrow { color:#00A7C4; font-size:11px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
+.section-title { color:#0f172a; font-size:clamp(28px,3vw,42px); font-weight:800; letter-spacing:-.04em; line-height:1.1; }
+.pattern { background-image: radial-gradient(#00A7C4 1px,transparent 1px); background-size:18px 18px; }
+.product-scroll { scrollbar-width:none; }.product-scroll::-webkit-scrollbar{display:none}

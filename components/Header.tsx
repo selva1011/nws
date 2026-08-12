@@ -1,61 +1,32 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
+import { useState } from "react";
+
+const links = ["Home", "Company", "Products", "Resources", "Projects"];
 
 export default function Header() {
-  const [isOpen, setIsOpen] = useState(false);
-
+  const [open, setOpen] = useState(false);
   return (
-    <header className="bg-[var(--color-base)] shadow-sm border-b border-[var(--color-border)] backdrop-blur-xl sticky top-0 z-50">
-      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-4 py-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-3">
-          <img src="/logo.png" alt="Workspace Solutions logo" className="h-10 w-auto object-contain" />
-        </Link>
-
-        <button
-          type="button"
-          className="inline-flex items-center rounded-full border border-[var(--color-border)] bg-[var(--color-base)] p-2 text-[var(--color-secondary)] shadow-sm transition hover:border-[var(--color-secondary)] hover:bg-[var(--color-light-base)] focus:outline-none focus:ring-2 focus:ring-[rgba(7,137,209,0.25)] md:hidden"
-          aria-label="Toggle menu"
-          aria-expanded={isOpen}
-          onClick={() => setIsOpen((current) => !current)}
-        >
-          <span className="sr-only">Open main menu</span>
-          <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {isOpen ? (
-              <path d="M18 6 6 18M6 6l12 12" />
-            ) : (
-              <path d="M3 12h18M3 6h18M3 18h18" />
-            )}
-          </svg>
-        </button>
-
-        <div className={`w-full flex-col gap-4 md:flex md:w-auto md:flex-row md:items-center ${isOpen ? "flex" : "hidden"}`}>
-          <nav className="flex w-full flex-col gap-2 rounded-3xl border border-[var(--color-border)] bg-[rgba(244,247,249,0.9)] p-4 shadow-sm md:w-auto md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0 md:shadow-none">
-            <Link href="/" className="rounded-full px-4 py-2 text-sm font-semibold text-[var(--color-primary)] transition hover:bg-[var(--color-light-base)] md:px-3 md:py-2">
-              Home
-            </Link>
-            <Link href="/company" className="rounded-full px-4 py-2 text-sm text-[var(--color-secondary)] transition hover:bg-[var(--color-light-base)] md:px-3 md:py-2">
-              Company 
-            </Link>
-            <Link href="/products" className="rounded-full px-4 py-2 text-sm text-[var(--color-secondary)] transition hover:bg-[var(--color-light-base)] md:px-3 md:py-2">
-              Products
-            </Link>
-            <Link href="/resources" className="rounded-full px-4 py-2 text-sm text-[var(--color-secondary)] transition hover:bg-[var(--color-light-base)] md:px-3 md:py-2">
-              Resources
-            </Link>
-            <Link href="/contact" className="rounded-full px-4 py-2 text-sm text-[var(--color-secondary)] transition hover:bg-[var(--color-light-base)] md:px-3 md:py-2">
-              Contact Us
-            </Link>
-          </nav>
-
-          <div className="flex w-full flex-col gap-3 rounded-3xl border border-[var(--color-border)] bg-[var(--color-base)] p-4 shadow-sm md:w-auto md:flex-row md:items-center md:border-0 md:bg-transparent md:p-0 md:shadow-none">
-
-            <button className="inline-flex items-center justify-center rounded-full bg-[var(--color-primary)] px-5 py-3 text-sm font-semibold text-[var(--color-base)] shadow-sm transition hover:bg-[rgb(var(--color-primary-rgb)/0.85)] md:ml-3">
-              Get a Quote
-            </button>
-          </div>
+    <header className="relative z-50">
+      <div className="hidden bg-[#111827] text-slate-300 md:block">
+        <div className="mx-auto flex h-9 max-w-[1280px] items-center justify-end gap-6 px-6 text-[11px] font-medium">
+          <a href="#warranty">Warranty</a><a href="#faq">FAQs</a><a href="#terms">Terms & Conditions</a><a href="#track">Track Order</a>
         </div>
+      </div>
+      <div className="border-b border-slate-200 bg-white/95 backdrop-blur">
+        <div className="mx-auto flex h-[76px] max-w-[1280px] items-center justify-between px-5 lg:px-6">
+          <Link href="/" className="flex items-center gap-3" aria-label="NWS home">
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#00A7C4] text-lg font-black tracking-tighter text-white">N</span>
+            <span className="leading-none"><b className="block text-base tracking-[.18em] text-slate-900">NWS</b><small className="mt-1 block text-[9px] font-bold tracking-[.09em] text-slate-500">NODE WORKSPACE SOLUTIONS</small></span>
+          </Link>
+          <nav className="hidden items-center gap-8 lg:flex">
+            {links.map((link) => <a key={link} href={link === "Home" ? "#top" : `#${link.toLowerCase()}`} className="nav-link text-sm font-semibold text-slate-700">{link}{["Products", "Resources"].includes(link) && <span className="ml-1 text-[#00A7C4]">⌄</span>}</a>)}
+            <a href="#contact" className="rounded-lg bg-[#00A7C4] px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:bg-[#008ca6]">Get a Quote</a>
+          </nav>
+          <button onClick={() => setOpen(!open)} className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 text-slate-800 lg:hidden" aria-label="Toggle menu"><span className="text-xl">{open ? "×" : "☰"}</span></button>
+        </div>
+        {open && <nav className="border-t border-slate-100 bg-white px-5 py-4 lg:hidden">{links.map((link) => <a key={link} href={`#${link.toLowerCase()}`} onClick={() => setOpen(false)} className="block border-b border-slate-100 py-3 text-sm font-semibold text-slate-700">{link}</a>)}<a href="#contact" className="mt-4 block rounded-lg bg-[#00A7C4] px-4 py-3 text-center text-sm font-bold text-white">Get a Quote</a></nav>}
       </div>
     </header>
   );
