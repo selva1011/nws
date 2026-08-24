@@ -1,36 +1,245 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-const categories = [
-  ["Ergonomic Chairs", "Posture-first comfort", "/banner_1.jpg", "bg-cyan-50"], ["Executive Chairs", "Command every meeting", "/banner_2.jpg", "bg-slate-100"], ["Task Chairs", "Made for the everyday", "/banner_3.jpg", "bg-sky-50"], ["Workstations", "Space that performs", "/images/nws-hero.png", "bg-stone-100"],
+const BASE = "https://cdn.shopify.com/s/files/1/0597/8554/3835/products/";
+
+const CHAIRS = [
+  {
+    label: "Executive Chairs",
+    img1: BASE + "MAGNUM-H.jpg?v=1636757813",
+    img2: BASE + "MAGNUM-HBACKVIEW.jpg?v=1636757813",
+    alt: "Magnum Executive Chair High Back",
+  },
+  {
+    label: "Mesh Task Chairs",
+    img1: BASE + "RIO-H-MB.jpg?v=1636772195",
+    img2: BASE + "RIO-Hwithdimension.jpg?v=1636772195",
+    alt: "Rio Task Chair High Mesh Back",
+  },
+  {
+    label: "Leather Chairs",
+    img1: BASE + "MGOPJ-VC-H01BK_5.jpg?v=1636874830",
+    img2: BASE + "MGOPJ-VC-H01BK_1.jpg?v=1636874830",
+    alt: "Bliss Leather Chair High Back",
+  },
+  {
+    label: "Heavy Duty",
+    img1: BASE + "HINO-MB.jpg?v=1636757372",
+    img2: BASE + "HINO-MBBackView.jpg?v=1636757372",
+    alt: "Hino Heavy Duty Task Chair",
+  },
 ];
-const features = [["✦", "Years of Expertise", "Extensive experience delivering reliable workspace solutions."], ["⌁", "Ergonomic Design", "Products designed around posture, movement and long-term comfort."], ["⌘", "Customized Solutions", "Furniture and layouts tailored to your team, space and brand."], ["◌", "Trusted After-Sales", "Dedicated service and long-term support after installation."]];
-const products = [["NWS Aero", "Executive Chair", "Adjustable lumbar · 4D armrests", "/banner_1.jpg"], ["NWS Flex", "Ergonomic Chair", "Breathable mesh · synchro tilt", "/banner_2.jpg"], ["NWS Prime", "Director Chair", "Premium comfort · polished base", "/banner_3.jpg"], ["NWS Motion", "Task Chair", "Adaptive support · height control", "/images/nws-hero.png"]];
 
-export default function HomePage() {
- return <main id="top">
-  <section className="relative overflow-hidden bg-[#f7fbfc]"><div className="pattern absolute -left-12 top-16 h-52 w-52 opacity-40"/><div className="mx-auto grid max-w-[1280px] items-center gap-10 px-6 py-14 lg:min-h-[595px] lg:grid-cols-[.88fr_1.12fr] lg:py-20"><div className="relative z-10"><p className="eyebrow">Premium ergonomic workspace solutions</p><h1 className="mt-5 max-w-xl text-[clamp(38px,5vw,64px)] font-extrabold leading-[1.05] tracking-[-.06em] text-slate-950">Ergonomics that power your <span className="text-[#00A7C4]">posture</span>, productivity &amp; performance.</h1><p className="mt-6 max-w-lg text-[17px] leading-7 text-slate-500">Engineered workspace solutions designed for comfort, productivity and modern offices.</p><div className="mt-9 flex flex-wrap gap-3"><a href="#products" className="rounded-lg bg-[#00A7C4] px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-cyan-600/15 transition hover:-translate-y-0.5">View Products</a><a href="#contact" className="rounded-lg border border-slate-300 bg-white px-6 py-3.5 text-sm font-bold text-slate-700 transition hover:border-[#00A7C4]">View Catalogue ↗</a></div><div className="mt-12 flex items-center gap-3"><span className="h-1.5 w-9 rounded-full bg-[#00A7C4]"/><span className="h-1.5 w-1.5 rounded-full bg-slate-300"/><span className="h-1.5 w-1.5 rounded-full bg-slate-300"/></div></div><div className="relative"><div className="absolute -right-10 -top-10 h-48 w-48 rounded-full border-[18px] border-cyan-100"/><div className="relative overflow-hidden rounded-[28px] bg-slate-200 shadow-2xl shadow-slate-900/15"><Image src="/images/nws-hero.png" alt="Premium ergonomic workspace with executive chair" width={1672} height={941} priority className="h-[390px] w-full object-cover lg:h-[490px]"/></div><div className="absolute bottom-5 left-5 rounded-xl border border-white/70 bg-white/90 px-4 py-3 shadow-lg backdrop-blur"><p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Designed for people</p><p className="mt-1 text-sm font-bold text-slate-800">Work better. Feel better.</p></div></div></div></section>
+function ChairTile({ chair, onClick }: { chair: { label: string; img1: string; img2: string; alt: string; isViewAll?: boolean }; onClick: () => void }) {
+  const [hovered, setHovered] = useState(false);
 
-  <section className="border-b border-slate-100 bg-white"><div className="mx-auto grid max-w-[1180px] grid-cols-2 divide-x divide-y divide-slate-100 px-6 md:grid-cols-4 md:divide-y-0">{[["15+", "Years of Expertise"], ["5,000+", "Workspace Installations"], ["40+", "Furniture Designs"], ["100+", "Corporate Clients"]].map(([n,l])=><div key={l} className="py-8 text-center md:py-11"><p className="text-3xl font-extrabold tracking-tight text-[#00A7C4]">{n}</p><p className="mt-1 text-xs font-semibold text-slate-600">{l}</p></div>)}</div></section>
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        position: "relative",
+        aspectRatio: "1 / 1",
+        border: "none",
+        padding: 0,
+        cursor: "pointer",
+        background: "#F1F5F9",
+        overflow: "hidden",
+        display: "block",
+      }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <img
+        src={chair.img1}
+        alt={chair.alt}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "opacity 0.55s ease, transform 0.55s ease",
+          opacity: hovered ? 0 : 1,
+          transform: hovered ? "scale(1.06)" : "scale(1)",
+        }}
+      />
+      <img
+        src={chair.img2}
+        alt={`${chair.alt} alternate`}
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          transition: "opacity 0.55s ease, transform 0.55s ease",
+          opacity: hovered ? 1 : 0,
+          transform: hovered ? "scale(1)" : "scale(1.06)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          background: chair.isViewAll ? "#00A7C4" : "#ffffff",
+          padding: "10px 18px",
+        }}
+      >
+        <span
+          style={{
+            fontSize: 13,
+            fontWeight: 700,
+            color: chair.isViewAll ? "#ffffff" : "#0F172A",
+            whiteSpace: "nowrap",
+            display: "block",
+          }}
+        >
+          {chair.label}
+        </span>
+      </div>
+    </button>
+  );
+}
 
-  <section id="products" className="overflow-hidden px-6 py-20 lg:py-28"><div className="mx-auto max-w-[1280px]"><div className="flex flex-wrap items-end justify-between gap-4"><div><p className="eyebrow">Designed for every way of working</p><h2 className="section-title mt-3">Explore Our Categories</h2><p className="mt-3 text-slate-500">Workspace solutions designed for every role and environment.</p></div><a href="#contact" className="text-sm font-bold text-[#00A7C4]">View all collections →</a></div><div className="product-scroll mt-10 flex gap-5 overflow-x-auto pb-3">{categories.map(([title,sub,image,bg])=><article key={title} className={`group min-w-[280px] flex-1 overflow-hidden rounded-2xl ${bg} p-4 transition duration-300 hover:-translate-y-1 hover:shadow-xl md:min-w-[260px]`}><div className="overflow-hidden rounded-xl"><Image src={image} alt={title} width={600} height={400} className="h-52 w-full object-cover transition duration-500 group-hover:scale-105"/></div><h3 className="mt-5 text-xl font-bold text-slate-900">{title}</h3><p className="mt-1 text-sm text-slate-500">{sub}</p><a href="#contact" className="mt-5 inline-flex text-sm font-bold text-[#00A7C4]">Explore collection <span className="ml-2">→</span></a></article>)}</div></div></section>
+export default function Home() {
+  const router = useRouter();
 
-  <section id="company" className="bg-slate-50 px-6 py-20 lg:py-28"><div className="mx-auto grid max-w-[1180px] items-center gap-0 lg:grid-cols-[1.05fr_.85fr]"><div className="relative min-h-[390px] overflow-hidden rounded-2xl"><Image src="/banner_2.jpg" fill sizes="(max-width: 1024px) 100vw, 60vw" alt="Modern office production and planning" className="object-cover"/></div><div className="relative bg-white p-8 shadow-xl shadow-slate-900/10 lg:-ml-14 lg:my-10 lg:p-12"><p className="eyebrow">Our story</p><h2 className="section-title mt-3">Workspace solutions built around people.</h2><p className="mt-5 text-[15px] leading-7 text-slate-500">Node Workspace Solutions combines ergonomic design, engineering expertise and modern manufacturing to create workspaces that improve comfort, productivity and employee wellbeing.</p><p className="mt-4 text-[15px] leading-7 text-slate-500">From individual ergonomic chairs to complete corporate workspace installations, we help organisations create environments where people perform at their best.</p><ul className="mt-6 grid gap-3 text-sm font-semibold text-slate-700 sm:grid-cols-2">{["Ergonomic engineering","Quality manufacturing","Custom workspace planning","Pan-India project support"].map(t=><li key={t} className="flex items-center gap-2"><span className="grid h-5 w-5 place-items-center rounded-full bg-cyan-50 text-xs text-[#00A7C4]">✓</span>{t}</li>)}</ul><a href="#contact" className="mt-8 inline-block text-sm font-bold text-[#00A7C4]">Discover NWS →</a></div></div></section>
+  return (
+    <div>
+      {/* ── HERO ── */}
+      <section
+        className="relative flex items-center justify-center"
+        style={{ minHeight: "88vh", background: "#0F172A" }}
+      >
+        <img
+          src="https://images.unsplash.com/photo-1631193816258-28b44b21e78b?w=1600&h=900&fit=crop&auto=format"
+          alt="Modern ergonomic office space"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ opacity: 0.45 }}
+        />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.65) 100%)" }} />
 
-  <section className="relative overflow-hidden bg-[#111827] px-6 py-20 text-white"><div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,167,196,.25),transparent_45%)]"/><div className="relative mx-auto max-w-[1100px] text-center"><p className="eyebrow">The NWS promise</p><h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">Built on Quality. Backed by Standards.</h2><div className="mt-11 grid grid-cols-2 gap-4 sm:grid-cols-5">{["ISO 9001","ISO 14001","BIFMA","GreenGuard","MAKE IN INDIA"].map(x=><div key={x} className="grid h-24 place-items-center rounded-xl border border-white/10 bg-white px-3 text-center text-xs font-extrabold text-slate-700 shadow-lg">{x}</div>)}</div></div></section>
+        <div className="relative z-10 flex flex-col items-center text-center gap-6" style={{ padding: "0 24px", maxWidth: 760 }}>
+          <span className="text-xs font-extrabold tracking-[0.22em] uppercase" style={{ color: "#22D3EE" }}>
+            For Your Workspace
+          </span>
+          <h1
+            className="font-extrabold text-white"
+            style={{ fontSize: "clamp(38px, 6vw, 68px)", lineHeight: 1.05, letterSpacing: "-0.04em" }}
+          >
+            Ergonomic Chairs &amp;<br />Workspace Solutions
+          </h1>
+          <p style={{ color: "#CBD5E1", fontSize: 17, lineHeight: "28px", maxWidth: 520 }}>
+            Engineered for comfort. Built for performance. Trusted by 100+ corporates across India.
+          </p>
+          <button
+            onClick={() => router.push("/products")}
+            style={{
+              background: "#00A7C4",
+              color: "#ffffff",
+              border: "none",
+              height: 52,
+              padding: "0 40px",
+              borderRadius: 8,
+              cursor: "pointer",
+              fontWeight: 700,
+              fontSize: 13,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              marginTop: 8,
+              boxShadow: "0 10px 30px rgba(0,167,196,0.35)",
+              transition: "background 0.2s",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
+            onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
+          >
+            Shop Now
+          </button>
+        </div>
 
-  <section className="px-6 py-20 lg:py-28"><div className="mx-auto max-w-[1180px] text-center"><p className="eyebrow">The NWS difference</p><h2 className="section-title mt-3">Why Node Workspace Solutions?</h2><p className="mt-3 text-slate-500">More than furniture. We create better places to work.</p><div className="mt-11 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{features.map(([icon,title,text])=><article key={title} className="rounded-xl border border-slate-200 bg-white p-6 text-left transition hover:-translate-y-1 hover:shadow-xl"><span className="grid h-11 w-11 place-items-center rounded-full bg-cyan-50 text-xl text-[#00A7C4]">{icon}</span><h3 className="mt-5 font-bold text-slate-900">{title}</h3><p className="mt-3 text-sm leading-6 text-slate-500">{text}</p></article>)}</div></div></section>
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0.45 }}>
+          <div style={{ width: 1, height: 40, background: "white" }} />
+          <span className="text-white text-[10px] tracking-widest uppercase">Scroll</span>
+        </div>
+      </section>
 
-  <section id="resources" className="bg-slate-50 px-6 py-20 lg:py-28"><div className="mx-auto grid max-w-[1180px] gap-10 lg:grid-cols-2"><div><p className="eyebrow">Spaces that support people</p><h2 className="section-title mt-3">We Serve Industries</h2><div className="mt-7">{["Banking & Finance","Corporate Offices","Co-Working Spaces","Educational Institutions","Healthcare","Hospitality","IT & Technology","Government Sector"].map((x,i)=><div key={x} className={`flex cursor-pointer items-center justify-between border-b py-4 ${i===1?"border-[#00A7C4] text-[#00A7C4]":"border-slate-200 text-slate-700"}`}><span className="text-sm font-bold"><small className="mr-4 text-xs text-slate-400">0{i+1}</small>{x}</span><span>↗</span></div>)}</div></div><div className="relative min-h-[420px] overflow-hidden rounded-2xl"><Image src="/images/nws-hero.png" fill sizes="(max-width: 1024px) 100vw, 50vw" alt="Corporate workspace installation" className="object-cover"/><div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-slate-950/90 p-8 text-white"><p className="text-sm font-bold">Corporate Offices</p><p className="mt-2 max-w-sm text-sm leading-6 text-slate-200">Flexible, future-ready spaces that help teams focus, collaborate and feel their best.</p></div></div></div></section>
+      {/* ── CHAIR GRID ── */}
+      <section style={{ background: "#ffffff", padding: "80px 24px" }}>
+        <div className="mx-auto" style={{ maxWidth: 1280 }}>
+          <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
+            <div>
+              <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-2" style={{ color: "#00A7C4" }}>
+                Our Collections
+              </span>
+              <h2
+                className="font-extrabold"
+                style={{ fontSize: "clamp(26px, 3vw, 38px)", color: "#0F172A", letterSpacing: "-0.04em", lineHeight: 1.1 }}
+              >
+                Browse by Category
+              </h2>
+              <p className="mt-2 text-sm" style={{ color: "#94A3B8" }}>Hover any tile to see the chair from a second angle</p>
+            </div>
+            <button
+              onClick={() => router.push("/products")}
+              style={{ color: "#00A7C4", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, textDecoration: "underline", textUnderlineOffset: 4 }}
+            >
+              View all chairs →
+            </button>
+          </div>
 
-  <section className="px-6 py-20 lg:py-28"><div className="mx-auto max-w-[1180px]"><div className="text-center"><p className="eyebrow">Featured collection</p><h2 className="section-title mt-3">Designed for Better Work</h2></div><div className="mt-11 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{products.map(([name,type,detail,image])=><article key={name} className="group"><div className="overflow-hidden rounded-2xl bg-slate-100"><Image src={image} alt={`${name} ${type}`} width={600} height={600} className="h-64 w-full object-cover transition duration-500 group-hover:scale-105"/></div><p className="mt-4 text-xs font-bold uppercase tracking-widest text-[#00A7C4]">{type}</p><h3 className="mt-1 text-lg font-bold text-slate-900">{name}</h3><p className="mt-2 text-sm text-slate-500">{detail}</p><a href="#contact" className="mt-4 inline-block text-sm font-bold text-slate-800">View product →</a></article>)}</div><div className="mt-10 text-center"><a href="#contact" className="inline-block rounded-lg border border-slate-300 px-6 py-3 text-sm font-bold text-slate-700">Explore All Products</a></div></div></section>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {CHAIRS.map((c) => (
+              <ChairTile key={c.label} chair={c} onClick={() => router.push("/products")} />
+            ))}
+          </div>
 
-  <section className="bg-[#111827] px-6 py-20 text-white"><div className="mx-auto max-w-[1180px]"><div className="flex items-end justify-between"><div><p className="eyebrow">Partner stories</p><h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">What Our Clients Say</h2></div><div className="hidden gap-2 sm:flex"><button className="grid h-10 w-10 place-items-center rounded-full border border-white/20">←</button><button className="grid h-10 w-10 place-items-center rounded-full bg-[#00A7C4]">→</button></div></div><div className="mt-10 grid gap-5 md:grid-cols-3">{["The NWS team helped us redesign our office seating across multiple departments. The improvement in comfort and workspace consistency was immediately noticeable.","Our new ergonomic workstations were delivered and installed smoothly. Great product quality and professional execution.","We were looking for a workspace partner rather than just a furniture vendor. NWS handled planning, customization and installation extremely well."].map((quote,i)=><article key={quote} className="rounded-xl border border-white/10 bg-white/5 p-6"><div className="text-[#22D3EE]">★★★★★</div><p className="mt-5 text-sm leading-7 text-slate-200">“{quote}”</p><div className="mt-7 flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-full bg-slate-600 text-xs font-bold">{["RA","SK","VM"][i]}</span><span><b className="block text-sm">{["R. Anand","S. Kumar","V. Menon"][i]}</b><small className="text-slate-400">Operations · Chennai</small></span></div></article>)}</div></div></section>
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => router.push("/products")}
+              style={{
+                background: "#00A7C4", color: "#ffffff", border: "none", height: 50, padding: "0 36px",
+                borderRadius: 8, cursor: "pointer", fontSize: 13, fontWeight: 700,
+                boxShadow: "0 8px 20px rgba(0,167,196,0.22)", transition: "background 0.2s",
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
+              onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
+            >
+              View More Chairs
+            </button>
+          </div>
+        </div>
+      </section>
 
-  <section id="projects" className="px-6 py-20 lg:py-28"><div className="mx-auto max-w-[1180px]"><div className="text-center"><p className="eyebrow">Project highlights</p><h2 className="section-title mt-3">Workspace Gallery</h2><p className="mt-3 text-slate-500">Spaces transformed by Node Workspace Solutions.</p></div><div className="mt-10 grid auto-rows-[180px] gap-4 md:grid-cols-4">{[["Corporate Offices","/banner_1.jpg","md:col-span-2 md:row-span-2"],["Conference Rooms","/images/nws-hero.png","md:col-span-2"],["Executive Cabins","/banner_2.jpg",""],["Workstations","/banner_3.jpg",""],["Training Rooms","/banner_2.jpg","md:col-span-2"]].map(([title,img,cls])=><article key={title} className={`group relative overflow-hidden rounded-xl ${cls}`}><Image src={img} fill sizes="(max-width:768px) 100vw, 33vw" alt={title} className="object-cover transition duration-500 group-hover:scale-105"/><div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-80"/><h3 className="absolute bottom-4 left-4 text-sm font-bold text-white">{title}</h3></article>)}</div><div className="mt-9 text-center"><a href="#contact" className="text-sm font-bold text-[#00A7C4]">View Our Projects →</a></div></div></section>
+      {/* ── STATS STRIP ── */}
+    
 
-  <section className="border-y border-slate-100 bg-slate-50 px-6 py-14"><div className="mx-auto max-w-[1080px] text-center"><p className="text-sm font-bold text-slate-800">Trusted by Growing Teams</p><div className="mt-8 flex flex-wrap justify-center gap-x-12 gap-y-5 text-lg font-extrabold tracking-widest text-slate-300"><span>VERVE</span><span>CONCENTRIC</span><span>ARCWORKS</span><span>INNOVATE</span><span>FOLIO</span></div></div></section>
-
-  <section id="contact" className="px-6 py-20 lg:py-28"><div className="mx-auto grid max-w-[1100px] gap-10 lg:grid-cols-[.75fr_1.25fr]"><div><p className="eyebrow">Let&apos;s get started</p><h2 className="section-title mt-3">Build Your Workspace with NWS</h2><p className="mt-4 text-sm leading-7 text-slate-500">Tell us about your next project. Our workspace experts will help you find the right solution.</p><div className="mt-8 space-y-5">{[["☎","Call Us","+91 98765 43210"],["✉","Email","sales@nwsworkspace.com"],["⌖","Office","Chennai, Tamil Nadu"],["◷","Working Hours","Mon – Sat · 9:00 AM – 6:30 PM"]].map(([i,t,d])=><div key={t} className="flex gap-4"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-cyan-50 text-[#00A7C4]">{i}</span><p className="text-sm"><b className="block text-slate-800">{t}</b><span className="text-slate-500">{d}</span></p></div>)}</div></div><form className="rounded-2xl border border-slate-200 bg-slate-50 p-6 shadow-xl shadow-slate-900/5 sm:p-8"><div className="grid gap-5 sm:grid-cols-2">{[["Name *","text"],["Company Name","text"],["Email *","email"],["Phone Number *","tel"],["City","text"]].map(([label,type])=><label key={label} className="text-xs font-bold text-slate-700">{label}<input type={type} required={label.includes("*")} className="mt-2 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal outline-none focus:border-[#00A7C4]"/></label>)}<label className="text-xs font-bold text-slate-700">Requirement<select className="mt-2 h-11 w-full rounded-lg border border-slate-200 bg-white px-3 text-sm font-normal outline-none focus:border-[#00A7C4]"><option>Ergonomic Chairs</option><option>Workstations</option><option>Complete Office Setup</option><option>Bulk Corporate Order</option></select></label></div><label className="mt-5 block text-xs font-bold text-slate-700">Message<textarea className="mt-2 min-h-28 w-full rounded-lg border border-slate-200 bg-white p-3 text-sm font-normal outline-none focus:border-[#00A7C4]"/></label><button type="submit" className="mt-6 w-full rounded-lg bg-[#00A7C4] px-6 py-3.5 text-sm font-bold text-white transition hover:bg-[#008ca6]">Request a Quote</button><p className="mt-4 text-center text-[11px] leading-5 text-slate-400">By submitting this form, you agree to be contacted regarding your enquiry.</p></form></div></section>
-  <script type="application/ld+json" dangerouslySetInnerHTML={{__html: JSON.stringify({"@context":"https://schema.org","@type":"LocalBusiness",name:"Node Workspace Solutions",description:"Ergonomic office furniture and workspace solutions",address:{"@type":"PostalAddress",addressLocality:"Chennai",addressRegion:"Tamil Nadu",addressCountry:"IN"},email:"sales@nwsworkspace.com"})}} />
- </main>;
+      {/* ── CTA BAND ── */}
+      <section style={{ background: "#00A7C4", padding: "64px 24px" }}>
+        <div className="mx-auto flex flex-col md:flex-row items-center justify-between gap-6" style={{ maxWidth: 1280 }}>
+          <div>
+            <h2 className="font-extrabold text-white" style={{ fontSize: "clamp(22px, 2.5vw, 32px)", letterSpacing: "-0.03em" }}>
+              Ready to transform your workspace?
+            </h2>
+            <p style={{ color: "rgba(255,255,255,0.8)", marginTop: 6, fontSize: 15 }}>
+              Talk to our experts and get a free space assessment.
+            </p>
+          </div>
+          <button
+            onClick={() => router.push("/quote")}
+            style={{
+              background: "#ffffff", color: "#00A7C4", border: "none", height: 50, padding: "0 32px",
+              borderRadius: 8, cursor: "pointer", fontSize: 13, fontWeight: 700, flexShrink: 0,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.12)", transition: "background 0.2s",
+            }}
+            onMouseEnter={e => (e.currentTarget.style.background = "#F0FDFE")}
+            onMouseLeave={e => (e.currentTarget.style.background = "#ffffff")}
+          >
+            Get a Free Quote
+          </button>
+        </div>
+      </section>
+    </div>
+  );
 }

@@ -51,13 +51,13 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto max-w-xl space-y-6 rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-base)] p-8 shadow-[0_30px_80px_rgba(15,23,42,0.06)]"
+      className="mx-auto max-w-xl space-y-6 rounded-2xl sm:rounded-[2rem] border border-[var(--color-border)] bg-[var(--color-base)] p-6 sm:p-8 shadow-[0_30px_80px_rgba(15,23,42,0.06)]"
     >
       <div className="space-y-3">
         <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[var(--color-neutral)]">
           Request a consultation
         </p>
-        <h2 className="text-3xl font-semibold text-[var(--color-secondary)]">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-[var(--color-secondary)]">
           Start your workspace transformation
         </h2>
         <p className="text-sm leading-6 text-[var(--color-neutral)]">
