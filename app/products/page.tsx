@@ -1,154 +1,202 @@
 "use client";
 import { useState, useEffect } from "react";
 
-const BASE = "https://cdn.shopify.com/s/files/1/0597/8554/3835/products/";
+const BASE = "/products images/";
 
-const CATEGORIES = ["All", "Executive", "Task", "Leather", "Heavy Duty", "Visitor", "Breakout", "Drafting"];
+const CATEGORIES = ["All", "Executive", "Task", "Visitor", "Sofa", "Training"];
 
 const ALL_CHAIRS = [
   {
-    name: "Magnum Executive Chair",
-    sub: "High Back",
-    cat: "Executive",
-    img1: BASE + "MAGNUM-H.jpg?v=1636757813",
-    img2: BASE + "MAGNUM-HBACKVIEW.jpg?v=1636757813",
-    alt: "Magnum Executive Chair High Back",
+    name: "8024-D Visitor",
+    sub: "Visitor",
+    cat: "Visitor",
+    img: BASE + "8024-D Visitor.jpeg",
   },
   {
-    name: "Bliss Leather Chair",
-    sub: "High Back",
-    cat: "Leather",
-    img1: BASE + "MGOPJ-VC-H01BK_5.jpg?v=1636874830",
-    img2: BASE + "MGOPJ-VC-H01BK_1.jpg?v=1636874830",
-    alt: "Bliss Leather Chair High Back",
-  },
-  {
-    name: "Rio Task Chair",
-    sub: "High Mesh Back",
+    name: "803 NETTED MB",
+    sub: "Medium Back",
     cat: "Task",
-    img1: BASE + "RIO-H-MB.jpg?v=1636772195",
-    img2: BASE + "RIO-Hwithdimension.jpg?v=1636772195",
-    alt: "Rio Task Chair High Mesh Back",
+    img: BASE + "803-NETTED-MB.jpeg",
   },
   {
-    name: "Hino Heavy Duty",
-    sub: "Task Chair",
-    cat: "Heavy Duty",
-    img1: BASE + "HINO-MB.jpg?v=1636757372",
-    img2: BASE + "HINO-MBBackView.jpg?v=1636757372",
-    alt: "Hino Heavy Duty Task Chair",
-  },
-  {
-    name: "Titan Chair",
-    sub: "Heavy Duty",
-    cat: "Heavy Duty",
-    img1: BASE + "titan_chair_5__1_1_5000x_0c09e98e-c00d-4cfa-af28-15a8c17cb228.jpg?v=1642390370",
-    img2: BASE + "titan_chair_45__1_5000x_233469c6-a02c-45d9-b105-2e6d7720b402.jpg?v=1642390370",
-    alt: "Titan Chair",
-  },
-  {
-    name: "Studio Mesh Visitor",
+    name: "804 VC",
     sub: "Visitor Chair",
     cat: "Visitor",
-    img1: BASE + "ys41-studio-front.jpg?v=1636713454",
-    img2: BASE + "ys41-studio-back.jpg?v=1636713454",
-    alt: "Studio Mesh Visitor Chair",
+    img: BASE + "804-VC.JPEG",
   },
   {
-    name: "Rio Task Chair",
-    sub: "Low Mesh Back",
+    name: "805 MESH",
+    sub: "Mesh Chair",
     cat: "Task",
-    img1: BASE + "RIO-L-MB.jpg?v=1636772281",
-    img2: BASE + "RIO-Lwithdimension.jpg?v=1636772280",
-    alt: "Rio Task Chair Low Mesh Back",
+    img: BASE + "805-MESH.JPEG",
   },
   {
-    name: "Intro Task Chair",
-    sub: "Standard",
-    cat: "Task",
-    img1: BASE + "INTRO_BLACK.jpg?v=1636757545",
-    img2: BASE + "INTROWithdimension.jpg?v=1636757545",
-    alt: "Intro Task Chair",
-  },
-  {
-    name: "Web Executive Chair",
-    sub: "Low Back",
-    cat: "Executive",
-    img1: BASE + "WEB_L_white.jpg?v=1636785895",
-    img2: BASE + "WEB_L_red_d143f25f-308a-4f74-bc82-8f6a80d2e1ce.jpg?v=1641174476",
-    alt: "Web Executive Chair Low Back",
-  },
-  {
-    name: "Hilton Executive Chair",
-    sub: "High Back",
-    cat: "Executive",
-    img1: BASE + "HILTON-H.jpg?v=1636757206",
-    img2: BASE + "HILTON-Hbacksideview.jpg?v=1636757206",
-    alt: "Hilton Executive Chair High Back",
-  },
-  {
-    name: "TR600 Heavy Duty",
-    sub: "Task Chair",
-    cat: "Heavy Duty",
-    img1: BASE + "TR600-MB.jpg?v=1636774067",
-    img2: BASE + "TR600-MBBackview.jpg?v=1636774067",
-    alt: "TR600 Heavy Duty Task Chair",
-  },
-  {
-    name: "Camry Executive Chair",
-    sub: "High Back",
-    cat: "Executive",
-    img1: BASE + "CAMRY-H.jpg?v=1636755486",
-    img2: BASE + "CAMRY-Hwithdimension.jpg?v=1636755486",
-    alt: "Camry Executive Chair High Back",
-  },
-  {
-    name: "Boston Executive Chair",
-    sub: "High Back",
-    cat: "Executive",
-    img1: BASE + "BOSTON-H_rightside.jpg?v=1636755247",
-    img2: BASE + "BOSTON-Hsideview.jpg?v=1636755248",
-    alt: "Boston Executive Chair High Back",
-  },
-  {
-    name: "Tonic Breakout Chair",
-    sub: "Breakout",
-    cat: "Breakout",
-    img1: BASE + "TONIC-R.jpg?v=1636774017",
-    img2: BASE + "TONIC-Rbackview.jpg?v=1636774017",
-    alt: "Tonic Breakout Chair",
-  },
-  {
-    name: "Drafting Chair",
+    name: "805 NETTED MB",
     sub: "Medium Back",
-    cat: "Drafting",
-    img1: BASE + "EC070BMBLDrafting_2.jpg?v=1637384797",
-    img2: BASE + "EC070BMBLDrafting_3.jpg?v=1637384797",
-    alt: "Commercial Grade Drafting Chair",
-  },
-  {
-    name: "Duro Plus Heavy Duty",
-    sub: "Task Chair",
-    cat: "Heavy Duty",
-    img1: BASE + "DuroPlusCT14HABK_1.jpg?v=1636871891",
-    img2: BASE + "DuroPlusCT14HABK_2.jpg?v=1636871891",
-    alt: "Duro Plus Heavy Duty Task Chair",
-  },
-  {
-    name: "Rose Hospitality Chair",
-    sub: "Hospitality",
-    cat: "Visitor",
-    img1: BASE + "ROSE.jpg?v=1636772427",
-    img2: BASE + "ROSEbackview.jpg?v=1636772428",
-    alt: "Rose Hospitality Chair",
-  },
-  {
-    name: "P350 Task Chair",
-    sub: "High Back with Arm",
     cat: "Task",
-    img1: BASE + "P350HC-MB.jpg?v=1636758228",
-    img2: BASE + "P350H-MB.jpg?v=1636758211",
-    alt: "P350 Task Chair High Back",
+    img: BASE + "805-NETTED-MB.jpeg",
+  },
+  {
+    name: "Accord MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "Accord MB.jpeg",
+  },
+  {
+    name: "BUTTERFLY HB",
+    sub: "High Back",
+    cat: "Executive",
+    img: BASE + "BUTTERFLY-HB.jpeg",
+  },
+  {
+    name: "BUTTERFLY MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "BUTTERFLY-MB.jpeg",
+  },
+  {
+    name: "ECCO MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "ECCO-MB.jpeg",
+  },
+  {
+    name: "EV-05 Visitor",
+    sub: "Visitor Chair",
+    cat: "Visitor",
+    img: BASE + "EV-05 Visitor.jpeg",
+  },
+  {
+    name: "FLASH MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "FLASH-MB.jpeg",
+  },
+  {
+    name: "Flip Training Chair",
+    sub: "With Pad",
+    cat: "Training",
+    img: BASE + "FLIPTRAININGCHAIR-WITHPADWITHOUTWHEEL-SIDE.JPEG",
+  },
+  {
+    name: "Flip Training Chair",
+    sub: "Without Pad",
+    cat: "Training",
+    img: BASE + "FLIP_TRAINING_CHAIR_-_WITH_OUT_WHEEL_WITHOUT_PAD_-_SIDE.JPEG",
+  },
+  {
+    name: "GILMA VC",
+    sub: "Visitor Chair",
+    cat: "Visitor",
+    img: BASE + "GILMA-VC-SIDE.JPEG",
+  },
+  {
+    name: "HILITE HB",
+    sub: "High Back",
+    cat: "Executive",
+    img: BASE + "HILITE-HB.jpeg",
+  },
+  {
+    name: "HILITE MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "HILITE-MB.jpeg",
+  },
+  {
+    name: "J-118-2",
+    sub: "Chair",
+    cat: "Task",
+    img: BASE + "J-118-2.JPEG",
+  },
+  {
+    name: "JAZZ HB",
+    sub: "High Back",
+    cat: "Executive",
+    img: BASE + "JAZZ-HB.jpeg",
+  },
+  {
+    name: "JAZZ MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "JAZZ-MB.jpeg",
+  },
+  {
+    name: "KAABLE CHAIR",
+    sub: "Chair",
+    cat: "Task",
+    img: BASE + "KAABLE-CHAIR.jpeg",
+  },
+  {
+    name: "Kaable-Mesh Visitor",
+    sub: "Visitor Chair",
+    cat: "Visitor",
+    img: BASE + "Kaable-Mesh Visitor.jpeg",
+  },
+  {
+    name: "METRO SOFA",
+    sub: "Sofa",
+    cat: "Sofa",
+    img: BASE + "METRO_SOFA.jpeg",
+  },
+  {
+    name: "OSLO HB",
+    sub: "High Back",
+    cat: "Executive",
+    img: BASE + "OSLO-HB.jpeg",
+  },
+  {
+    name: "OSLO MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "OSLO-MB.jpeg",
+  },
+  {
+    name: "SOLITAIRE VC",
+    sub: "Visitor Chair",
+    cat: "Visitor",
+    img: BASE + "SOLITAIRE-VC.jpeg",
+  },
+  {
+    name: "SPENCER",
+    sub: "Chair",
+    cat: "Task",
+    img: BASE + "SPENCER.jpeg",
+  },
+  {
+    name: "VENTO HB",
+    sub: "High Back",
+    cat: "Executive",
+    img: BASE + "VENTO-HB.jpeg",
+  },
+  {
+    name: "VENTO MB",
+    sub: "Medium Back",
+    cat: "Task",
+    img: BASE + "VENTO-MB.jpeg",
+  },
+  {
+    name: "VS 6009-1",
+    sub: "Chair",
+    cat: "Task",
+    img: BASE + "VS 6009-1.JPEG",
+  },
+  {
+    name: "Visitor 3 Seater Sky Sofa",
+    sub: "Sofa",
+    cat: "Sofa",
+    img: BASE + "Visitor 3 Seater Sky Sofa.jpeg",
+  },
+  {
+    name: "Visitor 3 Seater Sofa",
+    sub: "Sofa",
+    cat: "Sofa",
+    img: BASE + "Visitor 3 Seater Sofa.jpg.jpeg",
+  },
+  {
+    name: "ZOOM HB",
+    sub: "High Back",
+    cat: "Executive",
+    img: BASE + "ZOOM-HB.jpeg",
   },
 ];
 
@@ -161,26 +209,15 @@ function ChairCard({ chair }: { chair: typeof ALL_CHAIRS[0] }) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Image with crossfade */}
+      {/* Image with zoom effect */}
       <div style={{ position: "relative", aspectRatio: "4/5", background: "#F8FAFC", overflow: "hidden" }}>
         <img
-          src={chair.img1}
-          alt={chair.alt}
+          src={chair.img}
+          alt={chair.name}
           style={{
             position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", mixBlendMode: "darken",
-            transition: "opacity 0.55s ease, transform 0.55s ease",
-            opacity: hovered ? 0 : 1,
+            transition: "transform 0.55s ease",
             transform: hovered ? "scale(1.06)" : "scale(1)",
-          }}
-        />
-        <img
-          src={chair.img2}
-          alt={`${chair.alt} alternate`}
-          style={{
-            position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "contain", mixBlendMode: "darken",
-            transition: "opacity 0.55s ease, transform 0.55s ease",
-            opacity: hovered ? 1 : 0,
-            transform: hovered ? "scale(1)" : "scale(1.06)",
           }}
         />
       </div>

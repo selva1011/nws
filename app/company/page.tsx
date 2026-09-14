@@ -65,26 +65,7 @@ export default function Company() {
       </div>
 
       {/* Timeline */}
-      <div style={{ background: "#F8FAFC", padding: "72px 24px" }}>
-        <div className="mx-auto" style={{ maxWidth: 900 }}>
-          <div className="text-center mb-12">
-            <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-2" style={{ color: "#00A7C4" }}>Our Journey</span>
-            <h2 className="font-extrabold" style={{ fontSize: "clamp(22px, 2.5vw, 34px)", color: "#0F172A", letterSpacing: "-0.03em" }}>Key Milestones</h2>
-          </div>
-          <div className="flex flex-col gap-0 relative">
-            <div className="absolute left-[72px] top-0 bottom-0 hidden sm:block" style={{ width: 1, background: "#E2E8F0" }} />
-            {MILESTONES.map((m) => (
-              <div key={m.year} className="flex gap-6 sm:gap-10 items-start py-6" style={{ borderBottom: "1px solid #E2E8F0" }}>
-                <span className="font-extrabold flex-shrink-0 text-right" style={{ width: 56, color: "#00A7C4", fontSize: 15 }}>{m.year}</span>
-                <div className="hidden sm:flex items-center justify-center flex-shrink-0 relative" style={{ width: 32, height: 32, zIndex: 1 }}>
-                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#00A7C4", border: "3px solid #F8FAFC" }} />
-                </div>
-                <p className="text-sm pt-1" style={{ color: "#334155", lineHeight: "24px" }}>{m.event}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      
 
     
 

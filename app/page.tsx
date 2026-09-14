@@ -2,36 +2,32 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const BASE = "https://cdn.shopify.com/s/files/1/0597/8554/3835/products/";
+const BASE = "/products images/";
 
 const CHAIRS = [
   {
     label: "Executive Chairs",
-    img1: BASE + "MAGNUM-H.jpg?v=1636757813",
-    img2: BASE + "MAGNUM-HBACKVIEW.jpg?v=1636757813",
-    alt: "Magnum Executive Chair High Back",
+    img: BASE + "BUTTERFLY-HB.jpeg",
+    alt: "Butterfly High Back Chair",
   },
   {
-    label: "Mesh Task Chairs",
-    img1: BASE + "RIO-H-MB.jpg?v=1636772195",
-    img2: BASE + "RIO-Hwithdimension.jpg?v=1636772195",
-    alt: "Rio Task Chair High Mesh Back",
+    label: "Task Chairs",
+    img: BASE + "805-MESH.JPEG",
+    alt: "805 Mesh Chair",
   },
   {
-    label: "Leather Chairs",
-    img1: BASE + "MGOPJ-VC-H01BK_5.jpg?v=1636874830",
-    img2: BASE + "MGOPJ-VC-H01BK_1.jpg?v=1636874830",
-    alt: "Bliss Leather Chair High Back",
+    label: "Visitor Chairs",
+    img: BASE + "8024-D Visitor.jpeg",
+    alt: "8024-D Visitor Chair",
   },
   {
-    label: "Heavy Duty",
-    img1: BASE + "HINO-MB.jpg?v=1636757372",
-    img2: BASE + "HINO-MBBackView.jpg?v=1636757372",
-    alt: "Hino Heavy Duty Task Chair",
+    label: "Sofas",
+    img: BASE + "METRO_SOFA.jpeg",
+    alt: "Metro Sofa",
   },
 ];
 
-function ChairTile({ chair, onClick }: { chair: { label: string; img1: string; img2: string; alt: string; isViewAll?: boolean }; onClick: () => void }) {
+function ChairTile({ chair, onClick }: { chair: { label: string; img: string; alt: string; isViewAll?: boolean }; onClick: () => void }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -51,7 +47,7 @@ function ChairTile({ chair, onClick }: { chair: { label: string; img1: string; i
       onMouseLeave={() => setHovered(false)}
     >
       <img
-        src={chair.img1}
+        src={chair.img}
         alt={chair.alt}
         style={{
           position: "absolute",
@@ -59,23 +55,8 @@ function ChairTile({ chair, onClick }: { chair: { label: string; img1: string; i
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          transition: "opacity 0.55s ease, transform 0.55s ease",
-          opacity: hovered ? 0 : 1,
+          transition: "transform 0.55s ease",
           transform: hovered ? "scale(1.06)" : "scale(1)",
-        }}
-      />
-      <img
-        src={chair.img2}
-        alt={`${chair.alt} alternate`}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transition: "opacity 0.55s ease, transform 0.55s ease",
-          opacity: hovered ? 1 : 0,
-          transform: hovered ? "scale(1)" : "scale(1.06)",
         }}
       />
       <div
