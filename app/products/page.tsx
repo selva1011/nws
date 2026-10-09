@@ -1,9 +1,19 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const BASE = "/products images/";
 
 const CATEGORIES = ["All", "Executive", "Task", "Visitor", "Sofa", "Training"];
+
+function resolveCategory(param: string | null): string {
+  if (!param) return "All";
+  const normalized = param.trim().toLowerCase();
+  const matched = CATEGORIES.find(
+    (cat) => cat.toLowerCase() === normalized || normalized.startsWith(cat.toLowerCase())
+  );
+  return matched || "All";
+}
 
 const ALL_CHAIRS = [
   {
@@ -236,19 +246,52 @@ function ChairCard({ chair }: { chair: typeof ALL_CHAIRS[0] }) {
   );
 }
 
-export default function Products() {
-  const [active, setActive] = useState("All");
+function ProductsFallback() {
+  return (
+    <div style={{ background: "#ffffff", minHeight: "100vh" }}>
+      {/* Header */}
+      <div style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0", padding: "48px 24px 40px" }}>
+        <div className="mx-auto" style={{ maxWidth: 1280 }}>
+          <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-2" style={{ color: "#00A7C4" }}>Our Range</span>
+          <h1 className="font-extrabold" style={{ fontSize: "clamp(28px, 4vw, 48px)", color: "#0F172A", letterSpacing: "-0.04em", lineHeight: 1.1 }}>
+            Chair Collections
+          </h1>
+          <p className="mt-3 text-sm" style={{ color: "#64748B", maxWidth: 480, lineHeight: "24px" }}>
+            Hover any chair to see the alternate angle. Explore our full range of premium seating.
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductsContent() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const typeParam = searchParams.get("type") || searchParams.get("category");
+  const active = resolveCategory(typeParam);
+
   const [page, setPage] = useState(1);
+  const [prevCategory, setPrevCategory] = useState(active);
 
-  useEffect(() => {
+  if (prevCategory !== active) {
+    setPrevCategory(active);
     setPage(1);
-  }, [active]);
+  }
 
-  const filtered = active === "All" ? ALL_CHAIRS : ALL_CHAIRS.filter(c => c.cat === active);
+  const filtered = active === "All" ? ALL_CHAIRS : ALL_CHAIRS.filter((c) => c.cat === active);
   
   const ITEMS_PER_PAGE = 8;
   const paginatedChairs = filtered.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE);
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+
+  const handleCategorySelect = (cat: string) => {
+    if (cat === "All") {
+      router.push("/products");
+    } else {
+      router.push(`/products?type=${encodeURIComponent(cat)}`);
+    }
+  };
 
   return (
     <div style={{ background: "#ffffff", minHeight: "100vh" }}>
@@ -274,7 +317,7 @@ export default function Products() {
           {CATEGORIES.map(cat => (
             <button
               key={cat}
-              onClick={() => setActive(cat)}
+              onClick={() => handleCategorySelect(cat)}
               style={{
                 padding: "6px 18px", height: 36, borderRadius: 9999, border: "1px solid",
                 borderColor: active === cat ? "#00A7C4" : "#E2E8F0",
@@ -322,5 +365,13 @@ export default function Products() {
         )}
       </div>
     </div>
+  );
+}
+
+export default function Products() {
+  return (
+    <Suspense fallback={<ProductsFallback />}>
+      <ProductsContent />
+    </Suspense>
   );
 }

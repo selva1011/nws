@@ -7,27 +7,31 @@ const BASE = "/products images/";
 const CHAIRS = [
   {
     label: "Executive Chairs",
+    type: "Executive",
     img: BASE + "BUTTERFLY-HB.jpeg",
     alt: "Butterfly High Back Chair",
   },
   {
     label: "Task Chairs",
+    type: "Task",
     img: BASE + "805-MESH.JPEG",
     alt: "805 Mesh Chair",
   },
   {
     label: "Visitor Chairs",
+    type: "Visitor",
     img: BASE + "8024-D Visitor.jpeg",
     alt: "8024-D Visitor Chair",
   },
   {
     label: "Sofas",
+    type: "Sofa",
     img: BASE + "METRO_SOFA.jpeg",
     alt: "Metro Sofa",
   },
 ];
 
-function ChairTile({ chair, onClick }: { chair: { label: string; img: string; alt: string; isViewAll?: boolean }; onClick: () => void }) {
+function ChairTile({ chair, onClick }: { chair: { label: string; type?: string; img: string; alt: string; isViewAll?: boolean }; onClick: () => void }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -172,7 +176,11 @@ export default function Home() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {CHAIRS.map((c) => (
-              <ChairTile key={c.label} chair={c} onClick={() => router.push("/products")} />
+              <ChairTile
+                key={c.label}
+                chair={c}
+                onClick={() => router.push(`/products?type=${encodeURIComponent(c.type)}`)}
+              />
             ))}
           </div>
 
