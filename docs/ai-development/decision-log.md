@@ -21,6 +21,20 @@ Records architectural and structural decisions made for this repository. Use thi
 
 ---
 
+## 2026-10-09 — Modern Navbar Redesign & Direct Phone Call Integration
+
+| Field | Value |
+|---|---|
+| **Status** | Accepted |
+| **Problem** | The navigation bar used an older, plain design without active page states or direct call access, and mobile users needed an animated, accessible way to quickly call sales/inquiries. |
+| **Decision** | Modernised `Header.tsx` with glassmorphic styling, pill navigation with active route detection (`usePathname`), smooth harmonic phone ring & pulse animations, a smooth morphing hamburger icon, and direct `tel:` links opening the user's phone app. |
+| **Alternatives considered** | (1) Floating call widget only — rejected in favour of sticky header integration to avoid overlapping page content. (2) Heavy vibration animation — adjusted to a smooth, elegant harmonic ring and soft pulse. |
+| **Reasoning** | Keeps the UI sleek, modern, and high-converting while seamlessly triggering native phone dialers on mobile devices. |
+| **Affected areas** | `components/Header.tsx`, `app/globals.css` |
+| **Approver** | Selvaganapathi (repository owner) |
+
+---
+
 <!-- Add new entries above this line, most recent first -->
 
 ---
