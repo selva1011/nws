@@ -1,8 +1,22 @@
 # Decision Log
 
-Records architectural and structural decisions made for this repository. Use this file to capture future decisions that affect patterns, libraries, tooling, or conventions.
+Records intentional documentation/architecture decisions. Older entries below are preserved as inherited records: their dates, rationale and approver claims were not independently re-established in the 2026-11-07 audit. Current implementation is verified in the linked reference documents; do not infer history from source alone.
 
 **Format:** Add new entries at the top (most recent first).
+
+---
+
+## 2026-11-07 — Consolidate the repository intelligence layer
+
+| Field | Value |
+|---|---|
+| **Status** | Implemented for this documentation task |
+| **Context** | The user requested an evidence-based, progressive AI knowledge system without runtime changes. Existing docs contained useful guidance but stale catalogue/lint/robots claims and conflicting authority/check-order rules. |
+| **Decision** | Retain `docs/ai-development/` as the canonical location; shorten root AGENTS; keep CLAUDE as a pointer; add focused route/component/data/design/performance/security/issue references. Merge product overview into AI context and UI quality into existing frontend guidance. |
+| **Rationale** | Preserve useful existing navigation and history, reduce duplicate facts, and let future agents load only the relevant topic. |
+| **Tradeoffs** | More small topic files to maintain; no duplicate uppercase taxonomy or per-feature documents until feature complexity warrants them. |
+| **Scope** | Markdown only; managed Next.js block preserved; no application behavior, dependencies or tooling changed. |
+| **References** | [Bootstrap](../../AGENTS.md), [AI context](ai-context.md), [Repository map](repository-map.md), [audit](testing-and-validation.md) |
 
 ---
 

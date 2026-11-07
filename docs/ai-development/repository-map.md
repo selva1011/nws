@@ -1,85 +1,34 @@
-# NWS Repository Map
+# Repository map
 
-This file documents the purpose and ownership rules for every significant directory and file in the repository. Read it before adding new files or directories.
+Task → document → source. Paths are repository-relative below; open the affected implementation and its callers, not every file. [Bootstrap](../../AGENTS.md).
 
-## Source Directories
-
-### `app/`
-
-Next.js App Router root. Contains pages, layouts, API routes, and global styles.
-
-| Path | Type | Responsibility |
+| Task / concept | Source files | Responsibility / related document |
 |---|---|---|
-| `app/layout.tsx` | Server Component | Root HTML shell. Renders `<Header>` and `<Footer>` around all pages. The only place these two components are mounted. |
-| `app/globals.css` | CSS | Tailwind v4 import and project-level utility classes (`.eyebrow`, `.section-title`, `.pattern`, `.nav-link`, `.product-scroll`). |
-| `app/page.tsx` | Client Component | Home page — hero section, category grid, CTA band. |
-| `app/company/page.tsx` | Client Component | Company/About page — mission, milestones (partial), certifications. |
-| `app/contact/page.tsx` | Server Component | Contact page — renders `<ContactForm>`. |
-| `app/products/page.tsx` | Client Component | Product catalogue — filterable grid with category tabs and pagination. |
-| `app/quote/page.tsx` | Client Component | Quote request form — **does not currently send data** (known gap). |
-| `app/services/page.tsx` | Client Component | Services page — service cards and process strip. |
-| `app/about/page.tsx` | Server Component | Stub/placeholder page — generic copy, not linked in navigation. |
-| `app/api/contact/route.ts` | API Route (POST) | Receives contact form submissions. Currently logs to console only; email/DB integration is a documented TODO. |
-| `app/sitemap.ts` | Server function | Generates `/sitemap.xml`. Base URL is placeholder (`example.com`) — not yet updated to `nwsworkspace.com`. |
-| `app/robot.ts` | Server function | Generates `/robots.txt`. Same placeholder issue as sitemap. |
+| Shell, shared metadata, global styles | [app/layout.tsx](../../app/layout.tsx), [app/globals.css](../../app/globals.css) | Root HTML, only Header/Footer mounts, Tailwind import; [Architecture](architecture.md), [Design system](design-system.md) |
+| Navigation, calls, mobile menu | [components/Header.tsx](../../components/Header.tsx) | `NAV_LINKS`, `open`, pathname styling, phone anchors; [Registry](component-registry.md) |
+| Footer/contact text | [components/Footer.tsx](../../components/Footer.tsx) | Quick links, company contact text; social/legal text are not links |
+| Home categories and CTAs | [app/page.tsx](../../app/page.tsx) | `CHAIRS`, `ChairTile`, Unsplash hero, router pushes; [Data flow](data-flow.md) |
+| Catalogue/query/pagination | [app/products/page.tsx](../../app/products/page.tsx) | `ALL_CHAIRS`, `resolveCategory`, `ProductsContent`, `ChairCard`, Suspense; [Data flow](data-flow.md) |
+| Quote request | [app/quote/page.tsx](../../app/quote/page.tsx) | Controlled fields, local `sent`; no API integration |
+| Contact submission | [app/contact/page.tsx](../../app/contact/page.tsx), [components/ContactForm.tsx](../../components/ContactForm.tsx), [app/api/contact/route.ts](../../app/api/contact/route.ts) | Page → form → handler; [Data flow](data-flow.md), [Security](security.md) |
+| Company copy and certifications | [app/company/page.tsx](../../app/company/page.tsx) | Mission, badges, quote CTA; TEAM/MILESTONES unused; [Glossary](domain-glossary.md) |
+| Service content/process | [app/services/page.tsx](../../app/services/page.tsx) | Six SERVICES entries, four process steps, quote CTA |
+| Generic about stub | [app/about/page.tsx](../../app/about/page.tsx) | Separate from company page; [Routes](routes-and-features.md) |
+| Sitemap / robots investigation | [app/sitemap.ts](../../app/sitemap.ts), [app/robot.ts](../../app/robot.ts) | Placeholder sitemap, misnamed robots file; [Routes](routes-and-features.md) |
+| Existing unused UI | [components/ImageCarousel.tsx](../../components/ImageCarousel.tsx), [components/PageTransition.tsx](../../components/PageTransition.tsx), [components/Experience.tsx](../../components/Experience.tsx) | Check registry limitations before reuse |
+| Toolchain/scripts | [package.json](../../package.json), [package-lock.json](../../package-lock.json), [next.config.ts](../../next.config.ts), [tsconfig.json](../../tsconfig.json), [eslint.config.mjs](../../eslint.config.mjs), [postcss.config.mjs](../../postcss.config.mjs) | Approval rules in bootstrap; [Testing](testing-and-validation.md) |
+| AI guidance | [AGENTS.md](../../AGENTS.md), [CLAUDE.md](../../CLAUDE.md), this directory | Canonical bootstrap, Claude pointer, task-specific references |
 
-### `components/`
+## Assets and placement
 
-Shared components used across more than one page, or components extracted from the root layout.
-
-| File | Directive | Status | Notes |
-|---|---|---|---|
-| `Header.tsx` | `"use client"` | Active | Sticky nav, mobile hamburger menu. |
-| `Footer.tsx` | Server Component | Active | Brand, quick links, contact info. Has a `solutions` array declared but never rendered. |
-| `ContactForm.tsx` | `"use client"` | Active | Form with `fetch → /api/contact`. References undefined CSS custom properties — known gap. |
-| `ImageCarousel.tsx` | `"use client"` | Unused | Horizontal scroll carousel. Not referenced by any page. |
-| `PageTransition.tsx` | `"use client"` | Unused | View Transitions API wrapper. Not referenced by any page. |
-| `Experience.tsx` | `"use client"` | Unused | Stats display (years, projects, clients). Not referenced by any page. |
-
-### `public/`
-
-Static assets served at `/`. Not processed by Next.js or TypeScript.
-
-| Path | Content |
+| Existing path | Contents / usage |
 |---|---|
-| `public/logo.png` | NWS brand logo (1390×420 source image) |
-| `public/banner_1.jpg` / `banner_2.jpg` / `banner_3.jpg` | Hero/banner photos |
-| `public/images/nws-hero.png` | Hero image (not currently used in pages — the home page uses an Unsplash URL instead) |
-| `public/products images/` | 32 product JPEG files. **Directory name contains a space** — reference in code as `/products images/filename.jpeg`. |
+| [public/logo.png](../../public/logo.png) | Header/Footer next/image; quote success uses img |
+| [public/products images/](<../../public/products images/>) | 32 JPEGs; preserve filename case and spaces; used by home/catalogue |
+| [public/banner_1.jpg](../../public/banner_1.jpg), [banner_2.jpg](../../public/banner_2.jpg), [banner_3.jpg](../../public/banner_3.jpg), [public/images/nws-hero.png](../../public/images/nws-hero.png) | Available but not referenced by current app/components |
+| [app/favicon.ico](../../app/favicon.ico) | Metadata favicon asset |
+| `public/*.svg` | Starter assets; no current app/components references |
 
-## Configuration Files
+New pages belong in `app/<route>/page.tsx`; reused components in flat `components/`; page-local helpers stay with their page; assets in `public/`. New routes, folder restructuring, data extraction, and environment variables require authorization under AGENTS.md. No `src/`, `lib/`, `hooks/`, providers, tests, proxy/middleware, or tracked CI/deployment configuration exists in this snapshot; do not send agents searching for them.
 
-| File | Purpose | Edit rules |
-|---|---|---|
-| `next.config.ts` | Next.js configuration (currently empty) | Do not edit without approval. |
-| `tsconfig.json` | TypeScript configuration (strict, `@/*` alias) | Do not edit without approval. |
-| `postcss.config.mjs` | PostCSS — `@tailwindcss/postcss` only | Do not edit without approval. |
-| `eslint.config.mjs` | ESLint — `next/core-web-vitals` + `next/typescript` | Do not edit without approval. |
-| `package.json` | Dependencies and scripts | Do not edit without approval. |
-| `package-lock.json` | npm lockfile | Never edit manually. |
-
-## Generated Directories — Do Not Edit Manually
-
-| Path | Generated by |
-|---|---|
-| `.next/` | `npm run build` or `npm run dev` |
-| `node_modules/` | `npm install` |
-| `next-env.d.ts` | Next.js (regenerated automatically) |
-| `AGENTS.md` (the `<!-- BEGIN:nextjs-agent-rules -->` block) | `next dev` — the auto-generated block is re-added on every run |
-
-## Where New Code Belongs
-
-| What you are adding | Where it goes |
-|---|---|
-| New page or route | `app/<route>/page.tsx` |
-| New API endpoint | `app/api/<endpoint>/route.ts` |
-| Shared component (used by ≥2 pages) | `components/<ComponentName>.tsx` |
-| Page-local sub-component (used by 1 page) | Co-locate in the page file |
-| Static image or asset | `public/` |
-| Global CSS utility class | `app/globals.css` |
-| Page-level metadata | `export const metadata` inside the Server Component page |
-| Environment variable | Add to `.env.local` (gitignored), document in `docs/ai-development/architecture.md` |
-
-## Where Tests Would Live (Not Yet Configured)
-
-If a test runner is added, tests should live alongside their subject or in a `__tests__/` directory at the same level. See `testing-and-validation.md` for current status.
+Generated/ignored paths (`.next/`, `node_modules/`, `next-env.d.ts`, `*.tsbuildinfo`) are not application source. Read installed framework guides deliberately; exclude generated code from general indexing. Never read environment values for documentation.

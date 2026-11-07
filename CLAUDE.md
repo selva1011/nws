@@ -1,5 +1,5 @@
 # Claude Code Instructions
 
-Read and follow `/AGENTS.md` before working in this repository.
+Read and follow [AGENTS.md](AGENTS.md) in this repository before working.
 
-`AGENTS.md` is the canonical repository instruction source. Also read any scoped `AGENTS.md` file applicable to the directory being modified.
+`AGENTS.md` is the canonical tool-neutral instruction source. Also read any applicable scoped `AGENTS.md`. Load only the task-specific documentation selected by its index; do not maintain duplicate instructions here.

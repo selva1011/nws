@@ -8,195 +8,106 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
----
-
 # NWS — Agent Instructions
 
-> **Source of truth hierarchy:** this file → `docs/ai-development/` → source code → ask the user.
-> Read the relevant `docs/ai-development/` file before working in an unfamiliar area.
+Node Workspace Solutions is a Chennai office-furniture marketing and catalogue site.
+Repository: `selva1011/nws`. Intended production domain: `nwsworkspace.com`.
 
-## Application
+## Start here — progressive context
 
-Node Workspace Solutions (NWS) is a marketing and product-catalogue website for an ergonomic office furniture company based in Chennai, India.  
-Production domain: `nwsworkspace.com`  
-Repository: `https://github.com/selva1011/nws`
+1. Read this file; do not load every document by default.
+2. For first orientation, read [AI context](docs/ai-development/ai-context.md).
+3. Select one task-specific document below, then inspect the actual source and its callers.
+4. Treat documentation as an index, never as a substitute for verifying code before editing.
 
-## Technology Stack (verified)
+| Task | First document | Source area |
+|---|---|---|
+| Find an implementation | [Repository map](docs/ai-development/repository-map.md) | `app/`, `components/` |
+| Add/change a page or metadata | [Routes and features](docs/ai-development/routes-and-features.md) | `app/`, `app/layout.tsx` |
+| Change catalogue filters/pagination | [Data flow](docs/ai-development/data-flow.md) | `app/products/page.tsx`, `app/page.tsx` |
+| Change forms/API or debug submission | [Data flow](docs/ai-development/data-flow.md), [Security](docs/ai-development/security.md) | `components/ContactForm.tsx`, `app/api/contact/route.ts`, `app/quote/page.tsx` |
+| Reuse/build a component | [Component registry](docs/ai-development/component-registry.md) | `components/`, page-local components |
+| Change styling/responsiveness | [Design system](docs/ai-development/design-system.md), [Frontend quality](docs/ai-development/frontend-guidelines.md) | `app/globals.css`, affected component |
+| Change rendering/dependencies | [Architecture](docs/ai-development/architecture.md) | Root layout and imports |
+| Improve loading/speed | [Performance](docs/ai-development/performance.md) | Images, client boundaries, product Suspense |
+| Validate/debug tooling | [Testing](docs/ai-development/testing-and-validation.md) | `package.json`, configs |
+| Investigate a limitation | [Known issues](docs/ai-development/known-issues.md) | Source evidence linked per issue |
+| Plan a task | [Workflow](docs/ai-development/development-workflow.md), [Templates](docs/ai-development/task-and-plan-templates.md) | Affected files only |
+| Interpret business terms/history | [Glossary](docs/ai-development/domain-glossary.md), [Decisions](docs/ai-development/decision-log.md) | Page content; confirm business claims |
 
-| Item | Value |
+## Evidence and authority
+
+- Instructions: explicit user task → this file → relevant `docs/ai-development/` guidance.
+- Implementation facts: current source/configuration and executed checks. Correct stale docs; never change source merely to match docs.
+- Label inferences, unknowns, proposals, and historical records. Page copy does not prove business claims.
+- Ask about material scope ambiguities; proceed with already authorized work. Do not invent requirements.
+
+## Stack and structure
+
+- Next.js **16.3.0**, App Router; React/React DOM **19.2.8**; TypeScript strict mode.
+- Tailwind **v4** via `@tailwindcss/postcss`; inline styles for many brand/size values.
+- **npm only**. Exact installed/locked versions and runtime snapshot: [AI context](docs/ai-development/ai-context.md).
+- `app/`: pages, root layout, global CSS, metadata, one POST route.
+- `components/`: flat shared components. `public/`: static assets, including `products images/` (space and case matter).
+- `@/` resolves to repository root. No CMS, database, auth, global store, or test runner is implemented.
+- Vercel is the stated deployment target; hosted settings are not verified by repository inspection.
+
+## Implementation rules
+
+- Pages: `app/<route>/page.tsx`. Shared components: `components/`. Keep single-page subcomponents in their page file.
+- Render Header/Footer only from `app/layout.tsx`.
+- Prefer Server Components. Put `"use client"` first when hooks, handlers, navigation hooks, or browser APIs require it. Verify before removing existing directives.
+- Do not export metadata from Client Components. Preserve the product page's `useSearchParams`/Suspense boundary.
+- Content is hard-coded locally; preserve existing ownership. No speculative data/service layer.
+- Use inline prop types or infer from existing arrays. Avoid unnecessary `any`; validate untrusted input at runtime.
+- Imports are direct, without component barrel files. Search existing patterns before introducing abstractions.
+- Tailwind handles layout/spacing/breakpoints; use established inline styles for brand/measurements. No new styling system.
+- Reuse existing CSS utilities; see [Design system](docs/ai-development/design-system.md) for actual tokens and exceptions.
+- Approved brand values: `#00A7C4` / hover `#008CA6`; dark `#0F172A`, `#111827`; light `#F8FAFC`; text `#0F172A`, `#334155`, `#64748B`, `#94A3B8`.
+- Existing `--color-*` references are unresolved. Do not reuse them in new UI without an approved fix.
+- Use `next/image` for new images; preserve current paths including `/products images/`. Check installed image docs before new configuration.
+- For submissions, reuse ContactForm's loading/error/reset approach, but verify delivery: the current API only logs. Quote's success-only handler is not a working submission pattern.
+- No new visual behavior, copy, or user flow unless authorized by the task. Follow [Frontend quality](docs/ai-development/frontend-guidelines.md).
+
+## Scope and safety
+
+Get approval unless the task already authorizes the change:
+
+- Visible UI/layout/copy/user flows; new routes (including APIs); folder restructuring or shared data/type extraction.
+- Dependencies, package scripts, build/tooling configuration, additional styling systems, environment variables.
+- `next.config.ts` is intentionally minimal. Do not add options speculatively.
+
+Never:
+
+- Modify the managed Next.js block above, generated `.next/` or `next-env.d.ts` manually.
+- Manually edit `package-lock.json`, install packages silently, commit secrets, or reveal/copy environment values.
+- Invent API contracts, business facts, integrations, authentication, or delivery guarantees.
+- Hide pre-existing failures, suppress image lint warnings, or claim unexecuted checks passed.
+
+## Required workflow and completion
+
+1. Read relevant docs; inspect affected source and call sites; find an existing pattern.
+2. Restate verified requirements, expected files, and scope before edits. Resolve material questions.
+3. Make the smallest coherent authorized change; update only affected documentation.
+4. Run **`npm run lint` → `npx tsc --noEmit` → `npm run build`** in that order.
+5. For UI/behavior changes, perform focused browser checks described in [Testing](docs/ai-development/testing-and-validation.md).
+6. Review the complete diff for scope, generated files, and sensitive content.
+7. Report files, commands/results, assumptions, pre-existing issues, and verification limits.
+
+Done means the objective is met, types/build pass, lint has no new errors, and no unrelated behavior changes.
+Current check results belong in Testing, not this bootstrap. No test/format commands exist beyond the documented scripts.
+
+## Documentation maintenance
+
+| Change | Update canonical document |
 |---|---|
-| Framework | Next.js 16.3.0, App Router, Turbopack |
-| Language | TypeScript 5, strict mode |
-| React | 19.2.8 |
-| Runtime | Node.js (active: v24; no engine field in package.json) |
-| Package manager | **npm only** — `package-lock.json` is present. Never use yarn, pnpm, or bun. |
-| Styling | Tailwind CSS v4 (`@tailwindcss/postcss`) + inline `style={{}}` props |
-| Deployment | Vercel |
+| Route/metadata added, removed, renamed | Routes and features; repository map task entry if affected |
+| Shared component/API changed | Component registry; data flow for request contracts |
+| Token/layout pattern changed | Design system; frontend guidance if the contract changes |
+| Rendering/dependency boundary changed | Architecture; decision log for intentional decisions |
+| State/submission/query behavior changed | Data flow |
+| New limitation resolved/discovered | Known issues; Testing if validation changes |
+| Tooling/version changed | AI context; Testing/workflow as applicable |
+| New complex feature | Add focused feature documentation only when existing documents are insufficient |
 
-## Setup and Commands
-
-```bash
-npm install          # install dependencies
-npm run dev          # dev server → http://localhost:3000
-npm run lint         # ESLint (next/core-web-vitals + next/typescript)
-npx tsc --noEmit     # TypeScript check (no tsc script in package.json)
-npm run build        # production build
-npm run start        # serve production build locally
-```
-
-No test runner is configured. No formatter is configured. See `docs/ai-development/testing-and-validation.md` for current validation status.
-
-## Repository Structure
-
-```
-app/               Next.js App Router pages and API route
-  layout.tsx       Root layout — <Header> + {children} + <Footer>
-  page.tsx         Home page
-  about/           Stub page (placeholder content, not in nav)
-  company/         Company/About page
-  contact/         Contact page (server component)
-  products/        Product catalogue with filter + pagination
-  quote/           Quote request form
-  services/        Services page
-  api/contact/     POST route — receives form data (logs only; email TODO)
-  globals.css      Tailwind import + project utility classes
-  sitemap.ts       XML sitemap
-  robot.ts         robots.txt
-components/        Shared components
-  Header.tsx       Sticky nav with mobile menu
-  Footer.tsx       Site footer
-  ContactForm.tsx  Contact form (fetch → /api/contact)
-  ImageCarousel.tsx Scroll carousel (exists, not currently used in pages)
-  PageTransition.tsx View Transitions wrapper (exists, not currently used)
-  Experience.tsx   Stats display (exists, not currently used)
-public/            Static assets
-  logo.png
-  banner_1/2/3.jpg
-  images/          nws-hero.png
-  products images/ 32 product JPEG files (directory name contains a space)
-docs/ai-development/ Agent documentation — read before working in each area
-```
-
-## Path Alias
-
-`@/` resolves to the repository root. Example: `import Header from "@/components/Header"`.
-
-## Architecture Rules
-
-- Pages live in `app/<route>/page.tsx`. Do not create pages elsewhere.
-- Shared components live in `components/`. Do not put components inside `app/`.
-- All data (products, team, services) is hard-coded as `const` arrays in the relevant page file. There is no external API, CMS, or database.
-- The only API route is `app/api/contact/route.ts` (POST). Do not add new routes without approval.
-- `app/layout.tsx` is the only place `<Header>` and `<Footer>` are rendered. Do not render them inside pages.
-- `next.config.ts` is intentionally minimal (empty config object). Do not add options without approval.
-
-## Client vs Server Boundary
-
-- Prefer Server Components for pages that do not require browser APIs or event handlers.
-- Use `"use client"` only when the component uses `useState`, `useEffect`, `useRouter`, event handlers, or browser-only APIs.
-- The current codebase over-applies `"use client"`. Do not remove existing directives without verifying the component uses no client-only APIs.
-
-## Styling Conventions
-
-- Tailwind v4 utility classes for layout, spacing, grid, flexbox, and responsive breakpoints.
-- Inline `style={{}}` props for brand colours, font sizes, and component-specific measurements.
-- **Do not introduce a new CSS-in-JS library, CSS Modules, or additional styling system.**
-- Brand colour tokens (use these exact values; do not introduce new ones):
-  - Primary cyan: `#00A7C4` (hover: `#008CA6`)
-  - Dark bg: `#0F172A` / `#111827`
-  - Light bg: `#F8FAFC`
-  - Body text: `#0F172A`, `#334155`
-  - Muted text: `#64748B`, `#94A3B8`
-- CSS utility classes defined in `app/globals.css`: `.eyebrow`, `.section-title`, `.pattern`, `.nav-link`, `.product-scroll`. Use them before adding new ones.
-- **`ContactForm.tsx` references CSS custom properties (`var(--color-primary)` etc.) that are not defined in `globals.css`.** This is a known gap — do not rely on those variables in new components.
-
-## Component Conventions
-
-- Server Components: no `"use client"`, no hooks, no browser APIs, may use async/await.
-- Client Components: must have `"use client"` as the first line.
-- Local sub-components (e.g., `ChairCard`, `ChairTile`) are co-located in the page file. Move to `components/` only when reused across more than one page.
-- Prop types are defined inline (object type annotation on the parameter). No separate `interface` files observed.
-- Data arrays are defined as `const` at module scope above the component.
-
-## Routing Conventions
-
-- App Router file-system routing — add `page.tsx` inside a new `app/<route>/` directory.
-- Client-side navigation uses `useRouter().push(path)` (client components) or `<Link href>` (either).
-- Do not use the Pages Router.
-
-## Form Conventions
-
-- Two separate form implementations exist:
-  - `ContactForm.tsx` — fetches `/api/contact` and handles success/error state correctly.
-  - `quote/page.tsx` — **sets state to "sent" without sending data**. This is a known gap.
-- New forms should follow the `ContactForm.tsx` pattern: `fetch` the relevant API route, set `loading`/`status`/`message` state, call `form.reset()` on success.
-
-## Image Conventions
-
-- Static images: `<img>` tags with `src` pointing to `/public` paths or Unsplash CDN URLs. `next/image` is used only in `Header.tsx` and `Footer.tsx` (logo).
-- ESLint warns on `<img>` throughout the codebase — this is a pre-existing condition. Do not silence warnings in new code; use `next/image` for any new images.
-- Product images are in `public/products images/` (space in name). Reference them as `/products images/filename.jpeg`.
-
-## SEO / Metadata
-
-- Root metadata: defined in `app/layout.tsx` (`export const metadata`).
-- Page-level metadata: defined in the relevant `page.tsx` using `export const metadata` (Server Components only).
-- Do not add metadata exports to `"use client"` pages — this is a Next.js constraint.
-
-## Environment Variables
-
-- No `.env` files exist in the repository (gitignored).
-- No `NEXT_PUBLIC_*` or server-side env vars are currently used.
-- Do not add environment variables without documenting them and getting approval.
-- Never commit secrets or `.env` files.
-
-## What Must Not Be Changed Without Approval
-
-- Any visible UI, layout, copy, or user flow.
-- Dependencies (`package.json`, `package-lock.json`).
-- Build tooling (`next.config.ts`, `postcss.config.mjs`, `eslint.config.mjs`, `tsconfig.json`).
-- Package scripts.
-- The `AGENTS.md` auto-generated block (`<!-- BEGIN:nextjs-agent-rules -->` … `<!-- END:nextjs-agent-rules -->`).
-- Generated files: `.next/`, `next-env.d.ts`.
-
-## Required Workflow for Every Task
-
-1. Read the task description and any relevant `docs/ai-development/` file.
-2. Inspect the actual files affected — do not rely on memory of this file alone.
-3. Search for an existing pattern before creating a new abstraction.
-4. Restate the verified requirements before writing code.
-5. List unanswered questions and ask before proceeding if any are material.
-6. Make the smallest coherent change required — avoid unrelated refactoring.
-7. Run `npm run lint`, then `npx tsc --noEmit`, then `npm run build`.
-8. Review the diff for unintended changes before finishing.
-9. Report: files changed, commands run, results, assumptions, limitations.
-
-## Definition of Done
-
-- [ ] The change achieves the stated objective.
-- [ ] No existing page, route, or visible behaviour is altered unless explicitly required.
-- [ ] `npx tsc --noEmit` exits 0.
-- [ ] `npm run build` exits 0.
-- [ ] `npm run lint` introduces no **new** errors (pre-existing warnings are acceptable).
-- [ ] No secrets, env values, or generated files are committed.
-
-## Prohibited Actions
-
-- Do not invent API routes, response shapes, environment variables, or business rules.
-- Do not claim a check passed if the command was not executed or failed.
-- Do not modify generated files (`.next/`, `next-env.d.ts`) directly.
-- Do not install new packages without explicit approval.
-- Do not alter the folder structure without explicit approval.
-- Do not expose or copy the contents of any `.env` file.
-- Do not treat warnings as errors or hide pre-existing failures.
-
-## Further Documentation
-
-- [`docs/ai-development/repository-map.md`](docs/ai-development/repository-map.md) — detailed directory responsibilities
-- [`docs/ai-development/architecture.md`](docs/ai-development/architecture.md) — bootstrapping, routing, state, data flow
-- [`docs/ai-development/frontend-guidelines.md`](docs/ai-development/frontend-guidelines.md) — component, styling, accessibility standards
-- [`docs/ai-development/development-workflow.md`](docs/ai-development/development-workflow.md) — task workflow and edge-case rules
-- [`docs/ai-development/testing-and-validation.md`](docs/ai-development/testing-and-validation.md) — all validation commands and current results
-- [`docs/ai-development/task-and-plan-templates.md`](docs/ai-development/task-and-plan-templates.md) — templates for new tasks and implementation plans
-- [`docs/ai-development/decision-log.md`](docs/ai-development/decision-log.md) — architectural decisions
-- [`docs/ai-development/domain-glossary.md`](docs/ai-development/domain-glossary.md) — domain terminology
+Keep one canonical owner per concept; link instead of copying. Link volatile facts to source, date validation snapshots, remove stale references. `CLAUDE.md` delegates here; do not maintain parallel instruction copies.

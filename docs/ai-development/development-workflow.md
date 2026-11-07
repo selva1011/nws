@@ -1,103 +1,32 @@
-# Development Workflow
+# Development workflow
 
-Defines the task workflow for AI-assisted changes to this repository. Follow every step in order.
+[AGENTS.md](../../AGENTS.md) owns repository instructions and approval boundaries. This document explains execution; [Testing](testing-and-validation.md) owns commands/results.
 
----
+## Selective task workflow
 
-## Standard Task Workflow
+1. Read the task and bootstrap. Choose the relevant task document from its table; do not read the whole knowledge base for each change.
+2. Use [Repository map](repository-map.md) to locate implementation. Inspect every affected file, callers, local types/data and relevant installed Next.js guide. Search existing patterns before adding abstractions.
+3. Restate verified requirements, expected files, scope and unresolved material questions. Explicitly distinguish code behavior, business assumptions and proposed improvements.
+4. Resolve scope-critical questions before dependent implementation. Continue independent authorized investigation; do not repeatedly request authorization already provided by the task.
+5. Make the smallest coherent change. For larger work, use logical reviewable steps rather than unrelated refactors. [Templates](task-and-plan-templates.md) are optional planning aids; do not create bureaucracy for a small edit.
+6. Update only canonical documents affected by the implementation. The bootstrap maintenance matrix identifies owners. Remove stale references and link rather than copy explanations.
+7. Run `npm run lint`, then `npx tsc --noEmit`, then `npm run build`. Run relevant browser/behavior checks; no unit/E2E runner currently exists.
+8. Review the diff and final status for unintended application, tooling, generated or sensitive changes. Preserve pre-existing user work.
+9. Report changed files, commands/results, behavior/assumptions, pre-existing failures, and verification limits. Never report a check as passed if unavailable or failed.
 
-### Step 1 — Read and orient
-- Read the task description carefully.
-- Read `AGENTS.md` if you have not already done so.
-- Read any `docs/ai-development/` file relevant to the area being changed (e.g. `frontend-guidelines.md` for UI work, `architecture.md` for structural changes).
+## Evidence and disagreement
 
-### Step 2 — Inspect affected code
-- Open every file that will be changed.
-- Open call sites — other files that import or reference the affected code.
-- Check for existing tests (currently none, but check `__tests__/` or `*.test.ts` patterns).
-- Do not skip this step even for apparently small tasks.
+User instructions and AGENTS.md govern what is allowed. Current source/configuration and executed checks establish what is implemented. If documentation describes old behavior, verify and correct the document within scope; do not change working source to fit it. Ask only when the discrepancy leaves a material product requirement unresolved. Existing decision records are historical statements, not proof of current behavior or independently verified approval history.
 
-### Step 3 — Restate verified requirements
-Before writing any code, state:
-- What the task is asking for.
-- Which files are expected to change.
-- What must not change.
+## Scope-specific rules
 
-### Step 4 — Identify unanswered questions
-List any requirement that is ambiguous or cannot be verified from the repository. Do not proceed past this step if a material ambiguity exists — ask the user first.
+- New routes, dependencies/scripts/tooling, environment variables, structural extraction and UI behavior need authorization as described in AGENTS.md. Explicit task authorization counts; a large diff alone does not invalidate it.
+- API changes must inspect both producer and consumer. The actual contact request/response shape is in [Data flow](data-flow.md); quote currently has no network contract.
+- Never edit generated .next/next-env files or the managed AGENTS block manually. Dependency lockfiles are tool-generated, not hand-edited.
+- Do not install tooling just to complete an audit. Disclose unavailable verification. A sandbox-denied required check should be retried through the available approval mechanism, without disguising it as a code failure.
+- Pre-existing lint/test issues are documented, not silently fixed or suppressed. A successful type/build check is not proof of delivery, accessibility, or business correctness.
+- UI changes require inspecting existing tokens, reusable components and relevant states. Prefer [Frontend guidelines](frontend-guidelines.md) over inventing another style system.
 
-### Step 5 — Prepare an implementation plan
-Write a brief plan (can be a comment or scratch note):
-- Files to be changed and how.
-- Proposed approach.
-- Risks or assumptions.
+## Documentation maintenance example
 
-For simple tasks (< 5 lines changed), the plan can be mental. For larger tasks, document it explicitly or use the `task-and-plan-templates.md` template.
-
-### Step 6 — Implement in small, reviewable changes
-- Make the smallest coherent change that satisfies the requirement.
-- Avoid touching unrelated code — do not refactor opportunistically.
-- Preserve backwards compatibility unless the task explicitly breaks it.
-- Add or update comments/documentation that are affected by the change.
-
-### Step 7 — Run focused validation
-After each logical unit of change:
-```bash
-npx tsc --noEmit   # type check first
-npm run lint       # catch ESLint issues
-```
-
-### Step 8 — Run build
-```bash
-npm run build      # must exit 0 before the task is complete
-```
-
-### Step 9 — Review the diff
-Before finishing, review every changed line:
-- Is the change limited to the task scope?
-- Are there any accidental whitespace or formatting changes in untouched files?
-- Are there any secrets, console.log debug statements, or temporary code that should be removed?
-
-### Step 10 — Report
-Provide a summary including:
-- Files changed (list every file)
-- Commands run and their exit codes / results
-- Any assumptions made
-- Any pre-existing issues encountered (do not hide them)
-- Any limitations of the implementation
-
----
-
-## Edge-Case Rules
-
-### Unclear requirements
-Stop and ask. Do not invent a requirement. Do not implement the most likely interpretation silently.
-
-### Conflicting documentation
-The source of truth is: **source code > this AGENTS.md > docs/ > README**. If documentation conflicts with code, report the conflict and ask before proceeding.
-
-### Pre-existing test failures or lint errors
-Document them. Do not fix them unless the task explicitly includes it. Do not introduce new failures.
-
-### Large diffs (> ~100 lines changed)
-Split into logical sub-tasks. Seek confirmation between each before continuing.
-
-### Generated files
-Do not edit `.next/`, `next-env.d.ts`, or `package-lock.json` directly. They are regenerated by the toolchain.
-
-### Dependency changes
-Require explicit user approval. State: the package name, version, reason, and which alternatives were considered. Never install silently.
-
-### Architectural changes (new directory, new pattern, new library)
-Require explicit user approval. Document the decision in `decision-log.md` after approval.
-
-### UI changes
-Any change to a page component must preserve the visible layout, colour, typography, and interactive behaviour unless the task explicitly changes them. After implementation, describe exactly what the user will see differently (if anything).
-
-### API contract changes
-The only API contract is `POST /api/contact` (body: `name`, `email`, `phone?`, `message`; responses: `200`, `400`, `500`). Do not change request shape or response shape without approval.
-
-### Changes to `AGENTS.md`
-- **Never remove or modify the auto-generated block** between `<!-- BEGIN:nextjs-agent-rules -->` and `<!-- END:nextjs-agent-rules -->`. This block is re-written by `next dev`.
-- Append project content only after the closing `<!-- END:nextjs-agent-rules -->` comment.
-- Document any structural additions to the agent instructions in `decision-log.md`.
+For a catalogue query change: update Data flow, Routes if the URL contract changes, Testing's manual regression cases, and the matching issue entry if resolved. Do not rewrite unrelated design/security docs. For a shared component prop change: update the Registry and callers. Record an architecture decision only when an intentional boundary/policy changes, labeling inference and proposals honestly.

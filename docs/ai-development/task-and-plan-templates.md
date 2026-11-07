@@ -8,7 +8,7 @@ Use these templates when creating a new task ticket or implementation plan for A
 
 Copy this template when defining a new task.
 
-```markdown
+````markdown
 ## Task: [Short title]
 
 ### Objective
@@ -53,7 +53,7 @@ Copy this template when defining a new task.
 
 ### Dependencies
 [Other tasks or files that must be completed or reviewed first]
-```
+````
 
 ---
 
@@ -61,7 +61,7 @@ Copy this template when defining a new task.
 
 Copy this template when preparing to implement a task.
 
-```markdown
+````markdown
 ## Implementation Plan: [Task title]
 
 ### Relevant Existing Files
@@ -99,8 +99,8 @@ Copy this template when preparing to implement a task.
 
 ### Validation Commands
 ```bash
-npx tsc --noEmit
 npm run lint
+npx tsc --noEmit
 npm run build
 ```
 
@@ -116,4 +116,4 @@ npm run build
 - [ ] Manual browser verification complete
 - [ ] No secrets or generated files committed
 - [ ] Summary report written
-```
+````
