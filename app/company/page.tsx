@@ -89,7 +89,7 @@ export default function Company() {
             <button
               onClick={() => router.push("/quote")}
               className="font-bold text-sm rounded-lg"
-              style={{ background: "#00A7C4", color: "#ffffff", border: "none", height: 48, padding: "0 28px", cursor: "pointer" }}
+              style={{ background: "#00A7C4", color: "#0F172A", border: "none", height: 48, padding: "0 28px", cursor: "pointer" }}
               onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
               onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
             >

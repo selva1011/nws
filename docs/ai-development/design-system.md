@@ -4,19 +4,19 @@ Source-based inventory, verified 2026-11-07. See Testing for the latest focused 
 
 ## Maturity and tokens
 
-The visual language is recognizable (cyan actions, dark navy text/sections, white/light surfaces) but mostly implicit. There is no complete semantic token layer, typography scale, shared button/input primitive, theme switch, or icon system. Tailwind v4 is imported in [globals.css](../../app/globals.css); inline styles and arbitrary utility values coexist. No `@theme` override or Tailwind config is present.
+The visual language uses cyan actions, navy text/dark sections, white product stages and light slate supporting surfaces. A small semantic CSS token layer now covers the established palette and motion timings; Tailwind utilities, inline styles and some repeated literals still coexist. There is no complete typography scale, shared field primitive, theme switch or icon system. Tailwind v4 is imported in [globals.css](../../app/globals.css); no `@theme` override or Tailwind config is present.
 
 | Role | Actual values / definition | Status |
 |---|---|---|
-| Primary action | `#00A7C4`, hover `#008CA6`; `:root { --cyan:#00A7C4; }` | One defined custom variable; mostly repeated literals |
-| Dark/text | `#0F172A`, `#111827`, `#334155` | Repeated literals and slate utilities |
-| Muted | `#64748B`, `#94A3B8` | Repeated; contrast not audited |
-| Surface/border | White, `#F8FAFC`, `#F1F5F9`, `#E2E8F0` | Repeated across cards/forms |
+| Primary action | `--color-primary: #00A7C4`, `--color-primary-hover: #008CA6`, `--color-primary-soft: #F0FDFE` | Cyan uses navy text for normal-size actions; measured contrast is 6.23:1 on the base cyan and 4.51:1 on hover |
+| Dark/text | `--color-secondary: #0F172A`, `--color-dark-base: #111827`; slate `#334155` | Navy anchors headings, controls and footer hierarchy |
+| Muted | `--color-neutral: #64748B`, plus slate `#94A3B8` on dark surfaces | `#64748B` on white measures 4.76:1; other pairs still require per-component checks |
+| Surface/border | `--color-base: #FFFFFF`, `--color-light-base: #F8FAFC`, `--color-border: #E2E8F0` | White product stages preserve source photography; light slate separates supporting surfaces |
 | Additional existing accents | `#22D3EE` hero eyebrow, `#E6F7FA` icon/success surface, `#F0FDFE` hover surface, `#CBD5E1` pale text/background | Existing exceptions, not permission to expand the palette |
 | Feedback | ContactForm emerald/rose Tailwind colors | Local success/error convention |
-| Legacy semantic variables | `--color-primary`, `--color-secondary`, `--color-neutral`, `--color-border`, `--color-base`, `--color-light-base`, `--color-dark-base` | Referenced but undefined in project CSS; affected declarations cannot use intended values |
+| Motion | `--motion-control: 160ms`, `--motion-content: 220ms`, `--motion-section: 420ms`; standard/emphasized easing | Shared timing baseline for controls, swaps and selected section reveals |
 
-Undefined variables appear in ContactForm, contact/about text and unused Experience. Do not treat their names as usable tokens. Approved new brand values remain constrained by [AGENTS.md](../../AGENTS.md); new semantic tokens need an authorized change.
+The formerly unresolved `--color-*` variables now map to the established brand palette, restoring ContactForm, contact/about and unused Experience declarations. Approved new brand values remain constrained by [AGENTS.md](../../AGENTS.md); extend the semantic layer only as part of an authorized design-system change.
 
 ## Typography, spacing and composition
 
@@ -32,22 +32,22 @@ Undefined variables appear in ContactForm, contact/about text and unused Experie
 | Layout | Home 1→2→4 columns; catalogue 1→2→3→4; services 1→2→3 | Breakpoint-driven utilities |
 | Breakpoints | sm 40rem, md 48rem, lg 64rem (640/768/1024px at default 16px root) | Installed Tailwind default theme; no override |
 | Radii | CTA/input 8px, product card 12px, service/form rounded-2xl, navigation pills; ContactForm larger rounding | Inconsistent component families; no semantic radius scale |
-| Elevation | Cyan CTA shadows, low header shadow/backdrop blur, hover shadow on services, large soft ContactForm shadow | Per-component values, no elevation tokens |
+| Elevation | Low header shadow/backdrop blur, restrained product-card lift, detail-panel shadow and ContactForm shadow | Per-component values, no elevation tokens |
 
-Header is sticky at top with a 74px inner row; catalogue filters are in normal document flow. Check the interaction at real viewports before changing either. Fixed quote card padding may constrain narrow screens; this is a source-based risk, not a measured overflow failure.
+Header is sticky at top with a 74px inner row; catalogue filters use matching `top-[74px]` and a translucent white surface. Fixed quote card padding may constrain narrow screens; this is a source-based risk, not a measured overflow failure.
 
 ## Motion, icons and interaction states
 
-Globals define `.nav-link` underline transitions, `.pattern` 18px dot grid, `.product-scroll` hidden scrollbars, `.animate-phone-ring` and `.animate-pulse-ring` with infinite 3.6s animations. `html` enables smooth scrolling. Header uses 200/300ms transitions, product/home images a .55s zoom, catalogue pagination smooth scroll. A global reduced-motion override disables continuous animations and smooth scrolling. ScrollReveal uses IntersectionObserver and Web Animations with live reduced-motion handling; initial content remains visible.
+Globals define `.nav-link`, `.pattern`, `.product-scroll`, button/card interactions and semantic timing/easing tokens. Phone ring/pulse motion runs once on hover/focus instead of continuously. Controls use roughly 150–160ms feedback, product/result changes 200–220ms, React shared-image route transitions 280ms, and selected section reveals 420ms. Catalogue pagination scrolls smoothly only when reduced motion is not requested. The global reduced-motion override disables animation, positional hover and smooth scrolling. ScrollReveal uses IntersectionObserver and Web Animations with live reduced-motion handling; initial content remains visible.
 
-Hover styles mix Tailwind variants, local React state and direct `event.currentTarget.style` assignments. Global focus-visible outlines and a skip link are present. Quote inputs/selects/textarea remove outline and mutate border on focus; ContactForm removes outline while its focus border token is undefined. Pending/disabled styling exists in ContactForm only; quote has no pending state. Catalogue filters/pages expose pressed/current state; its search field is labeled.
+Hover styles still mix Tailwind variants and direct `event.currentTarget.style` assignments in older pages. Global focus-visible outlines and a skip link are present. Catalogue filters/pages/view controls expose pressed/current state; its search field is labeled and uses an explicit focus ring. Product thumbnails expose selection, support arrow/Home/End keys and crossfade stacked images without changing the frame. ContactForm now resolves its token-based focus colors. Quote still has no pending state.
 
 Icons are inline SVG in Header, emoji in services/quote, text arrows/checkmarks and footer social abbreviations. Sizes vary by use (e.g. header SVG 12/16/20px, services 56px icon container); no icon dependency exists. Dark sections are composition choices within a light site, not a dark-mode theme.
 
 ## Applying existing styles
 
-Inspect the closest component and existing utilities before adding styles. Preserve aspect-ratio image containers, contextual max widths and responsive grid progression. Do not normalize all radii, introduce gradients, redesign the header, or define a new token system as incidental maintenance. A future authorized consolidation should retain visual intent and verify responsive/focus/motion states; it is proposed improvement work, not an implemented design system.
+Inspect the closest component and existing utilities before adding styles. Preserve stable aspect-ratio image containers, white product-photo stages, contextual max widths and responsive grid progression. Use semantic variables before repeating the core palette or motion values. Do not normalize all radii, introduce gradients or redesign unrelated pages as incidental maintenance. Any further consolidation should retain visual intent and verify responsive/focus/motion states.
 
 ## 2026-11-07 catalogue refresh
 
-Home, catalogue, detail and footer use spacious responsive compositions, navy text, light surfaces, contained product photos and rounded cards. Shared `.button-primary` uses cyan with dark text; `.button-secondary` uses a white bordered surface. ProductCard supplies CSS hover/focus image scaling; `.product-card` supplies restrained lift. New grids use 1→2→4 columns. Product tables retain row/column headers and the comparison table has a keyboard-focusable horizontal scroll region. Unchanged company/quote/contact styles retain their earlier limitations. No new token or styling dependency was introduced.
+Home, catalogue, detail and footer use spacious responsive compositions, navy text, light supporting surfaces, white product stages and rounded cards. Shared `.button-primary` uses cyan with dark text; older company/services/quote cyan actions now use the same readable foreground. ProductCard supplies a subtle 200ms hover/focus scale and React's built-in ViewTransition pairs a selected product image with its detail gallery where supported. Catalogue result swaps use a short opacity/translate animation rather than per-card scroll reveals. Product tables retain row/column headers and the comparison table has a keyboard-focusable horizontal scroll region. No styling or motion dependency was added.

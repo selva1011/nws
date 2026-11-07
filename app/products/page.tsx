@@ -27,7 +27,7 @@ export default function Products() {
             <div className="mt-8 flex flex-wrap items-center gap-5"><a href="#collection" className="button-primary">Explore the collection <span aria-hidden="true">↓</span></a><span className="text-xs text-slate-500">32 models · 5 categories</span></div>
           </div>
           <Link href="/products/butterfly-hb" className="group relative mx-auto block w-full max-w-[400px] rounded-[32px] border border-slate-200 bg-white p-5">
-            <div className="relative aspect-[1.15] overflow-hidden"><Image src="/products images/BUTTERFLY-HB.jpeg" alt="Butterfly HB high back executive chair" fill preload sizes="(max-width: 767px) 85vw, 400px" className="object-contain transition-transform duration-700 group-hover:scale-105" /></div>
+            <div className="relative aspect-[1.15] overflow-hidden bg-white"><Image src="/products images/BUTTERFLY-HB.jpeg" alt="Butterfly HB high back executive chair" fill preload sizes="(max-width: 767px) 85vw, 400px" className="object-contain transition-transform duration-200 ease-out group-hover:scale-[1.025] group-focus-visible:scale-[1.025]" /></div>
             <div className="flex items-end justify-between border-t border-slate-100 pt-4"><div><span className="text-[10px] uppercase tracking-widest text-slate-500">In focus / Executive</span><p className="mt-1 font-bold">BUTTERFLY HB</p></div><span className="grid h-10 w-10 place-items-center rounded-full bg-[#0F172A] text-white" aria-hidden="true">↗</span></div>
           </Link>
         </div>

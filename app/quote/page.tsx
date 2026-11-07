@@ -28,7 +28,7 @@ export default function Quote() {
           <button
             onClick={() => setSent(false)}
             className="text-sm font-bold rounded-lg"
-            style={{ background: "#00A7C4", color: "#ffffff", border: "none", height: 44, padding: "0 24px", cursor: "pointer" }}
+            style={{ background: "#00A7C4", color: "#0F172A", border: "none", height: 44, padding: "0 24px", cursor: "pointer" }}
           >
             Submit Another Request
           </button>
@@ -167,7 +167,7 @@ export default function Quote() {
 
             <button
               type="submit"
-              className="w-full text-sm font-bold text-white rounded-lg transition-colors"
+              className="w-full rounded-lg text-sm font-bold text-[#0F172A] transition-colors"
               style={{ height: 52, background: "#00A7C4", border: "none", cursor: "pointer", fontSize: 15 }}
               onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
               onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}

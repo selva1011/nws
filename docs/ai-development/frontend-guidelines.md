@@ -10,20 +10,20 @@
 - Tailwind layout/spacing/responsive utilities plus inline component values; existing global utilities before new classes. No additional styling system.
 - Content arrays are local; app/products/catalogue.ts is shared by catalogue consumers. Avoid speculative abstractions or dependencies.
 - Names: PascalCase components/files; framework `page.tsx`; module constants often SCREAMING_SNAKE_CASE; state/handlers camelCase. No enforced import-order formatter.
-- Use ContactForm's asynchronous pending/error/reset structure for comparable form behavior after verifying the endpoint. Do not copy quote's success-only handler or unresolved CSS variables.
+- Use ContactForm's asynchronous pending/error/reset structure for comparable form behavior after verifying the endpoint. Its color variables now map to the established palette; do not copy quote's success-only handler.
 
 ## Source-based experience assessment
 
 | Principle | Current evidence | Improvement direction (not implemented) |
 |---|---|---|
 | Clarity/hierarchy | Strong hero, category tiles, section eyebrows, obvious quote CTAs | Align “Shop Now” and alternate-angle copy with actual browsing/zoom capability |
-| Consistency | Shared shell and cyan identity; duplicated CTA/form styling | Consolidate only after identifying real shared variants |
-| Restraint | Limited section patterns; header blur, pulse and ring draw persistent attention | Assess whether continuous motion helps the calling task |
+| Consistency | Shared shell, semantic palette/motion variables, cyan identity and reusable product cards | Consolidate remaining legacy inline controls only within affected feature work |
+| Restraint | Phone motion is interaction-triggered; product results move as one region and selected sections reveal once | Keep new motion tied to continuity or state feedback |
 | Feedback/trust | Contact pending/error text; quote success with no delivery | Correct submission semantics before decorative polish |
-| Accessibility | Native buttons/selects, alt text, ContactForm associated labels/live feedback | Fix quote labels, disclosure state, selected filter/page state, landmarks and focus |
+| Accessibility | Landmarks/skip link, disclosure state, selected catalogue/gallery controls, alt text and ContactForm labels/live feedback | Fix remaining quote labels and complete browser/AT checks |
 | Responsiveness | Responsive grids and mobile header | Verify narrow quote layout and header/filter sticky offset |
 | Performance | Static routes, few dependencies, aspect-ratio product frames | Measure image cost and client boundary impact |
-| Delight | Restrained image zoom and hover changes in most content | Support keyboard/touch equivalents and reduced motion |
+| Delight | Stable gallery crossfades, shared product-image route transition and restrained hover changes | Verify touch and browser-specific transition behavior before adding more motion |
 
 ## Required considerations for future UI changes
 

@@ -13,8 +13,8 @@ export default function ScrollReveal({ children, className = "" }: { children: R
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       animation = element.animate(
-        [{ opacity: 0.45, transform: "translateY(24px)" }, { opacity: 1, transform: "translateY(0)" }],
-        { duration: 650, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+        [{ opacity: 0.72, transform: "translateY(14px)" }, { opacity: 1, transform: "translateY(0)" }],
+        { duration: 420, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
       );
       observer.disconnect();
     }, { threshold: 0.08 });
