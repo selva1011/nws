@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
       disallow: "/api/",
     },
 
-    sitemap: "https://www.example.com/sitemap.xml",
+    sitemap: "https://nwsworkspace.com/sitemap.xml",
   };
 }

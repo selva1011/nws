@@ -8,17 +8,17 @@ NWS presents ergonomic office seating and workspace services for a Chennai busin
 
 | Journey | Actual implementation | Boundary |
 |---|---|---|
-| Discover seating | Home category tiles → `/products?type=…` → filter and paginate 32 records | No prices, product detail pages, cart, checkout, or inventory |
+| Discover seating | Home category tiles → `/products?type=…` → filter and paginate 32 records | Individual product pages, search and grid/table comparison; no published prices, cart, checkout or inventory |
 | Evaluate company/services | Company mission/certifications and six service cards → `/quote` | Marketing claims are content, not independently verified credentials |
 | Request a quote | Eight controlled fields → local success screen | No network request or durable lead |
 | Contact | `/contact` → ContactForm → POST `/api/contact` | HTTP success acknowledges logging only |
-| Call | Header `tel:` anchors | Opens the device's calling handler; actual phone ownership/delivery unverified |
+| Call | Header/footer/product `tel:` anchors | Opens the device's calling handler; actual phone ownership/delivery unverified |
 
 The site is public. `/about` is a generic stub separate from `/company`. `/contact` is implemented but not linked by the header/footer. Business metrics, warranty/certification claims, contact details, and response promises require owner confirmation before reuse or expansion.
 
 ## System in one paragraph
 
-One Next.js App Router application, one root layout, seven page routes, one POST endpoint. Root layout imports global CSS and mounts Header (client) and Footer (server). Five pages are client entry points; contact and about are server pages. Content stays in local arrays/JSX. Products derive category from the URL and pagination from local state; contact is the only application `fetch`. There are no providers, custom hooks, service modules, global stores, server actions, database, CMS, auth, or application cache/revalidation layer. Three standalone components are unmounted. See [Architecture](architecture.md) for boundaries and [Data flow](data-flow.md) for behavior.
+One Next.js App Router application, one root layout, seven fixed page routes, 32 product detail pages and one POST endpoint. Root layout imports global CSS and mounts Header (client) and Footer (server). Company/services/quote are client page entry points; home/catalogue/details use server shells and focused client components; contact and about are server pages. Content stays in local arrays/JSX; products share app/products/catalogue.ts. Products derive category from the URL and pagination from local state; contact is the only application `fetch`. There are no providers, custom hooks, service modules, global stores, server actions, database, CMS, auth, or application cache/revalidation layer. Three standalone components are unmounted. See [Architecture](architecture.md) for boundaries and [Data flow](data-flow.md) for behavior.
 
 ## Toolchain snapshot
 

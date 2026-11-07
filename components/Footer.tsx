@@ -1,71 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
+import ScrollReveal from "./ScrollReveal";
 
 export default function Footer() {
-  const quickLinks = [
-    { label: "Company", href: "/company" },
-    { label: "Products", href: "/products" },
-    { label: "Services", href: "/services" },
-    { label: "Request a Quote", href: "/quote" },
-  ];
-  
-  const solutions = [
-    { label: "Ergonomic Chairs", href: "/products" },
-    { label: "Executive Chairs", href: "/products" },
-    { label: "Workstations", href: "/products" },
-    { label: "Office Interiors", href: "/services" },
-    { label: "Corporate Projects", href: "/services" },
-  ];
-
   return (
-    <footer className="bg-[#111827] text-white">
-      <div className="mx-auto grid max-w-[1280px] gap-12 px-6 py-16 md:grid-cols-2 lg:grid-cols-3">
-        
-        {/* Brand */}
-        <div>
-          <Link href="/" className="inline-flex">
-            <Image src="/logo.png" alt="Node Workspace Solutions" width={1390} height={420} className="h-12 w-auto object-contain brightness-0 invert" />
-          </Link>
-          <p className="mt-5 max-w-xs text-sm leading-7 text-slate-400">
-            Ergonomic furniture and workspace solutions designed to improve comfort, productivity and modern workplaces.
-          </p>
-          <div className="mt-6 flex gap-3 text-sm text-slate-300">
-            <span>in</span><span>ig</span><span>f</span><span>▶</span>
-          </div>
+    <footer className="bg-[#0F172A] text-white">
+      <div className="mx-auto max-w-[1280px] px-6">
+        <ScrollReveal><div className="flex flex-col justify-between gap-8 border-b border-white/15 py-14 md:flex-row md:items-end md:py-20"><div><p className="text-xs font-bold uppercase tracking-[0.18em] text-[#00A7C4]">Your next workspace starts here</p><h2 className="mt-5 text-[clamp(32px,4.5vw,56px)] font-medium leading-[1.08] tracking-[-0.04em]">A better place<br />to do your best work.</h2></div><a href="tel:+919876543210" className="button-primary self-start md:self-auto">Let’s talk about your space <span aria-hidden="true">↗</span></a></div></ScrollReveal>
+        <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+          <div><Link href="/" aria-label="NWS home" className="inline-flex"><Image src="/logo.png" alt="Node Workspace Solutions" width={1390} height={420} className="h-10 w-auto brightness-0 invert" /></Link><p className="mt-5 max-w-xs text-sm leading-7 text-slate-400">Office seating and workspace solutions. Find your fit with NWS, Chennai.</p><span className="mt-6 inline-flex items-center gap-2 text-xs text-slate-300"><span className="h-1.5 w-1.5 rounded-full bg-[#00A7C4]" aria-hidden="true" />Chennai, Tamil Nadu, India</span></div>
+          <nav aria-label="Footer collections"><h3 className="text-xs font-bold uppercase tracking-widest">Explore seating</h3><ul className="mt-6 space-y-3 text-sm text-slate-400">{["Executive", "Task", "Visitor", "Sofa", "Training"].map(category => <li key={category}><Link href={`/products?type=${category}`} className="transition-colors hover:text-white">{category === "Sofa" ? "Sofas" : `${category} chairs`}</Link></li>)}</ul></nav>
+          <nav aria-label="Footer company"><h3 className="text-xs font-bold uppercase tracking-widest">Discover NWS</h3><ul className="mt-6 space-y-3 text-sm text-slate-400">{[["Our company", "/company"], ["Workspace services", "/services"], ["All products", "/products"], ["Contact us", "/contact"]].map(([label, href]) => <li key={href}><Link href={href} className="transition-colors hover:text-white">{label}</Link></li>)}</ul></nav>
+          <div><h3 className="text-xs font-bold uppercase tracking-widest">Talk to our team</h3><address className="mt-6 space-y-4 not-italic"><a href="tel:+919876543210" className="block text-lg font-medium tracking-tight hover:text-[#00A7C4]">+91 98765 43210 ↗</a><a href="mailto:sales@nwsworkspace.com" className="block break-words text-sm text-slate-400 hover:text-white">sales@nwsworkspace.com</a></address><p className="mt-5 text-xs leading-6 text-slate-400">For product details, seating requirements and workspace enquiries.</p></div>
         </div>
-
-        {/* Quick Links */}
-        <div>
-          <h3 className="text-sm font-bold text-white">Quick Links</h3>
-          <ul className="mt-5 space-y-3 text-sm text-slate-400">
-            {quickLinks.map((item) => (
-              <li key={item.label}>
-                <Link href={item.href} className="hover:text-[#00A7C4] transition-colors">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Contact */}
-        <div>
-          <h3 className="text-sm font-bold">Contact</h3>
-          <p className="mt-5 text-sm leading-7 text-slate-400">
-            Chennai, Tamil Nadu, India<br />
-            sales@nwsworkspace.com<br />
-            +91 98765 43210
-          </p>
-        </div>
-
-      </div>
-
-      {/* Bottom */}
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-[1280px] flex-col gap-3 px-6 py-6 text-xs text-slate-500 sm:flex-row sm:justify-between">
-          <span>© 2026 Node Workspace Solutions.</span>
-          <span>Privacy Policy &nbsp; Terms & Conditions</span>
-        </div>
+        <div className="flex flex-col justify-between gap-3 border-t border-white/15 py-6 text-xs text-slate-400 sm:flex-row"><span>© {new Date().getFullYear()} Node Workspace Solutions.</span><span>Thoughtful spaces. Better work.</span></div>
       </div>
     </footer>
   );

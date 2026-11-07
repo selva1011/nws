@@ -34,11 +34,12 @@ export default function Header() {
         {/* Desktop Navigation Links */}
         <nav className="hidden items-center gap-1.5 lg:flex">
           {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href;
+            const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
             return (
               <Link
                 key={link.label}
                 href={link.href}
+                aria-current={isActive ? "page" : undefined}
                 className={`relative px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 ${
                   isActive
                     ? "bg-slate-100/90 text-[#00A7C4] shadow-xs"
@@ -110,7 +111,9 @@ export default function Header() {
           <button
             onClick={() => setOpen(!open)}
             className="relative grid h-10 w-10 place-items-center rounded-full border border-slate-200/90 bg-slate-50/80 text-slate-800 transition-colors hover:bg-slate-100 active:scale-95"
-            aria-label="Toggle menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
           >
             <div className="flex h-4 w-4 flex-col justify-between">
               <span
@@ -135,6 +138,8 @@ export default function Header() {
 
       {/* Modern Mobile Dropdown Drawer */}
       <div
+        id="mobile-navigation"
+        inert={!open}
         className={`grid transition-[grid-template-rows,opacity] duration-300 ease-in-out lg:hidden ${
           open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
@@ -142,11 +147,12 @@ export default function Header() {
         <div className="overflow-hidden">
           <nav className="border-t border-slate-100 bg-white/95 backdrop-blur-2xl px-5 pt-3 pb-6 space-y-2">
             {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href;
+              const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
                 <Link
                   key={link.label}
                   href={link.href}
+                aria-current={isActive ? "page" : undefined}
                   onClick={() => setOpen(false)}
                   className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
                     isActive

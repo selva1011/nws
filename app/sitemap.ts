@@ -1,29 +1,10 @@
 import type { MetadataRoute } from "next";
+import { PRODUCTS } from "./products/catalogue";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-
-  const baseUrl = "https://www.example.com";
-
+  const base = "https://nwsworkspace.com";
   return [
-    {
-      url: baseUrl,
-      lastModified: new Date(),
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/services`,
-      lastModified: new Date(),
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      priority: 0.7,
-    },
+    ...["", "/company", "/products", "/services", "/contact", "/quote"].map(path => ({ url: `${base}${path}`, priority: path === "" ? 1 : 0.8 })),
+    ...PRODUCTS.map(product => ({ url: `${base}/products/${product.slug}`, priority: 0.7 })),
   ];
 }

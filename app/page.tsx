@@ -1,234 +1,45 @@
-"use client";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
+import ScrollReveal from "@/components/ScrollReveal";
+import ProductCard from "@/components/ProductCard";
+import { PRODUCTS } from "./products/catalogue";
 
-const BASE = "/products images/";
-
-const CHAIRS = [
-  {
-    label: "Executive Chairs",
-    type: "Executive",
-    img: BASE + "BUTTERFLY-HB.jpeg",
-    alt: "Butterfly High Back Chair",
-  },
-  {
-    label: "Task Chairs",
-    type: "Task",
-    img: BASE + "805-MESH.JPEG",
-    alt: "805 Mesh Chair",
-  },
-  {
-    label: "Visitor Chairs",
-    type: "Visitor",
-    img: BASE + "8024-D Visitor.jpeg",
-    alt: "8024-D Visitor Chair",
-  },
-  {
-    label: "Sofas",
-    type: "Sofa",
-    img: BASE + "METRO_SOFA.jpeg",
-    alt: "Metro Sofa",
-  },
-];
-
-function ChairTile({ chair, onClick }: { chair: { label: string; type?: string; img: string; alt: string; isViewAll?: boolean }; onClick: () => void }) {
-  const [hovered, setHovered] = useState(false);
-
-  return (
-    <button
-      onClick={onClick}
-      style={{
-        position: "relative",
-        aspectRatio: "1 / 1",
-        border: "none",
-        padding: 0,
-        cursor: "pointer",
-        background: "#F1F5F9",
-        overflow: "hidden",
-        display: "block",
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-    >
-      <img
-        src={chair.img}
-        alt={chair.alt}
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          transition: "transform 0.55s ease",
-          transform: hovered ? "scale(1.06)" : "scale(1)",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          background: chair.isViewAll ? "#00A7C4" : "#ffffff",
-          padding: "10px 18px",
-        }}
-      >
-        <span
-          style={{
-            fontSize: 13,
-            fontWeight: 700,
-            color: chair.isViewAll ? "#ffffff" : "#0F172A",
-            whiteSpace: "nowrap",
-            display: "block",
-          }}
-        >
-          {chair.label}
-        </span>
-      </div>
-    </button>
-  );
-}
+export const metadata: Metadata = {
+  title: "Office Chairs & Workspace Furniture in Chennai | NWS",
+  description: "Discover office chairs, executive seating, visitor chairs and sofas at Node Workspace Solutions in Chennai. Explore product photos and details, and talk to our team.",
+  alternates: { canonical: "/" },
+  openGraph: { title: "Thoughtful spaces. Better work. | NWS", description: "Explore office seating and workspace solutions from NWS, Chennai.", url: "/", images: ["/images/nws-hero.png"] },
+};
 
 export default function Home() {
-  const router = useRouter();
-
+  const categories = [
+    { name: "Executive", caption: "Room to think big.", image: "BUTTERFLY-HB.jpeg" },
+    { name: "Task", caption: "For the everyday focus.", image: "805-MESH.JPEG" },
+    { name: "Visitor", caption: "Make everyone welcome.", image: "8024-D Visitor.jpeg" },
+    { name: "Sofa", caption: "Space to connect.", image: "METRO_SOFA.jpeg" },
+  ];
+  const featured = ["butterfly-hb", "805-mesh", "oslo-mb", "metro-sofa"].map(slug => PRODUCTS.find(product => product.slug === slug)!);
   return (
-    <div>
-      {/* ── HERO ── */}
-      <section
-        className="relative flex items-center justify-center"
-        style={{ minHeight: "88vh", background: "#0F172A" }}
-      >
-        <img
-          src="https://images.unsplash.com/photo-1631193816258-28b44b21e78b?w=1600&h=900&fit=crop&auto=format"
-          alt="Modern ergonomic office space"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: 0.45 }}
-        />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.65) 100%)" }} />
-
-        <div className="relative z-10 flex flex-col items-center text-center gap-6" style={{ padding: "0 24px", maxWidth: 760 }}>
-          <span className="text-xs font-extrabold tracking-[0.22em] uppercase" style={{ color: "#22D3EE" }}>
-            For Your Workspace
-          </span>
-          <h1
-            className="font-extrabold text-white"
-            style={{ fontSize: "clamp(38px, 6vw, 68px)", lineHeight: 1.05, letterSpacing: "-0.04em" }}
-          >
-            Ergonomic Chairs &amp;<br />Workspace Solutions
-          </h1>
-          <p style={{ color: "#CBD5E1", fontSize: 17, lineHeight: "28px", maxWidth: 520 }}>
-            Engineered for comfort. Built for performance. Trusted by 100+ corporates across India.
-          </p>
-          <button
-            onClick={() => router.push("/products")}
-            style={{
-              background: "#00A7C4",
-              color: "#ffffff",
-              border: "none",
-              height: 52,
-              padding: "0 40px",
-              borderRadius: 8,
-              cursor: "pointer",
-              fontWeight: 700,
-              fontSize: 13,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              marginTop: 8,
-              boxShadow: "0 10px 30px rgba(0,167,196,0.35)",
-              transition: "background 0.2s",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
-            onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
-          >
-            Shop Now
-          </button>
-        </div>
-
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2" style={{ opacity: 0.45 }}>
-          <div style={{ width: 1, height: 40, background: "white" }} />
-          <span className="text-white text-[10px] tracking-widest uppercase">Scroll</span>
+    <>
+      <section className="relative isolate overflow-hidden bg-[#F8FAFC]">
+        <div className="mx-auto grid max-w-[1440px] md:min-h-[640px] md:grid-cols-2">
+          <div className="flex flex-col justify-center px-6 py-14 md:py-20 md:pl-12 lg:pl-20">
+            <p className="eyebrow">Node Workspace Solutions · Chennai</p>
+            <h1 className="mt-6 text-[clamp(44px,5.4vw,78px)] font-semibold leading-[1.02] tracking-[-0.06em]">Thoughtful spaces.<br /><span className="text-[#008CA6]">Better work.</span></h1>
+            <p className="mt-7 max-w-md text-base leading-7 text-slate-600">Find the seat that fits your day. Explore office furniture for focused work, shared ideas and everything in between.</p>
+            <div className="mt-9 flex flex-wrap gap-3"><Link href="/products" className="button-primary">Explore our seating ↗</Link><Link href="/services" className="button-secondary">Workspace solutions</Link></div>
+            <p className="mt-10 text-xs tracking-wide text-slate-500">Executive · Task · Visitor · Training · Sofas</p>
+          </div>
+          <div className="relative min-h-[330px] md:min-h-full"><Image src="/images/nws-hero.png" alt="Office seating and desks in a bright contemporary workspace" fill preload sizes="(max-width: 767px) 100vw, 50vw" className="object-cover object-[67%_center]" /><span className="absolute bottom-6 left-6 rounded-full border border-white/60 bg-white/90 px-4 py-2 text-xs font-semibold">A new perspective on your workspace.</span></div>
         </div>
       </section>
-
-      {/* ── CHAIR GRID ── */}
-      <section style={{ background: "#ffffff", padding: "80px 24px" }}>
-        <div className="mx-auto" style={{ maxWidth: 1280 }}>
-          <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
-            <div>
-              <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-2" style={{ color: "#00A7C4" }}>
-                Our Collections
-              </span>
-              <h2
-                className="font-extrabold"
-                style={{ fontSize: "clamp(26px, 3vw, 38px)", color: "#0F172A", letterSpacing: "-0.04em", lineHeight: 1.1 }}
-              >
-                Browse by Category
-              </h2>
-              <p className="mt-2 text-sm" style={{ color: "#94A3B8" }}>Hover any tile to see the chair from a second angle</p>
-            </div>
-            <button
-              onClick={() => router.push("/products")}
-              style={{ color: "#00A7C4", background: "none", border: "none", cursor: "pointer", fontSize: 13, fontWeight: 700, textDecoration: "underline", textUnderlineOffset: 4 }}
-            >
-              View all chairs →
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {CHAIRS.map((c) => (
-              <ChairTile
-                key={c.label}
-                chair={c}
-                onClick={() => router.push(`/products?type=${encodeURIComponent(c.type)}`)}
-              />
-            ))}
-          </div>
-
-          <div className="flex justify-center mt-10">
-            <button
-              onClick={() => router.push("/products")}
-              style={{
-                background: "#00A7C4", color: "#ffffff", border: "none", height: 50, padding: "0 36px",
-                borderRadius: 8, cursor: "pointer", fontSize: 13, fontWeight: 700,
-                boxShadow: "0 8px 20px rgba(0,167,196,0.22)", transition: "background 0.2s",
-              }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
-              onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
-            >
-              View More Chairs
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ── STATS STRIP ── */}
-    
-
-      {/* ── CTA BAND ── */}
-      <section style={{ background: "#00A7C4", padding: "64px 24px" }}>
-        <div className="mx-auto flex flex-col md:flex-row items-center justify-between gap-6" style={{ maxWidth: 1280 }}>
-          <div>
-            <h2 className="font-extrabold text-white" style={{ fontSize: "clamp(22px, 2.5vw, 32px)", letterSpacing: "-0.03em" }}>
-              Ready to transform your workspace?
-            </h2>
-            <p style={{ color: "rgba(255,255,255,0.8)", marginTop: 6, fontSize: 15 }}>
-              Talk to our experts and get a free space assessment.
-            </p>
-          </div>
-          <button
-            onClick={() => router.push("/quote")}
-            style={{
-              background: "#ffffff", color: "#00A7C4", border: "none", height: 50, padding: "0 32px",
-              borderRadius: 8, cursor: "pointer", fontSize: 13, fontWeight: 700, flexShrink: 0,
-              boxShadow: "0 4px 20px rgba(0,0,0,0.12)", transition: "background 0.2s",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#F0FDFE")}
-            onMouseLeave={e => (e.currentTarget.style.background = "#ffffff")}
-          >
-            Get a Free Quote
-          </button>
-        </div>
-      </section>
-    </div>
+      <div className="border-y border-slate-200"><div className="mx-auto grid max-w-[1280px] gap-5 px-6 py-6 text-sm text-slate-600 sm:grid-cols-3">{["01 / Explore the collection", "02 / Compare the details", "03 / Talk to our team"].map(text => <p key={text}>{text}</p>)}</div></div>
+      <div className="mx-auto max-w-[1280px] px-6 py-16 md:py-24">
+        <ScrollReveal><section><div className="mb-9 flex flex-wrap items-end justify-between gap-4"><div><p className="eyebrow">A seat for every space</p><h2 className="mt-4 text-[clamp(30px,3.5vw,44px)] font-semibold tracking-[-0.04em]">Find your way to better work.</h2></div><Link href="/products" className="text-sm font-semibold underline underline-offset-4">All collections ↗</Link></div><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{categories.map(category => <Link key={category.name} href={`/products?type=${category.name}`} className="group overflow-hidden rounded-2xl bg-[#F8FAFC]"><div className="relative aspect-square"><Image src={`/products images/${category.image}`} alt={`${category.name} seating collection`} fill sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 290px" className="object-contain p-6 mix-blend-multiply transition-transform duration-500 group-hover:scale-105" /></div><div className="flex items-center justify-between p-6 pt-2"><div><h3 className="text-xl font-semibold tracking-tight">{category.name === "Sofa" ? "Sofas" : `${category.name} chairs`}</h3><p className="mt-2 text-sm text-slate-500">{category.caption}</p></div><span aria-hidden="true">↗</span></div></Link>)}</div></section></ScrollReveal>
+        <ScrollReveal className="mt-20 md:mt-28"><section><div className="mb-9 flex flex-wrap items-end justify-between gap-4"><div><p className="eyebrow">Meet the collection</p><h2 className="mt-4 text-[clamp(30px,3.5vw,44px)] font-semibold tracking-[-0.04em]">Take a closer look.</h2></div><Link href="/products" className="text-sm font-semibold underline underline-offset-4">Browse all 32 models ↗</Link></div><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{featured.map(product => <ProductCard key={product.slug} product={product} />)}</div></section></ScrollReveal>
+        <ScrollReveal className="mt-20 md:mt-28"><section className="grid gap-8 rounded-3xl bg-[#F8FAFC] p-7 md:grid-cols-2 md:p-12"><div><p className="eyebrow">More than a chair</p><h2 className="mt-4 max-w-md text-4xl font-semibold leading-tight tracking-[-0.04em]">Bring your whole<br />workspace together.</h2></div><div className="flex flex-col items-start justify-center"><p className="max-w-md text-base leading-7 text-slate-600">Planning a new office or refreshing a familiar space? Explore our workspace services and talk through what your team needs.</p><Link href="/services" className="button-secondary mt-6">Explore workspace services ↗</Link></div></section></ScrollReveal>
+      </div>
+    </>
   );
 }

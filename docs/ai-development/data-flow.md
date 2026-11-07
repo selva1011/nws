@@ -2,19 +2,20 @@
 
 Verified from [home](../../app/page.tsx), [catalogue](../../app/products/page.tsx), [quote](../../app/quote/page.tsx), [ContactForm](../../components/ContactForm.tsx), and [POST handler](../../app/api/contact/route.ts). No fetching/cache library, persistent storage, global state, context, server action, or custom hook exists.
 
-## Catalogue: URL → selection → local pagination
+## Catalogue and product details
 
-1. Home `CHAIRS` stores four category/image choices; tile clicks push `/products?type=${encodeURIComponent(c.type)}`.
-2. `Products` wraps `ProductsContent` in Suspense with `ProductsFallback` (header only).
-3. `typeParam = searchParams.get("type") || searchParams.get("category")`. A nonempty `type` wins even when invalid; empty `type` falls through.
-4. `resolveCategory` trims/lowercases input, then selects the first CATEGORIES entry that equals it or is a prefix. CATEGORIES is `All`, `Executive`, `Task`, `Visitor`, `Sofa`, `Training`; unmatched/absent input → All. Thus `Task Chairs` and `taskanything` both match Task; this is existing permissive behavior, not a validated taxonomy parser.
-5. `active` is derived from URL. `page` and `prevCategory` are local state. If resolved active changes, a guarded render-time state adjustment updates `prevCategory` and resets page to 1. There is **no pagination useEffect** in current code.
-6. Filter ALL_CHAIRS by `cat`, then slice `(page - 1) * 8` through `page * 8`. The 32 records yield four All pages. Catalogue cards render a single image/name/sub/category; hover zooms that image.
-7. Filter buttons push `/products` for All or `/products?type=…` otherwise, replacing other query keys. Page buttons change only local state and scroll to top smoothly. Page is not bookmarkable; browser back/forward category changes reset it when active changes.
+The 32 original records live in [catalogue.ts](../../app/products/catalogue.ts), shared by home features, catalogue, details and sitemap. Inferred product shape includes original `name`, `sub`, `cat`, `img` plus a unique `slug`, factual `description`, and `images: { src, alt, label }[]`. Add up to three **real** product photos there. All current records have one photo; gallery slots explicitly mark unavailable photos rather than duplicating or generating angles. Training variants include their descriptor in the slug.
 
-Data shape is inferred by ChairCard as `typeof ALL_CHAIRS[0]`: `{ name, sub, cat, img }`, all strings. `sub` is a display descriptor, not filter state. Home keeps a separate category dataset; update both only when the task requires it. Product image filenames must preserve case and spaces.
+[Products](../../app/products/page.tsx) is a Server Component with metadata, hero and ItemList. Its Suspense boundary retains `useSearchParams` in [CatalogueBrowser](../../app/products/CatalogueBrowser.tsx). The fallback includes links to every detail page, making all products discoverable in the server HTML.
 
-Edge checks: absent query, empty/invalid input, legacy `category`, conflicting query keys, prefixed category labels, filter changes from a later page, and back/forward navigation. Unknown categories resolve to All; every current category has records. There is no zero-result UI for a future empty category, no product API, and no product detail selection passed to quote.
+1. Category = `resolveCategory(searchParams.get("type") || searchParams.get("category"))`. Existing trimming, case-insensitive prefix matching, nonempty `type` precedence and invalid→All behavior are preserved.
+2. Category changes use router push (without jumping the viewport); guarded render-time state resets pagination when the resolved category changes. Back/forward retain those URL semantics.
+3. Search matches name, descriptor and category, case-insensitively after trimming. Search is local and resets page to 1. Grid/table mode is also local and preserves filters/page.
+4. Filter first, then slice eight per page. Page buttons announce current state and scroll to the collection, instantly under reduced motion. The no-results state offers a clear-filters action.
+5. Product cards/table rows link to `/products/[slug]`. Detail routes generate static params, await route params, and reject unknown products. Their tables show known catalogue fields and explicitly ask the buyer to confirm unknown specifications/pricing.
+6. The local ProductGallery selects among up to three photos and toggles image zoom with a keyboard-operable button; missing slots are noninteractive. New product actions use `tel:` and do not submit the existing non-delivering forms.
+
+Phone links still use the existing repository number `+91 98765 43210`; the user requested calling but has not supplied a verified replacement. Additional photos and detailed specifications remain content dependencies.
 
 ## Contact: browser → server → logging
 
@@ -50,7 +51,7 @@ Eight string fields: name, company, email, phone, seats, budget, timeline, messa
 
 ## Other state and content
 
-Header owns `open` and reads `usePathname`; mobile menu link clicks close it, but there is no pathname effect to reset it for every possible navigation. ChairTile/ChairCard own hover state. Only unused PageTransition uses `useEffect`/`useRef` to observe path changes; unused ImageCarousel holds a scroll-container ref. Content arrays are mostly module-local; Footer and Experience define arrays inside their functions. No application cache or revalidation policy exists beyond framework route rendering described in [Architecture](architecture.md).
+Header owns `open` and reads `usePathname`; mobile menu link clicks close it, but there is no pathname effect to reset it for every possible navigation. Product presentation uses CSS hover/focus states; ScrollReveal uses IntersectionObserver and the Web Animations API. Only unused PageTransition uses `useEffect`/`useRef` to observe path changes; unused ImageCarousel holds a scroll-container ref. Content remains local; catalogue.ts is the single shared product-content owner. No application cache or revalidation policy exists beyond framework route rendering described in [Architecture](architecture.md).
 
 ## Change guidance
 

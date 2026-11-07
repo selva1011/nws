@@ -35,3 +35,23 @@ body { margin:0; color:#0f172a; background:#fff; font-family:Arial, Helvetica, s
 .animate-pulse-ring {
   animation: pulse-ring 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
+/* Shared catalogue and marketing interactions. */
+a, button, input, select, textarea, [tabindex] { outline-offset: 5px; }
+:focus-visible { outline: 2px solid #008CA6; }
+button { cursor: pointer; }
+#main-content { scroll-margin-top: 90px; }
+.skip-link { position: fixed; z-index: 100; top: 12px; left: 12px; transform: translateY(-160%); border-radius: 8px; padding: 12px 20px; background: #0F172A; color: white; }
+.skip-link:focus { transform: translateY(0); }
+.button-primary, .button-secondary { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 20px; border-radius: 999px; padding: 13px 22px; font-size: 13px; font-weight: 700; line-height: 1.5; text-align: center; transition: transform .25s, background .25s; }
+.button-primary { background: #00A7C4; color: #0F172A; }
+.button-primary:hover { background: #008CA6; transform: translateY(-2px); }
+.button-secondary { border: 1px solid #CBD5E1; background: white; color: #0F172A; }
+.button-secondary:hover { background: #F8FAFC; transform: translateY(-2px); }
+.product-card { transition: border-color .25s, box-shadow .25s, transform .25s; }
+.product-card:hover { border-color: #94A3B8; transform: translateY(-4px); box-shadow: 0 12px 28px rgb(15 23 42 / .06); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+  .product-card:hover, .button-primary:hover, .button-secondary:hover { transform: none; }
+}

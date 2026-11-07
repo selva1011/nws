@@ -5,10 +5,10 @@
 ## Established implementation conventions
 
 - Server Components by default; client directives where hooks, handlers or browser APIs require them. Existing client pages must be inspected before removing directives. Company/services use navigation and hover handlers; they are not immediately server-safe.
-- Flat shared components, page-local helpers, direct imports with `@/` or relative paths. Props are inline object types; ChairCard derives its shape from ALL_CHAIRS. Do not introduce type/data folders without authorization.
+- Flat shared components, page-local helpers, direct imports with `@/` or relative paths. Props are inline object types; ProductCard derives its shape from PRODUCTS. Do not introduce type/data folders without authorization.
 - State lives with its owner. Catalogue active category is URL-derived, not duplicated local filter state. [Data flow](data-flow.md) is the canonical behavioral specification.
 - Tailwind layout/spacing/responsive utilities plus inline component values; existing global utilities before new classes. No additional styling system.
-- Content arrays are local to page/component; there is no shared data abstraction. Avoid speculative abstractions or dependencies.
+- Content arrays are local; app/products/catalogue.ts is shared by catalogue consumers. Avoid speculative abstractions or dependencies.
 - Names: PascalCase components/files; framework `page.tsx`; module constants often SCREAMING_SNAKE_CASE; state/handlers camelCase. No enforced import-order formatter.
 - Use ContactForm's asynchronous pending/error/reset structure for comparable form behavior after verifying the endpoint. Do not copy quote's success-only handler or unresolved CSS variables.
 

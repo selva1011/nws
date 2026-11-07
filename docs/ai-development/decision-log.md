@@ -6,6 +6,14 @@ Records intentional documentation/architecture decisions. Older entries below ar
 
 ---
 
+## 2026-11-07 — Searchable catalogue and static product details
+
+The user authorized a modern UI, clearer product information, three-image galleries, calling and search discoverability. Home/catalogue/detail content now uses server components with focused client controls. Product records moved into one local catalogue module because home cards, listings, detail metadata and sitemap need the same identifiers. No service/data fetching layer or new package was added.
+
+Native IntersectionObserver/Web Animations provides scroll motion with reduced-motion handling. Each gallery supports three real photos but currently has only one supplied asset; missing photos are labeled, not synthesized. Unknown product facts and existing contact ownership remain explicitly unverified. Metadata describes known content without fabricated offers/reviews. This is a local repository update; no deployment was requested or performed.
+
+---
+
 ## 2026-11-07 — Consolidate the repository intelligence layer
 
 | Field | Value |
