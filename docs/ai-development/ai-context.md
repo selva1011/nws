@@ -32,7 +32,11 @@ Versions agree between installed package metadata and `package-lock.json` on the
 | Tailwind / PostCSS plugin | `^4` | `4.3.3` each |
 | ESLint | `^9` | `9.39.5` |
 | eslint-config-next | `16.3.0` | `16.3.0` |
-| Node | No engines field | Observed `v24.18.1`, not locked |
+| Node / `@types/node` | No engines field / `^24` | Observed `v24.18.1`, not locked / `24.19.2` (raised from 20 on 2026-11-19 to match the runtime and Vitest 5) |
+| Vitest / coverage-v8 | `^5.1.1` | `5.1.1` |
+| Testing Library: react / user-event / jest-dom | `^16.3.3` / `^14.6.13` / `^8.0.0` | same |
+| jsdom / @vitejs/plugin-react | `^31.0.1` / `^6.3.0` | same |
+| Playwright / @axe-core/playwright | `^1.65.1` / `^4.14.0` | same (browsers: Chromium 159, Firefox 159, WebKit 27.2) |
 
 Sources: [package.json](../../package.json), [lockfile](../../package-lock.json), [TypeScript config](../../tsconfig.json), [PostCSS](../../postcss.config.mjs), [ESLint](../../eslint.config.mjs). npm is the mandated manager. Turbopack is used by the configured Next dev/build commands. Arial/Helvetica/system sans-serif is the actual font stack; the old README's Geist claim was incorrect.
 

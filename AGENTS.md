@@ -49,7 +49,7 @@ Repository: `selva1011/nws`. Intended production domain: `nwsworkspace.com`.
 - **npm only**. Exact installed/locked versions and runtime snapshot: [AI context](docs/ai-development/ai-context.md).
 - `app/`: pages, root layout, global CSS, metadata, one POST route.
 - `components/`: flat shared components. `public/`: static assets, including `products images/` (space and case matter).
-- `@/` resolves to repository root. No CMS, database, auth, global store, or test runner is implemented.
+- `@/` resolves to repository root. No CMS, database, auth or global store is implemented. Tests: Vitest + Testing Library (`tests/unit`) and Playwright + axe (`tests/e2e`); see [Testing](docs/ai-development/testing-and-validation.md).
 - Vercel is the stated deployment target; hosted settings are not verified by repository inspection.
 
 ## Implementation rules
@@ -90,13 +90,13 @@ Never:
 1. Read relevant docs; inspect affected source and call sites; find an existing pattern.
 2. Restate verified requirements, expected files, and scope before edits. Resolve material questions.
 3. Make the smallest coherent authorized change; update only affected documentation.
-4. Run **`npm run lint` → `npx tsc --noEmit` → `npm run build`** in that order.
+4. Run **`npm run lint` → `npx tsc --noEmit` → `npm run build` → `npm test`** in that order; run **`npm run test:e2e`** for UI, routing or behaviour changes. Tests marked `it.fails`/`test.fail`/`test.fixme` track known issues; when one starts passing, fix the marker and the issue entry.
 5. For UI/behavior changes, perform focused browser checks described in [Testing](docs/ai-development/testing-and-validation.md).
 6. Review the complete diff for scope, generated files, and sensitive content.
 7. Report files, commands/results, assumptions, pre-existing issues, and verification limits.
 
 Done means the objective is met, types/build pass, lint has no new errors, and no unrelated behavior changes.
-Current check results belong in Testing, not this bootstrap. No test/format commands exist beyond the documented scripts.
+Current check results belong in Testing, not this bootstrap. No formatter is configured; test commands are `test`, `test:watch`, `test:coverage` and `test:e2e`.
 
 ## Documentation maintenance
 

@@ -29,9 +29,11 @@ npm run lint
 npx tsc --noEmit
 npm run build
 npm run start
+npm test              # Vitest unit/component tests
+npm run test:e2e      # Playwright E2E + accessibility (builds and serves on :3100)
 ```
 
-`start` serves an existing production build: run `npm run build` successfully first. For everyday editing, use `npm run dev`. There is no configured test runner or formatter. See [validation results and manual checks](docs/ai-development/testing-and-validation.md).
+`start` serves an existing production build: run `npm run build` successfully first. For everyday editing, use `npm run dev`. First-time E2E setup needs the Playwright browsers: `npx playwright install chromium firefox webkit`. No formatter is configured. See [validation results and manual checks](docs/ai-development/testing-and-validation.md).
 
 ## Routes
 

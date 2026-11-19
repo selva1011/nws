@@ -6,6 +6,20 @@ Records intentional documentation/architecture decisions. Older entries below ar
 
 ---
 
+## 2026-11-19 — Automated testing stack
+
+| Field | Value |
+|---|---|
+| **Status** | Implemented |
+| **Problem** | The user asked to install modern testing environments, run them and report issues. Only lint/typecheck/build and manual browser checks existed. |
+| **Decision** | Follow the installed Next.js 16.3 testing guides: Vitest 5 + React Testing Library + jsdom for unit/component tests (`tests/unit`), Playwright 1.65 for E2E against a production build on port 3100 across Chromium, Firefox, WebKit, Pixel 7 and iPhone 15 (`tests/e2e`), and @axe-core/playwright for WCAG 2.2 AA scans. Scripts: `test`, `test:watch`, `test:coverage`, `test:e2e`. Confirmed product bugs are encoded as expected failures (`it.fails` / `test.fail`) referencing known-issue IDs; the intermittent K29 is `test.fixme`. |
+| **Alternatives considered** | Jest (the Next guide lists it, but Vitest is faster and needs no Babel setup); Cypress (single-engine by default; Playwright covers WebKit/Firefox and mobile emulation); `vite-tsconfig-paths` (removed: Vite resolves tsconfig paths natively); `--legacy-peer-deps` (rejected: raised `@types/node` to ^24 to match the Node 24 runtime instead). |
+| **Consequences** | `@types/node` 20 → 24; npm dedupe bumped 8 transitive packages (e.g. postcss 8.5.26 → 8.5.33). Unit tests stub React `ViewTransition` (only Next's bundled React exports it). Async Server Component pages are covered by E2E, not Vitest. E2E needs the Playwright browser binaries locally. No CI was added. |
+| **Affected areas** | `package.json`, `package-lock.json`, `vitest.config.mts`, `playwright.config.ts`, `tests/`, `.gitignore`, `eslint.config.mjs`, docs |
+| **Approver** | User request in the 2026-11-19 session |
+
+---
+
 ## 2026-11-19 — White seating showroom catalogue (supersedes the dark theme)
 
 | Field | Value |

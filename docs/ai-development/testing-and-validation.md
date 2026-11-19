@@ -2,6 +2,27 @@
 
 Validation for the **2026-11-19 white showroom session** (white/charcoal/yellow palette, rebuilt catalogue, framed display photos, detail-page changes; logo artwork stays removed). Results replace the earlier dark-theme snapshot. Source checks and HTTP responses do not prove email delivery, assistive-technology compatibility or cross-browser rendering.
 
+## Automated test suites (added 2026-11-19)
+
+| Command | What it runs |
+|---|---|
+| `npm test` | Vitest 5 (jsdom) over `tests/unit/**`: catalogue data integrity (slugs, photo files on disk, categories, titles/highlights), ProductCard, CatalogueView, CatalogueBrowser (URL category, legacy alias, sessionStorage), BackToCatalogue, ProductGallery (keys, buttons, swipe, zoom), ContactForm (validation, draft, mailto, clipboard), Header/Footer/SeatFinder, sitemap/robots, legacy `/api/contact` (node environment) |
+| `npm run test:coverage` | Same, with v8 coverage (`coverage/`) |
+| `npm run test:e2e` | Playwright: builds, serves on :3100 and runs `tests/e2e/**` in Chromium, Firefox and WebKit (1440×900), Pixel 7 and iPhone 15. Smoke (every route and all 32 products, console errors, broken images, overflow, 404), catalogue (column matrix 390–1440, shared tracks, short groups, URL filter, Back/Forward scroll, hover without layout shift, keyboard focus, reduced motion, back link, one-tap touch, phone hero), product/enquiry (layout order, specs, zoom, call, quote handoff, validation, draft), axe WCAG 2.2 AA on 9 views (desktop and mobile, plus the open draft and the open menu) |
+
+Known product issues are encoded as expected failures (`it.fails`, `test.fail`) that name their [known issue](known-issues.md) ID; an expected failure that starts passing fails the run, prompting removal of the marker. K29 is intermittent and marked `test.fixme`.
+
+Results on 2026-11-19 (Node 24.18.1, macOS arm64):
+
+| Suite | Result |
+|---|---|
+| Unit | 6 files, 55 tests: 46 passed, 9 expected failures (K22 ×5, K26, K27 ×2, K28). Coverage: 56.8% statements, 73.2% branches, 54.2% functions, 60.2% lines (Server Component pages are exercised by E2E instead) |
+| E2E | 190 tests: 124 passed (including 9 expected failures: K21, K23 ×2, K24, K25 ×5), 66 skipped (project-scoped tests and K29). Stable on a full repeat run |
+| Axe | Only violation: K23 (label-in-name on the gallery zoom button). No other WCAG 2.2 AA rule failed on home, catalogue (All and Sofa), company, services, contact, about, quote (empty and with draft) or the mobile menu |
+| `npm audit` | 1 critical (Next.js), high (sharp, brace-expansion, js-yaml), moderate (minimatch): K20 |
+
+Triage notes: failures caused by the tests themselves were fixed rather than reported. These were Playwright auto-scrolling before clicks, clicks before hydration, WebKit's Option+Tab link navigation, a 0.016px sub-pixel track difference, and an immediate Back racing the animated scroll. Scroll restoration on Back was measured separately at a realistic pace: 40 of 40 runs restored the exact position in Chromium, mobile Chrome, Firefox and WebKit. Fast repeated Back presses are affected by K21.
+
 ## Required checks
 
 Executed in order on the final code:
@@ -53,10 +74,10 @@ Calculated from sRGB token values; full table in [Design system](design-system.m
 
 | Area | Cases |
 |---|---|
-| Touch | One-tap navigation on a real touch device (verified only by hover rules being scoped to fine pointers and no click interception); real-finger swipe in the gallery |
-| Browsers/devices | Safari, Firefox, iOS/Android, 200% zoom, forced colours |
-| Motion | `prefers-reduced-motion` was checked in compiled CSS, not by toggling the OS setting |
+| Touch | Real-device one-tap navigation and finger swipe (one-tap is now covered by Playwright touch emulation on Pixel 7 and iPhone 15; swipe by unit tests only) |
+| Browsers/devices | Branded Safari/Chrome on real iOS/Android devices (engines are covered by Playwright WebKit/Firefox/Chromium), 200% zoom, forced colours |
+| Motion | Reduced motion is covered by Playwright media emulation, not by toggling the OS setting |
 | Accessibility | Screen-reader pass, full WCAG audit |
 | Production | Owner verifies phone/email (the number looks like a placeholder), hosted image availability and actual sending |
 
-There is no configured unit/E2E test runner or tracked CI. No Lighthouse, deployment, inbox receipt or screen-reader audit was performed.
+No tracked CI runs the suites yet (K11). No Lighthouse, deployment, inbox receipt or screen-reader audit was performed.

@@ -10,7 +10,7 @@
 4. Resolve scope-critical questions before dependent implementation. Continue independent authorized investigation; do not repeatedly request authorization already provided by the task.
 5. Make the smallest coherent change. For larger work, use logical reviewable steps rather than unrelated refactors. [Templates](task-and-plan-templates.md) are optional planning aids; do not create bureaucracy for a small edit.
 6. Update only canonical documents affected by the implementation. The bootstrap maintenance matrix identifies owners. Remove stale references and link rather than copy explanations.
-7. Run `npm run lint`, then `npx tsc --noEmit`, then `npm run build`. Run relevant browser/behavior checks; no unit/E2E runner currently exists.
+7. Run `npm run lint`, then `npx tsc --noEmit`, then `npm run build`, then `npm test`. For UI/routing/behaviour changes also run `npm run test:e2e` (all five browser projects). Add or update tests next to the behaviour you change.
 8. Review the diff and final status for unintended application, tooling, generated or sensitive changes. Preserve pre-existing user work.
 9. Report changed files, commands/results, behavior/assumptions, pre-existing failures, and verification limits. Never report a check as passed if unavailable or failed.
 

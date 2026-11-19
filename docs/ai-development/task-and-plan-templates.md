@@ -94,14 +94,18 @@ Copy this template when preparing to implement a task.
 - [ ] `npx tsc --noEmit` exits 0
 - [ ] `npm run lint` introduces no new errors
 - [ ] `npm run build` exits 0
+- [ ] `npm test` passes (unit/component)
+- [ ] `npm run test:e2e` passes for UI/behaviour changes
 - [ ] Navigate to [affected route] in browser and verify [specific behaviour]
-- [ ] Verify on mobile viewport (375px)
+- [ ] Verify on mobile viewport (390px)
 
 ### Validation Commands
 ```bash
 npm run lint
 npx tsc --noEmit
 npm run build
+npm test
+npm run test:e2e
 ```
 
 ### Rollback Considerations

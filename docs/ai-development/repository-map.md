@@ -20,6 +20,7 @@ Task → document → source. Paths are repository-relative below; open the affe
 | Sitemap / robots investigation | [app/sitemap.ts](../../app/sitemap.ts), [app/robots.ts](../../app/robots.ts) | Production-domain sitemap and crawl rules; [Routes](routes-and-features.md) |
 | Existing unused UI | [components/ImageCarousel.tsx](../../components/ImageCarousel.tsx), [components/PageTransition.tsx](../../components/PageTransition.tsx), [components/Experience.tsx](../../components/Experience.tsx) | Check registry limitations before reuse |
 | Toolchain/scripts | [package.json](../../package.json), [package-lock.json](../../package-lock.json), [next.config.ts](../../next.config.ts), [tsconfig.json](../../tsconfig.json), [eslint.config.mjs](../../eslint.config.mjs), [postcss.config.mjs](../../postcss.config.mjs) | Approval rules in bootstrap; [Testing](testing-and-validation.md) |
+| Automated tests | [tests/unit/](../../tests/unit/), [tests/e2e/](../../tests/e2e/), [vitest.config.mts](../../vitest.config.mts), [playwright.config.ts](../../playwright.config.ts) | Vitest + Testing Library (jsdom; `tests/unit/setup.tsx` stubs React `ViewTransition`), Playwright + axe against a production build on :3100; [Testing](testing-and-validation.md) |
 | AI guidance | [AGENTS.md](../../AGENTS.md), [CLAUDE.md](../../CLAUDE.md), this directory | Canonical bootstrap, Claude pointer, task-specific references |
 
 ## Assets and placement
