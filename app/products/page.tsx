@@ -1,18 +1,18 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { Suspense } from "react";
-import Link from "next/link";
 import CatalogueBrowser from "./CatalogueBrowser";
+import CatalogueView from "./CatalogueView";
 import { PRODUCTS } from "./catalogue";
 
 export const metadata: Metadata = {
   title: "Office Chairs & Seating Collection | NWS Chennai",
   description:
-    "Explore and compare 32 NWS seating models. Find task, executive, visitor and training chairs, and sofas for your workspace in Chennai.",
+    "Explore 32 NWS seating models by category. Find task, executive, visitor and training chairs, and sofas for your workspace in Chennai.",
   alternates: { canonical: "/products" },
   openGraph: {
     title: "A seat for your kind of work | NWS",
-    description:
-      "Explore the NWS seating collection and compare your shortlist.",
+    description: "Explore the NWS seating collection by category.",
     url: "/products",
     images: ["/products images/BUTTERFLY-HB.jpeg"],
   },
@@ -39,58 +39,29 @@ export default function Products() {
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <section className="bg-[#EAE4F0]">
-        <div className="site-container py-10 md:py-16">
-          <nav
-            aria-label="Breadcrumb"
-            className="mb-9 flex gap-3 text-xs text-[var(--color-neutral)]"
-          >
-            <Link href="/" className="hover:underline">
-              Home
-            </Link>
-            <span aria-hidden="true">/</span>
-            <span aria-current="page">Seating</span>
-          </nav>
-          <div className="grid items-end gap-6 md:grid-cols-[1.4fr_1fr]">
-            <h1 className="display-title !text-[clamp(40px,5.6vw,74px)]">
-              A seat for your
-              <br />
-              kind of work.
-            </h1>
-            <div className="max-w-md">
-              <p className="copy">
-                Explore the shapes, styles and spaces of the NWS collection.
-                Pick up to three models to compare side by side.
-              </p>
-              <Link href="/#seat-finder" className="text-link mt-4">
-                Not sure where to start? Try the seating finder
-              </Link>
-            </div>
-          </div>
+      {/* Wide, shallow hero: photo on the right, heading on its quiet side. */}
+      <section className="relative isolate overflow-hidden border-b border-[var(--color-border)]">
+        <div className="absolute inset-y-0 right-0 -z-10 w-full md:w-[66%]">
+          <Image
+            src="/images/nws-hero.png"
+            alt=""
+            fill
+            preload
+            sizes="(max-width: 767px) 100vw, 66vw"
+            className="object-cover object-[84%_82%] md:object-[50%_80%]"
+          />
+          <div aria-hidden="true" className="catalogue-hero-fade absolute inset-0" />
+        </div>
+        <div className="site-container flex h-[188px] flex-col justify-center sm:h-[240px] md:h-[300px] lg:h-[340px]">
+          <h1 className="max-w-[11ch] text-[clamp(26px,4.2vw,56px)] font-semibold leading-[1.04] tracking-[-0.045em] md:max-w-[14ch]">
+            A seat for your kind of work.
+          </h1>
+          <p className="mt-3 max-w-[22ch] text-[13px] leading-5 text-[var(--color-text-muted)] sm:max-w-[34ch] sm:text-base sm:leading-7">
+            Explore the shapes, styles and spaces of the NWS collection.
+          </p>
         </div>
       </section>
-      <Suspense
-        fallback={
-          <section className="site-container section-space">
-            <h2 className="section-title">Explore all seating</h2>
-            <p className="copy mt-4">
-              Choose a model to view its photo and details.
-            </p>
-            <ul className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {PRODUCTS.map((product) => (
-                <li key={product.slug}>
-                  <Link
-                    className="text-link"
-                    href={`/products/${product.slug}`}
-                  >
-                    {product.name} · {product.sub}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </section>
-        }
-      >
+      <Suspense fallback={<CatalogueView active="All" />}>
         <CatalogueBrowser />
       </Suspense>
     </>

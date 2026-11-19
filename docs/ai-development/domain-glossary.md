@@ -1,6 +1,6 @@
 # Domain glossary
 
-Current source terminology, updated **2026-11-18**. Product labels come from [catalogue.ts](../../app/products/catalogue.ts); labels do not prove detailed product capabilities.
+Current source terminology, updated **2026-11-19**. Product labels come from [catalogue.ts](../../app/products/catalogue.ts); labels do not prove detailed product capabilities.
 
 | Term | Meaning in this repository |
 |---|---|
@@ -13,11 +13,11 @@ Current source terminology, updated **2026-11-18**. Product labels come from [ca
 | HB / MB / VC | High Back / Medium Back / Visitor Chair |
 | `sub` | Catalogue style descriptor shown alongside model name; not a full specification |
 | `cat` | Product category; All is a filter option, not a product category |
-| Shortlist | Up to three catalogue slugs held in local comparison state; no account or saved list |
+| Shortlist | Up to three catalogue slugs in `/quote?models=`; the catalogue comparison UI was removed on 2026-11-19, so the UI now passes one model per enquiry |
 | Seating finder | Four work-setting choices linking to relevant categories; not a health/ergonomic assessment |
 | Enquiry draft | Local plain-text message prepared for the visitor to send through their email app or copy; not a delivered lead |
 | Workspace services | Topics for discussing planning, sourcing, installation, support, fitouts and upgrades; actual scope/availability must be confirmed |
-| `BASE` | `/products images/`, defined in catalogue.ts; spaces/case in paths must be preserved |
+| `BASE` / `DISPLAY` | `/products images/` (originals) and `/product-display/` (framed display copies, same file names), defined in catalogue.ts; spaces/case in paths must be preserved |
 | `nwsworkspace.com` | Intended production domain; hosted ownership/deployment not verified |
 
 App Router, Server/Client Components, Suspense and request/static rendering are documented in [Architecture](architecture.md). State/query behavior belongs to [Data flow](data-flow.md).

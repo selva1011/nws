@@ -25,7 +25,7 @@ export default function ContactPage() {
         </p>
         <div className="mt-10 space-y-6">
           <div className="border-t border-[var(--color-border)] pt-5">
-            <h2 className="text-xs text-[var(--color-neutral)]">
+            <h2 className="text-xs text-[var(--color-text-muted)]">
               Email our team
             </h2>
             <a
@@ -36,7 +36,7 @@ export default function ContactPage() {
             </a>
           </div>
           <div className="border-t border-[var(--color-border)] pt-5">
-            <h2 className="text-xs text-[var(--color-neutral)]">
+            <h2 className="text-xs text-[var(--color-text-muted)]">
               Give us a call
             </h2>
             <a className="text-link text-lg" href="tel:+919876543210">
@@ -44,7 +44,7 @@ export default function ContactPage() {
             </a>
           </div>
           <div className="border-t border-[var(--color-border)] pt-5">
-            <h2 className="text-xs text-[var(--color-neutral)]">Our home</h2>
+            <h2 className="text-xs text-[var(--color-text-muted)]">Our home</h2>
             <p className="mt-2 text-lg">Chennai, Tamil Nadu</p>
           </div>
         </div>

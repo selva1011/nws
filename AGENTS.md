@@ -24,7 +24,7 @@ Repository: `selva1011/nws`. Intended production domain: `nwsworkspace.com`.
 |---|---|---|
 | Find an implementation | [Repository map](docs/ai-development/repository-map.md) | `app/`, `components/` |
 | Add/change a page or metadata | [Routes and features](docs/ai-development/routes-and-features.md) | `app/`, `app/layout.tsx` |
-| Change catalogue filters/pagination | [Data flow](docs/ai-development/data-flow.md) | `app/products/page.tsx`, `app/page.tsx` |
+| Change catalogue filters/grid | [Data flow](docs/ai-development/data-flow.md), [Design system](docs/ai-development/design-system.md) | `app/products/`, `components/ProductCard.tsx` |
 | Change forms/API or debug submission | [Data flow](docs/ai-development/data-flow.md), [Security](docs/ai-development/security.md) | `components/ContactForm.tsx`, `app/api/contact/route.ts`, `app/quote/page.tsx` |
 | Reuse/build a component | [Component registry](docs/ai-development/component-registry.md) | `components/`, page-local components |
 | Change styling/responsiveness | [Design system](docs/ai-development/design-system.md), [Frontend quality](docs/ai-development/frontend-guidelines.md) | `app/globals.css`, affected component |
@@ -63,8 +63,9 @@ Repository: `selva1011/nws`. Intended production domain: `nwsworkspace.com`.
 - Imports are direct, without component barrel files. Search existing patterns before introducing abstractions.
 - Tailwind handles layout/spacing/breakpoints; use established inline styles for brand/measurements. No new styling system.
 - Reuse existing CSS utilities; see [Design system](docs/ai-development/design-system.md) for actual tokens and exceptions.
-- The user-authorized 2026-11-18 redesign replaces the old palette: plum `#493653` / hover `#302237`, soft lavender `#EAE4F0`, text `#302A34` / `#685F6E`, light `#F7F5F8`. [Design system](docs/ai-development/design-system.md) is the canonical palette/layout contract. Keep the NWS brand name, logo and original product images.
-- Semantic `--color-*` tokens are defined in globals.css. Reuse them and the shared button/field/chip utilities; do not restore the superseded cyan UI.
+- The user-authorized 2026-11-19 white showroom replaces the dark and plum/lavender palettes: canvas `#FFFFFF`, text `#171717` / `#4A4A4A`, charcoal `#171717` with white text for selection, bright yellow `#FFD400` only as primary-action fill with near-black text, deeper gold `#8A6A00` for small accents, near-black focus outline. [Design system](docs/ai-development/design-system.md) is the canonical palette/state/grid contract.
+- Keep the brand name as text ("Node Workspace Solutions"); the logo artwork is no longer displayed. Keep original product images unmodified in `public/products images/`; show the framed copies from `public/product-display/` (regenerate with `scripts/frame-product-photos.swift`).
+- Role-based `--color-*` tokens are defined in globals.css. Reuse them and the shared button/field/chip/grid/tile utilities; do not restore superseded palettes.
 - Use `next/image` for new images; preserve current paths including `/products images/`. Check installed image docs before new configuration.
 - Enquiries reuse ContactForm's review → email-draft/copy flow. Draft preparation is not delivery; never claim receipt or reset an unsent enquiry. The legacy public API only logs and has no current UI caller.
 - No new visual behavior, copy, or user flow unless authorized by the task. Follow [Frontend quality](docs/ai-development/frontend-guidelines.md).

@@ -23,7 +23,7 @@ flowchart TD
 - Root layout owns global CSS, the single main landmark, skip link, metadata, Organization JSON-LD, Header and Footer. Pages must not remount the shell.
 - All page entry files are Server Components. Home uses SeatFinder; products uses query-aware CatalogueBrowser inside Suspense; detail uses ProductGallery; contact/quote use ContactForm.
 - `/quote` reads awaited searchParams and renders on demand to resolve selected catalogue slugs. Other fixed pages prerender; all 32 product routes use generateStaticParams with dynamicParams=false.
-- ProductCard is server-safe and also imported into the catalogue client bundle. No providers, global stores, server actions, CMS or remote content fetches exist.
+- ProductCard and CatalogueView are hook-free and server-safe: the products page prerenders CatalogueView as the Suspense fallback, and CatalogueBrowser renders it client-side for the URL category. The detail page adds a small client BackToCatalogue link. No providers, global stores, server actions, CMS or remote content fetches exist.
 - ScrollReveal, ImageCarousel, PageTransition and Experience remain unmounted. No scroll-reveal wrappers run in the redesigned pages.
 - The legacy POST contact endpoint is independent of the current UI. It logs only; it is not a delivery service.
 

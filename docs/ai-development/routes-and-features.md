@@ -6,8 +6,8 @@ All routes are public and use the root Header/Footer. Source and default build v
 |---|---|---|
 | `/` | [Home](../../app/page.tsx) | Static server shell; workspace image, five categories, interactive seating finder, featured models, FAQs |
 | `/company` | [Company](../../app/company/page.tsx) | Static server page; NWS introduction and practical selection approach |
-| `/products` | [Products](../../app/products/page.tsx) | Static server metadata/hero plus Suspense; category/search/sort, grid/table, eight models/page and three-model comparison |
-| `/products/[slug]` | [Detail](../../app/products/[slug]/page.tsx) | 32 generated pages; original-photo zoom, catalogue fields, enquiry/call and related models; unknown slugs 404 |
+| `/products` | [Products](../../app/products/page.tsx) | Static metadata, shallow hero, grouped showroom grid (static "All" fallback) plus URL category filter (`?type=`, legacy `?category=`) |
+| `/products/[slug]` | [Detail](../../app/products/[slug]/page.tsx) | 32 generated pages; back-to-catalogue link, gallery with zoom, verified catalogue fields/spec table, enquiry/call and related models; unknown slugs 404 |
 | `/services` | [Services](../../app/services/page.tsx) | Static server page; six native service disclosures and three-step enquiry process |
 | `/quote` | [Quote](../../app/quote/page.tsx) | Dynamic server shell resolves `models` query slugs; client email-draft form |
 | `/contact` | [Contact](../../app/contact/page.tsx) | Static server shell; email/phone and client email-draft form |

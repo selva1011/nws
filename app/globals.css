@@ -1,17 +1,33 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #493653;
-  --color-primary-hover: #302237;
-  --color-primary-soft: #eae4f0;
-  --color-secondary: #302a34;
-  --color-neutral: #685f6e;
-  --color-border: #ddd7df;
-  --color-base: #ffffff;
-  --color-light-base: #f7f5f8;
-  --color-dark-base: #302237;
+  color-scheme: light;
+  /* Surfaces */
+  --color-page: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-raised: #ebebeb;
+  /* Product photo stage; photos blend onto it with multiply (white -> stage). */
+  --color-image-surface: #f4f4f4;
+  /* Text */
+  --color-text: #171717;
+  --color-text-muted: #4a4a4a;
+  --color-placeholder: #6b6b6b;
+  /* Yellow: primary actions only. Gold: small accents (>= 4.6:1 on white). */
+  --color-accent: #ffd400;
+  --color-accent-hover: #f2c500;
+  --color-on-accent: #171717;
+  --color-gold: #8a6a00;
+  /* Selection and focus */
+  --color-selected: #171717;
+  --color-on-selected: #ffffff;
+  --color-focus: #171717;
+  /* Lines and states */
+  --color-border: #e5e5e5;
+  --color-control: #858585;
+  --color-error: #b42318;
+  --header-height: 64px;
   --motion-control: 160ms;
-  --motion-content: 220ms;
+  --motion-content: 180ms;
   --motion-section: 420ms;
   --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
@@ -21,17 +37,19 @@
 }
 html {
   scroll-behavior: smooth;
+  /* Hash and scrollIntoView targets clear the sticky header. */
+  scroll-padding-top: calc(var(--header-height) + 16px);
 }
 body {
   margin: 0;
-  color: var(--color-secondary);
-  background: #fcfbfc;
+  color: var(--color-text);
+  background: var(--color-page);
   font-family: "Avenir Next", Avenir, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 ::selection {
-  background: #dcd0e7;
-  color: #302237;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 button,
 summary {
@@ -43,10 +61,10 @@ input,
 select,
 textarea,
 [tabindex] {
-  outline-offset: 4px;
+  outline-offset: 3px;
 }
 :focus-visible {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-focus);
 }
 button:disabled {
   cursor: not-allowed;
@@ -63,9 +81,9 @@ button:disabled {
   }
   .display-title {
     font-size: clamp(44px, 6.2vw, 88px);
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.02;
-    letter-spacing: -0.065em;
+    letter-spacing: -0.06em;
   }
   .section-title {
     font-size: clamp(30px, 3.6vw, 50px);
@@ -74,40 +92,44 @@ button:disabled {
     letter-spacing: -0.045em;
   }
   .eyebrow {
-    color: var(--color-neutral);
+    color: var(--color-text-muted);
     font-size: 13px;
     font-weight: 600;
     letter-spacing: 0.01em;
   }
   .copy {
-    color: var(--color-neutral);
+    color: var(--color-text-muted);
     font-size: 16px;
     line-height: 1.8;
     max-width: 60ch;
   }
+  /* Text links: near-black text, deeper-gold underline as the accent. */
   .text-link {
     display: inline-flex;
     align-items: center;
     gap: 12px;
     padding-block: 8px;
+    color: var(--color-text);
     font-size: 14px;
     font-weight: 600;
     text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 2px;
     text-underline-offset: 6px;
-    text-decoration-color: #b9adbf;
+    transition: text-decoration-color var(--motion-control);
   }
   .text-link:hover {
-    text-decoration-color: currentColor;
+    text-decoration-color: var(--color-text);
   }
   .button-primary,
   .button-secondary {
     display: inline-flex;
-    min-height: 50px;
+    min-height: 48px;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    gap: 16px;
     border-radius: 8px;
-    padding: 14px 22px;
+    padding: 12px 22px;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.4;
@@ -115,24 +137,27 @@ button:disabled {
     transition:
       background-color var(--motion-control),
       border-color var(--motion-control),
+      color var(--motion-control),
       transform var(--motion-control);
   }
+  /* Near-black on bright yellow: 12.5:1 (10.9:1 on the hover tone). */
   .button-primary {
-    background: var(--color-primary);
-    color: white;
+    background: var(--color-accent);
+    color: var(--color-on-accent);
     border: 1px solid transparent;
   }
-  .button-primary:hover {
-    background: var(--color-primary-hover);
+  .button-primary:hover,
+  .button-primary:active {
+    background: var(--color-accent-hover);
   }
   .button-secondary {
-    background: transparent;
-    border: 1px solid #bdb2c3;
-    color: var(--color-primary);
+    background: var(--color-page);
+    border: 1px solid var(--color-text);
+    color: var(--color-text);
   }
-  .button-secondary:hover {
-    background: var(--color-primary-soft);
-    border-color: var(--color-primary);
+  .button-secondary:hover,
+  .button-secondary:active {
+    background: var(--color-surface);
   }
   .button-primary:active,
   .button-secondary:active {
@@ -146,74 +171,193 @@ button:disabled {
     transform: translateY(-160%);
     border-radius: 8px;
     padding: 12px 20px;
-    background: var(--color-primary);
-    color: white;
+    background: var(--color-selected);
+    color: var(--color-on-selected);
+    font-weight: 600;
   }
   .skip-link:focus {
     transform: translateY(0);
   }
   #main-content {
-    scroll-margin-top: 90px;
+    scroll-margin-top: var(--header-height);
   }
   .product-scroll {
     scrollbar-width: thin;
-    scrollbar-color: #bdb2c3 transparent;
+    scrollbar-color: #bdbdbd transparent;
   }
-  .product-card .product-photo {
-    transition: transform var(--motion-content) var(--ease-standard);
-  }
-  .product-card:hover .product-photo,
-  .product-card:focus-visible .product-photo {
-    transform: scale(1.035);
-  }
-  .product-card:hover .product-arrow,
-  .product-card:focus-visible .product-arrow {
-    background: var(--color-primary);
-    color: white;
-  }
+  /* Photo stage: white photo backgrounds multiply into the stage tone so every
+     tile reads as the same surface; white and silver chairs keep their shading. */
   .product-stage {
-    background: #f2eff4;
+    background: var(--color-image-surface);
   }
   .product-stage img {
     mix-blend-mode: multiply;
   }
+
+  /* Catalogue grid: identical column tracks for every section. Short groups
+     fill the first slots from the left; tiles never stretch. */
+  .catalogue-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px 16px;
+  }
+  @media (width >= 30rem) {
+    .catalogue-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 40rem) {
+    .catalogue-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 48rem) {
+    .catalogue-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 64rem) {
+    .catalogue-grid {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 80rem) {
+    .catalogue-grid {
+      grid-template-columns: repeat(8, minmax(0, 1fr));
+      column-gap: 20px;
+    }
+  }
+
+  /* Product tile: the whole tile is one link. */
+  .product-tile {
+    display: block;
+    border-radius: 10px;
+  }
+  .product-tile .tile-stage {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  /* Framed display photos sit on a common baseline (bottom aligned). */
+  .product-tile .tile-photo {
+    object-fit: contain;
+    object-position: center bottom;
+    padding: 10% 10% 8%;
+    transition: transform var(--motion-content) var(--ease-standard);
+  }
+  .product-tile .tile-name {
+    display: block;
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+  /* Always occupies its line so revealing it never moves neighbours. */
+  .product-tile .tile-reveal {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 1.5em;
+    margin-top: 2px;
+    color: var(--color-text-muted);
+    font-size: 12px;
+    line-height: 1.5;
+    opacity: 0;
+    transition: opacity var(--motion-content) var(--ease-standard);
+  }
+  .product-tile .tile-arrow {
+    color: var(--color-gold);
+    font-weight: 600;
+  }
+  .product-tile:focus-visible .tile-reveal {
+    opacity: 1;
+  }
+  .product-tile:focus-visible .tile-photo {
+    transform: translateY(-3px);
+  }
+  /* Hover only where a fine pointer can hover; touch taps navigate at once. */
+  @media (hover: hover) and (pointer: fine) {
+    .product-tile:hover .tile-photo {
+      transform: translateY(-3px);
+    }
+    .product-tile:hover .tile-reveal {
+      opacity: 1;
+    }
+    .product-tile:hover .tile-name {
+      text-decoration: underline;
+      text-decoration-color: var(--color-gold);
+      text-decoration-thickness: 2px;
+      text-underline-offset: 4px;
+    }
+  }
+
   .field {
     display: block;
     width: 100%;
-    min-height: 50px;
-    border: 1px solid var(--color-border);
+    min-height: 48px;
+    border: 1px solid var(--color-control);
     border-radius: 8px;
     padding: 12px 14px;
-    background: white;
-    color: var(--color-secondary);
-    transition: border-color 160ms;
+    background: var(--color-page);
+    color: var(--color-text);
+    transition:
+      border-color var(--motion-control),
+      box-shadow var(--motion-control);
+  }
+  .field::placeholder {
+    color: var(--color-placeholder);
+  }
+  .field:hover {
+    border-color: var(--color-text-muted);
   }
   .field:focus {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
-    border-color: var(--color-primary);
+    border-color: var(--color-text);
+  }
+  /* Shown only after the visitor interacts; the browser supplies the message. */
+  .field:user-invalid {
+    border-color: var(--color-error);
+    box-shadow: inset 0 0 0 1px var(--color-error);
   }
   .field-label {
     display: block;
     margin-bottom: 8px;
+    color: var(--color-text);
     font-size: 13px;
     font-weight: 600;
   }
+  /* Category selector and finder choices. Selected = charcoal with white text. */
   .filter-chip {
-    border: 1px solid var(--color-border);
-    padding: 10px 17px;
-    border-radius: 999px;
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    border: 1px solid var(--color-control);
+    border-radius: 6px;
+    padding: 8px 14px;
+    background: var(--color-page);
+    color: var(--color-text);
     font-size: 13px;
+    font-weight: 500;
     white-space: nowrap;
-    transition: background-color 160ms;
+    transition:
+      background-color var(--motion-control),
+      border-color var(--motion-control),
+      color var(--motion-control);
   }
   .filter-chip:hover {
-    background: var(--color-primary-soft);
+    border-color: var(--color-text);
+    background: var(--color-surface);
   }
-  .filter-chip[aria-pressed="true"] {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: white;
+  .filter-chip[aria-pressed="true"],
+  .filter-chip[aria-current="page"] {
+    border-color: var(--color-selected);
+    background: var(--color-selected);
+    color: var(--color-on-selected);
+    font-weight: 600;
   }
   .faq-row {
     border-bottom: 1px solid var(--color-border);
@@ -227,12 +371,19 @@ button:disabled {
     font-size: 18px;
     font-weight: 500;
     list-style: none;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 6px;
+  }
+  .faq-row summary:hover {
+    text-decoration-line: underline;
   }
   .faq-row summary::-webkit-details-marker {
     display: none;
   }
   .faq-row summary::after {
     content: "+";
+    color: var(--color-gold);
     font-size: 24px;
     font-weight: 400;
   }
@@ -242,18 +393,19 @@ button:disabled {
   .faq-row p {
     margin-top: 18px;
   }
-  @keyframes catalogue-swap {
-    from {
-      opacity: 0.5;
-      transform: translateY(5px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Catalogue hero: soft white fade keeps the heading on a quiet area. */
+  .catalogue-hero-fade {
+    background: linear-gradient(
+      90deg,
+      #fff 0%,
+      rgb(255 255 255 / 0.94) 40%,
+      rgb(255 255 255 / 0) 68%
+    );
   }
-  .catalogue-swap {
-    animation: catalogue-swap var(--motion-content) var(--ease-standard) both;
+  @media (width >= 48rem) {
+    .catalogue-hero-fade {
+      background: linear-gradient(90deg, #fff 0%, rgb(255 255 255 / 0) 32%);
+    }
   }
   ::view-transition {
     pointer-events: none;
@@ -282,8 +434,8 @@ button:disabled {
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
-    .product-card:hover .product-photo {
-      transform: none;
+    .product-tile .tile-photo {
+      transform: none !important;
     }
     ::view-transition-old(*),
     ::view-transition-new(*),

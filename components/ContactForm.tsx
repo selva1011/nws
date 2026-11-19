@@ -64,7 +64,7 @@ export default function ContactForm({
   }
 
   return (
-    <div className="rounded-2xl border border-[var(--color-border)] bg-white p-6 sm:p-9">
+    <div className="rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 sm:p-9">
       <form
         onSubmit={prepare}
         className="space-y-6"
@@ -81,16 +81,16 @@ export default function ContactForm({
               ? "Tell us what you have in mind."
               : "What can we help with?"}
           </h2>
-          <p className="mt-3 text-sm leading-6 text-[var(--color-neutral)]">
+          <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">
             Complete the details to prepare an email. You’ll review and send it
             using your email app.
           </p>
-          <p className="mt-3 text-xs text-[var(--color-neutral)]">
+          <p className="mt-3 text-xs text-[var(--color-text-muted)]">
             Fields marked * are required.
           </p>
         </div>
         {models.length > 0 && (
-          <div className="rounded-lg bg-[var(--color-primary-soft)] p-4">
+          <div className="rounded-lg border-l-[3px] border-[var(--color-gold)] bg-[var(--color-surface)] p-4">
             <p className="text-xs font-semibold">Your selected seating</p>
             <ul className="mt-2 space-y-1 text-sm">
               {models.map((model) => (
@@ -203,14 +203,14 @@ export default function ContactForm({
             maxLength={1500}
             placeholder="Your preferred models, workspace needs or questions…"
           />
-          <p className="mt-2 text-xs text-[var(--color-neutral)]">
+          <p className="mt-2 text-xs text-[var(--color-text-muted)]">
             Up to 1,500 characters. Avoid including sensitive information.
           </p>
         </div>
         <button type="submit" className="button-primary w-full">
           Review your enquiry <span aria-hidden="true">↗</span>
         </button>
-        <p className="text-xs leading-6 text-[var(--color-neutral)]">
+        <p className="text-xs leading-6 text-[var(--color-text-muted)]">
           This step prepares a draft only. Send the email to complete your
           enquiry.
         </p>
@@ -224,7 +224,7 @@ export default function ContactForm({
           <h3 className="text-xl font-medium">
             Your enquiry is ready to send.
           </h3>
-          <p className="mt-3 text-sm leading-6 text-[var(--color-neutral)]">
+          <p className="mt-3 text-sm leading-6 text-[var(--color-text-muted)]">
             Open the draft in your email app, then send it to
             sales@nwsworkspace.com. If an email app isn’t configured, copy the
             text instead.

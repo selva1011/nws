@@ -4,13 +4,13 @@ Product/source context updated **2026-11-18**; the package-version snapshot belo
 
 ## Product and journeys
 
-NWS is a Chennai office-seating catalogue for individuals and teams. The user authorized a complete UI/UX and palette redesign on **2026-11-18**, preserving the NWS name, logo and original product images. [Design system](design-system.md) supersedes the old cyan/navy visual rules.
+NWS is a Chennai office-seating catalogue for individuals and teams. The user authorized a complete UI/UX redesign on **2026-11-18**; on **2026-11-19** the logo artwork was removed (text brand name), a short-lived dark theme was replaced by the current white showroom catalogue with charcoal and yellow, and the catalogue browsing UX was rebuilt. Original product images are preserved; framed display copies are used on screen. [Design system](design-system.md) supersedes the earlier light and cyan/navy visual rules.
 
 | Journey | Current implementation | Boundary |
 |---|---|---|
 | Discover seating | Home categories and interactive four-setting finder → collection | Category guidance, not a verified ergonomic assessment |
-| Choose a model | Search, sorting, URL categories, eight-per-page grid/table and up to three-model comparison | No prices, stock, saved account or checkout |
-| Inspect a chair | 32 detail routes, original photo zoom, known catalogue facts and related models | Extra photos/specifications need verified source material |
+| Choose a model | Grouped showroom grid (8 per row on wide desktop), URL category filter with Back/Forward restore, hover/focus detail reveal | No search, sort, comparison, prices, stock, saved account or checkout |
+| Inspect a chair | 32 detail routes, back-to-catalogue link, gallery zoom, verified catalogue facts/spec table and related models | Extra photos/specifications need verified source material |
 | Plan seating | Product/shortlist slugs → quote form → review draft → mailto/copy | Visitor must send the email; no automatic delivery/storage |
 | Contact | Contact form uses the same email-draft flow; phone/email links | Existing contact ownership needs business verification |
 

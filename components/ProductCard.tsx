@@ -3,50 +3,44 @@ import Link from "next/link";
 import { ViewTransition } from "react";
 import type { PRODUCTS } from "@/app/products/catalogue";
 
+// Catalogue tile. The whole tile is a link; the reveal line is always laid out
+// (opacity only) so hover/focus never moves neighbouring tiles.
 export default function ProductCard({
   product,
+  sizes = "(max-width: 479px) 46vw, (max-width: 1023px) 24vw, 180px",
 }: {
   product: (typeof PRODUCTS)[number];
+  sizes?: string;
 }) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="product-card group block"
+      id={`p-${product.slug}`}
+      data-product={product.slug}
+      className="product-tile"
     >
       <ViewTransition
         name={`product-${product.slug}`}
         share="product-image"
         default="none"
       >
-        <div className="product-stage relative aspect-[1/1.05] overflow-hidden rounded-xl">
+        <span className="tile-stage product-stage block">
           <Image
-            src={product.img}
-            alt={`${product.name} — ${product.sub}`}
+            src={product.display}
+            alt=""
             fill
-            sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 320px"
-            className="product-photo object-contain p-6"
+            sizes={sizes}
+            className="tile-photo"
           />
-          <span className="absolute left-4 top-4 text-[11px] text-[var(--color-neutral)]">
-            {product.cat}
-          </span>
-        </div>
-      </ViewTransition>
-      <div className="flex items-center justify-between gap-3 py-5">
-        <div>
-          <h3 className="text-[15px] font-semibold tracking-[-.02em]">
-            {product.name}
-          </h3>
-          <p className="mt-1 text-xs text-[var(--color-neutral)]">
-            {product.sub}
-          </p>
-        </div>
-        <span
-          className="product-arrow grid h-9 w-9 shrink-0 place-items-center rounded-full border border-[var(--color-border)] transition-colors"
-          aria-hidden="true"
-        >
-          ↗
         </span>
-      </div>
+      </ViewTransition>
+      <span className="tile-name">{product.title}</span>
+      <span className="tile-reveal">
+        <span>{product.highlight ?? "View details"}</span>
+        <span aria-hidden="true" className="tile-arrow">
+          →
+        </span>
+      </span>
     </Link>
   );
 }

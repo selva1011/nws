@@ -10,7 +10,7 @@ const spaces = [
     category: "Task",
     title: "A place to settle into your day.",
     copy: "Start with task seating for your desk. Compare medium-back and mesh styles, then ask about the fit and adjustments of your preferred model.",
-    image: "/products images/OSLO-MB.jpeg",
+    image: "/product-display/OSLO-MB.jpeg",
     secondary: "Executive",
   },
   {
@@ -18,7 +18,7 @@ const spaces = [
     category: "Task",
     title: "Different people. One considered space.",
     copy: "Build your shortlist around the desks your team uses. Share quantities and the way your space works when you enquire.",
-    image: "/products images/805-MESH.JPEG",
+    image: "/product-display/805-MESH.JPEG",
     secondary: "Executive",
   },
   {
@@ -26,7 +26,7 @@ const spaces = [
     category: "Visitor",
     title: "Make a good first seat.",
     copy: "Explore visitor chairs for meetings and reception, or sofas for a more relaxed waiting area. Confirm dimensions before planning your layout.",
-    image: "/products images/8024-D Visitor.jpeg",
+    image: "/product-display/8024-D Visitor.jpeg",
     secondary: "Sofa",
   },
   {
@@ -34,7 +34,7 @@ const spaces = [
     category: "Training",
     title: "Room for the next good idea.",
     copy: "Explore training chairs with and without writing pads. Start with the format that suits your room and ask about the practical details.",
-    image: "/products images/FLIPTRAININGCHAIR-WITHPADWITHOUTWHEEL-SIDE.JPEG",
+    image: "/product-display/FLIPTRAININGCHAIR-WITHPADWITHOUTWHEEL-SIDE.JPEG",
     secondary: "Visitor",
   },
 ];
@@ -45,7 +45,7 @@ export default function SeatFinder() {
   return (
     <section
       id="seat-finder"
-      className="scroll-mt-28 bg-[#EAE4F0] section-space"
+      className="scroll-mt-28 border-y border-[var(--color-border)] bg-[var(--color-surface)] section-space"
     >
       <div className="site-container grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
         <div>
@@ -63,7 +63,7 @@ export default function SeatFinder() {
             {spaces.map((item, index) => (
               <button
                 key={item.label}
-                className="filter-chip !border-[#B9ADBF]"
+                className="filter-chip"
                 type="button"
                 aria-pressed={index === selected}
                 onClick={() => setSelected(index)}
@@ -93,14 +93,14 @@ export default function SeatFinder() {
             </div>
           </div>
         </div>
-        <div className="relative min-h-[340px] overflow-hidden rounded-[120px_120px_16px_16px] bg-[#F7F5F8] sm:min-h-[430px]">
+        <div className="product-stage relative min-h-[340px] overflow-hidden rounded-[120px_120px_16px_16px] !bg-[var(--color-page)] sm:min-h-[430px]">
           <Image
             key={space.image}
             src={space.image}
             alt={`${space.category} seating example`}
             fill
             sizes="(max-width: 1023px) 90vw, 520px"
-            className="object-contain p-8 mix-blend-multiply"
+            className="object-contain p-8"
           />
         </div>
       </div>

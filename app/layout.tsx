@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -11,7 +11,9 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image" },
 };
 
+export const viewport: Viewport = { themeColor: "#ffffff", colorScheme: "light" };
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const organization = { "@context": "https://schema.org", "@type": "Organization", "@id": "https://nwsworkspace.com/#organization", name: "Node Workspace Solutions", alternateName: "NWS", url: "https://nwsworkspace.com", logo: "https://nwsworkspace.com/logo.png" };
+  const organization = { "@context": "https://schema.org", "@type": "Organization", "@id": "https://nwsworkspace.com/#organization", name: "Node Workspace Solutions", alternateName: "NWS", url: "https://nwsworkspace.com" };
   return <html lang="en"><body><a href="#main-content" className="skip-link">Skip to content</a><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization).replace(/</g, "\\u003c") }} /><Header /><main id="main-content" tabIndex={-1}>{children}</main><Footer /></body></html>;
 }

@@ -38,7 +38,7 @@ npm run start
 | Route | Purpose |
 |---|---|
 | `/` | Home, categories, guided seating finder and FAQs |
-| `/products` | Searchable/sortable catalogue and three-model comparison |
+| `/products` | Showroom catalogue grouped by category, with a URL category filter |
 | `/company` | NWS story and selection approach |
 | `/services` | Workspace services and process |
 | `/quote` | Product-aware enquiry draft and email handoff |
@@ -48,7 +48,7 @@ npm run start
 
 The root layout mounts the shared header and footer for every page. Product filtering uses `type` or `category` query parameters, for example `/products?type=Executive`.
 
-The 2026-11-18 redesign replaces the old visual system with plum/lavender surfaces and a seating-first journey. The NWS logo and all original product photos are retained. See the [design contract](docs/ai-development/design-system.md).
+The 2026-11-19 design is a white seating showroom: near-black type, charcoal selection and bright yellow primary actions, with chairs aligned on a common baseline using framed copies of the original photos. The brand name appears as text in place of the logo artwork. See the [design contract](docs/ai-development/design-system.md).
 
 ## Implementation and limitations
 

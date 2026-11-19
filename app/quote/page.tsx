@@ -25,7 +25,7 @@ export default async function Quote({
   );
   return (
     <section className="site-container section-space grid items-start gap-10 lg:grid-cols-[.85fr_1.15fr] lg:gap-20">
-      <div className="lg:sticky lg:top-28">
+      <div className="lg:sticky lg:top-24">
         <p className="eyebrow mb-5">Your next workspace starts here</p>
         <h1 className="display-title !text-[clamp(42px,5vw,66px)]">
           A better seat.
@@ -51,12 +51,12 @@ export default async function Quote({
             ],
           ].map(([title, copy], i) => (
             <li key={title} className="flex gap-4">
-              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--color-primary-soft)] text-xs">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--color-selected)] text-xs font-semibold text-[var(--color-on-selected)]">
                 {i + 1}
               </span>
               <div>
                 <h2 className="text-sm font-semibold">{title}</h2>
-                <p className="mt-1 text-sm leading-6 text-[var(--color-neutral)]">
+                <p className="mt-1 text-sm leading-6 text-[var(--color-text-muted)]">
                   {copy}
                 </p>
               </div>

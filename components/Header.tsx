@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -12,6 +11,10 @@ const links = [
   ["Contact", "/contact"],
 ];
 
+// Current page: semibold + deeper-gold underline. Hover: near-black underline.
+const current =
+  "font-semibold underline decoration-[var(--color-gold)] hover:decoration-[var(--color-gold)]";
+
 export default function Header() {
   const pathname = usePathname();
   const [menuPath, setMenuPath] = useState<string | null>(null);
@@ -19,7 +22,7 @@ export default function Header() {
   const trigger = useRef<HTMLButtonElement>(null);
   return (
     <header
-      className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[#FCFBFC]/95 backdrop-blur-lg"
+      className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-white/95 backdrop-blur-md"
       onKeyDown={(event) => {
         if (event.key === "Escape" && open) {
           setMenuPath(null);
@@ -27,21 +30,14 @@ export default function Header() {
         }
       }}
     >
-      <div className="site-container flex h-20 items-center justify-between gap-5">
+      <div className="site-container flex h-[var(--header-height)] items-center justify-between gap-5">
         <Link
           href="/"
-          aria-label="NWS home"
+          aria-label="Node Workspace Solutions home"
           onClick={() => setMenuPath(null)}
-          className="shrink-0"
+          className="shrink-0 py-2 text-[15px] font-bold tracking-[-0.02em] decoration-2 underline-offset-8 hover:underline sm:text-base"
         >
-          <Image
-            src="/logo.png"
-            alt="Node Workspace Solutions"
-            width={1390}
-            height={420}
-            preload
-            className="h-auto w-[132px] sm:w-[150px]"
-          />
+          Node Workspace Solutions
         </Link>
         <nav
           aria-label="Main navigation"
@@ -52,14 +48,17 @@ export default function Header() {
               key={href}
               href={href}
               aria-current={pathname.startsWith(href) ? "page" : undefined}
-              className={`py-3 text-[13px] font-medium underline-offset-8 hover:underline ${pathname.startsWith(href) ? "underline" : ""}`}
+              className={`py-2 text-[13px] decoration-2 underline-offset-8 hover:underline ${pathname.startsWith(href) ? current : "font-medium"}`}
             >
               {label}
             </Link>
           ))}
         </nav>
-        <Link href="/quote" className="button-primary hidden sm:inline-flex">
-          Plan your seating <span aria-hidden="true">↗</span>
+        <Link
+          href="/quote"
+          className="button-primary hidden !min-h-10 !py-2 sm:ml-auto sm:inline-flex lg:ml-0"
+        >
+          Plan your seating <span aria-hidden="true">→</span>
         </Link>
         <button
           ref={trigger}
@@ -68,7 +67,7 @@ export default function Header() {
           aria-expanded={open}
           aria-controls="mobile-navigation"
           onClick={() => setMenuPath(open ? null : pathname)}
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-[var(--color-border)] lg:hidden"
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-[var(--color-control)] transition-colors hover:border-[var(--color-text)] aria-expanded:border-[var(--color-selected)] aria-expanded:bg-[var(--color-selected)] aria-expanded:text-[var(--color-on-selected)] lg:hidden"
         >
           <span aria-hidden="true" className="text-xl">
             {open ? "×" : "☰"}
@@ -79,7 +78,7 @@ export default function Header() {
         <nav
           id="mobile-navigation"
           aria-label="Mobile navigation"
-          className="site-container border-t border-[var(--color-border)] py-5 lg:hidden"
+          className="site-container border-t border-[var(--color-border)] py-4 lg:hidden"
         >
           {links.map(([label, href]) => (
             <Link
@@ -87,10 +86,12 @@ export default function Header() {
               href={href}
               onClick={() => setMenuPath(null)}
               aria-current={pathname.startsWith(href) ? "page" : undefined}
-              className="flex items-center justify-between border-b border-[var(--color-border)] py-4 text-lg"
+              className={`flex items-center justify-between border-b border-[var(--color-border)] py-4 text-lg decoration-2 underline-offset-8 hover:underline ${pathname.startsWith(href) ? current : ""}`}
             >
               {label}
-              <span aria-hidden="true">↗</span>
+              <span aria-hidden="true" className="text-[var(--color-gold)]">
+                →
+              </span>
             </Link>
           ))}
           <Link

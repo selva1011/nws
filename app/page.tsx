@@ -8,7 +8,7 @@ import { PRODUCTS } from "./products/catalogue";
 export const metadata: Metadata = {
   title: "Office Chairs & Workspace Furniture in Chennai | NWS",
   description:
-    "Find a seat for your kind of work. Explore NWS office chairs, compare seating and plan your workspace with Node Workspace Solutions in Chennai.",
+    "Find a seat for your kind of work. Explore NWS office chairs by category and plan your workspace with Node Workspace Solutions in Chennai.",
   alternates: { canonical: "/" },
   openGraph: {
     title: "Your workday. Better seated. | NWS",
@@ -61,36 +61,39 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="relative h-[350px] overflow-hidden rounded-2xl sm:h-[430px] lg:h-[490px]">
-          <Image
-            src="/images/nws-hero.png"
-            alt="Bright workspace inspiration with desk seating, wood finishes and natural light"
-            fill
-            preload
-            sizes="(max-width: 1370px) 100vw, 1320px"
-            className="object-cover object-[65%_center]"
-          />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-4 rounded-xl bg-white/95 p-4 backdrop-blur-sm sm:bottom-6 sm:left-auto sm:right-6 sm:w-[310px]">
+        {/* Crop keeps both chairs whole; the card sits over the empty floor. */}
+        <div className="relative">
+          <div className="relative h-[360px] overflow-hidden rounded-2xl sm:h-[460px] lg:h-[560px]">
+            <Image
+              src="/images/nws-hero.png"
+              alt="Bright workspace inspiration with desk seating, wood finishes and natural light"
+              fill
+              preload
+              sizes="(max-width: 1370px) 100vw, 1320px"
+              className="object-cover object-[82%_75%]"
+            />
+          </div>
+          <div className="mt-3 flex items-center justify-between gap-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]/95 p-4 backdrop-blur-sm sm:max-w-sm lg:absolute lg:bottom-6 lg:left-6 lg:mt-0 lg:w-[320px]">
             <div>
-              <p className="text-xs text-[var(--color-neutral)]">
+              <p className="text-xs text-[var(--color-text-muted)]">
                 Consider your whole workspace
               </p>
               <Link
                 href="/services"
-                className="mt-1 block text-sm font-semibold"
+                className="mt-1 block text-sm font-semibold underline-offset-4 decoration-[var(--color-gold)] decoration-2 hover:underline"
               >
                 From a seat to a space <span aria-hidden="true">↗</span>
               </Link>
             </div>
             <span
               aria-hidden="true"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[#EAE4F0]"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--color-accent)] text-[var(--color-on-accent)]"
             >
               ↗
             </span>
           </div>
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border)] py-6 text-xs text-[var(--color-neutral)]">
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-[var(--color-border)] py-6 text-xs text-[var(--color-text-muted)]">
           <span>32 seating models to explore</span>
           <span>For individuals & teams</span>
           <span>Product advice from our Chennai team</span>
@@ -112,22 +115,24 @@ export default function Home() {
             >
               <div className="product-stage relative aspect-[.9] overflow-hidden rounded-xl">
                 <Image
-                  src={`/products images/${category.image}`}
+                  src={`/product-display/${category.image}`}
                   alt={`${category.name} seating`}
                   fill
                   sizes="(max-width: 639px) 44vw, (max-width: 1023px) 30vw, 250px"
-                  className="object-contain p-3 transition-transform duration-200 group-hover:scale-105 group-focus-visible:scale-105"
+                  className="object-contain object-bottom px-[12%] pb-[8%] pt-[12%] transition-transform duration-200 group-hover:-translate-y-[3px] group-focus-visible:-translate-y-[3px] motion-reduce:!translate-y-0"
                 />
               </div>
               <div className="mt-4 flex items-center justify-between gap-2">
-                <h3 className="text-base font-semibold">
+                <h3 className="text-base font-semibold decoration-[var(--color-gold)] decoration-2 underline-offset-4 group-hover:underline">
                   {category.name === "Sofa"
                     ? "Lounge & sofas"
                     : `${category.name} chairs`}
                 </h3>
-                <span aria-hidden="true">↗</span>
+                <span aria-hidden="true" className="text-[var(--color-gold)]">
+                  ↗
+                </span>
               </div>
-              <p className="mt-1 text-xs text-[var(--color-neutral)]">
+              <p className="mt-1 text-xs text-[var(--color-text-muted)]">
                 {category.label}
               </p>
             </Link>
@@ -147,12 +152,16 @@ export default function Home() {
         </div>
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {featured.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+            <ProductCard
+              key={product.slug}
+              product={product}
+              sizes="(max-width: 639px) 90vw, (max-width: 1023px) 45vw, 320px"
+            />
           ))}
         </div>
       </section>
       <section className="site-container pb-16 md:pb-24">
-        <div className="grid overflow-hidden rounded-2xl bg-[#ECE7E2] md:grid-cols-2">
+        <div className="grid overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] md:grid-cols-2">
           <div className="relative min-h-[310px]">
             <Image
               src="/images/nws-hero.png"
@@ -194,7 +203,7 @@ export default function Home() {
           {[
             [
               "Where should I start?",
-              "Choose the setting first: a desk, a meeting space, a reception area or a training room. Use the seating finder above, then compare models in the collection.",
+              "Choose the setting first: a desk, a meeting space, a reception area or a training room. Use the seating finder above, then browse models by category in the collection.",
             ],
             [
               "Can I enquire about seating for a whole team?",

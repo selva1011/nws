@@ -35,7 +35,7 @@ export default function AboutPage() {
       </div>
       <div className="product-stage relative aspect-square overflow-hidden rounded-[140px_140px_16px_16px]">
         <Image
-          src="/products images/BUTTERFLY-HB.jpeg"
+          src="/product-display/BUTTERFLY-HB.jpeg"
           alt="NWS Butterfly high back chair"
           fill
           preload

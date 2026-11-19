@@ -51,7 +51,7 @@ const services = [
 export default function Services() {
   return (
     <>
-      <section className="bg-[#EAE4F0]">
+      <section className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="site-container grid items-center gap-10 py-12 md:grid-cols-[1.1fr_1fr] md:py-16">
           <div>
             <p className="eyebrow mb-5">Workspace services</p>
@@ -81,7 +81,7 @@ export default function Services() {
         </div>
       </section>
       <section className="site-container section-space grid items-start gap-10 md:grid-cols-[.7fr_1.3fr] md:gap-20">
-        <div className="md:sticky md:top-28">
+        <div className="md:sticky md:top-24">
           <p className="eyebrow mb-4">How we can help</p>
           <h2 className="section-title">
             From first ideas
@@ -111,7 +111,7 @@ export default function Services() {
           ))}
         </div>
       </section>
-      <section className="bg-[var(--color-light-base)] section-space">
+      <section className="border-y border-[var(--color-border)] bg-[var(--color-surface)] section-space">
         <div className="site-container">
           <h2 className="section-title mb-10">A simple way to get started.</h2>
           <ol className="grid gap-9 md:grid-cols-3">
@@ -130,7 +130,7 @@ export default function Services() {
               ],
             ].map(([title, copy], i) => (
               <li key={title}>
-                <span className="mb-5 grid h-10 w-10 place-items-center rounded-full border border-[#BDB2C3] text-sm">
+                <span className="mb-5 grid h-10 w-10 place-items-center rounded-full bg-[var(--color-selected)] text-sm font-semibold text-[var(--color-on-selected)]">
                   {i + 1}
                 </span>
                 <h3 className="text-xl font-medium">{title}</h3>

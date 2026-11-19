@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
+import BackToCatalogue from "./BackToCatalogue";
 import ProductGallery from "./ProductGallery";
-import { PRODUCTS } from "../catalogue";
+import { PRODUCTS, SPEC_FIELDS, categoryTitle } from "../catalogue";
 
 export const dynamicParams = false;
 export function generateStaticParams() {
@@ -94,6 +95,16 @@ export default async function ProductDetail({
       },
     ],
   };
+  const specRows: [string, string][] = [
+    ["Model", product.name],
+    ["Category", categoryTitle(product.cat)],
+    ["Catalogue style", product.sub],
+    ...SPEC_FIELDS.flatMap((field): [string, string][] =>
+      product.specs[field] ? [[field, product.specs[field]]] : [],
+    ),
+  ];
+  const missingSpecs = SPEC_FIELDS.filter((field) => !product.specs[field]);
+  const noun = product.cat === "Sofa" ? "sofa" : "chair";
   return (
     <>
       <script
@@ -102,179 +113,151 @@ export default async function ProductDetail({
           __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c"),
         }}
       />
-      <div className="bg-[#FCFBFC]">
-        <div className="mx-auto max-w-[1368px] px-6 pb-16 pt-7 md:pt-10">
+      <div className="site-container pb-20 pt-5 md:pb-28 md:pt-8">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-2">
+          <BackToCatalogue slug={product.slug} category={product.cat} />
           <nav
             aria-label="Breadcrumb"
-            className="mb-8 flex flex-wrap gap-2 text-xs text-[var(--color-neutral)]"
+            className="flex flex-wrap gap-2 text-xs text-[var(--color-text-muted)]"
           >
             <Link href="/" className="underline-offset-4 hover:underline">
               Home
             </Link>
             <span aria-hidden="true">/</span>
-            <Link
-              href="/products"
-              className="underline-offset-4 hover:underline"
-            >
+            <Link href="/products" className="underline-offset-4 hover:underline">
               Products
             </Link>
             <span aria-hidden="true">/</span>
-            <span aria-current="page" className="text-[var(--color-secondary)]">
-              {product.name}
+            <span aria-current="page" className="text-[var(--color-text)]">
+              {product.title}
             </span>
           </nav>
-          <div className="grid items-start gap-10 md:grid-cols-2 lg:gap-16">
-            <ProductGallery
-              slug={product.slug}
-              name={product.name}
-              images={product.images}
-            />
-            <div className="py-3 md:sticky md:top-28 lg:py-8">
-              <Link
-                href={`/products?type=${product.cat}`}
-                className="inline-flex rounded-full border border-[var(--color-border)] px-4 py-2 text-xs font-semibold text-[var(--color-neutral)] transition-colors duration-150 hover:border-[#493653] hover:bg-[#EAE4F0] hover:text-[#493653]"
-              >
-                {product.cat} collection{" "}
-                <span className="ml-3" aria-hidden="true">
-                  ↗
-                </span>
-              </Link>
-              <h1 className="mt-6 text-[clamp(32px,4vw,52px)] font-medium leading-[1.08] tracking-[-0.045em]">
-                {product.name}
-              </h1>
-              <p className="mt-3 text-xl text-[var(--color-neutral)]">
-                {product.sub}
-              </p>
-              <p className="mt-6 text-base leading-7 text-[var(--color-neutral)]">
-                {product.description}
-              </p>
-              <dl className="mt-7 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-border)] text-sm">
-                <div className="bg-[var(--color-light-base)] p-4">
-                  <dt className="text-xs uppercase tracking-wider text-[var(--color-neutral)]">
-                    Category
-                  </dt>
-                  <dd className="mt-1 font-semibold text-[var(--color-secondary)]">
-                    {product.cat}
-                  </dd>
-                </div>
-                <div className="bg-[var(--color-light-base)] p-4">
-                  <dt className="text-xs uppercase tracking-wider text-[var(--color-neutral)]">
-                    Style
-                  </dt>
-                  <dd className="mt-1 font-semibold text-[var(--color-secondary)]">
-                    {product.sub}
-                  </dd>
-                </div>
-              </dl>
-              <div className="my-8 border-t border-[var(--color-border)] pt-7">
-                <p className="text-sm font-bold">Let’s find the right fit.</p>
-                <p className="mt-2 text-sm leading-6 text-[var(--color-neutral)]">
-                  Discuss this model, your seating quantity and workspace
-                  requirements with our team.
-                </p>
-                <div className="mt-5 flex flex-wrap gap-3">
-                  <Link
-                    href={`/quote?models=${product.slug}`}
-                    className="button-primary"
-                  >
-                    Enquire about this{" "}
-                    {product.cat === "Sofa" ? "sofa" : "chair"}{" "}
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                  <a
-                    href="tel:+919876543210"
-                    className="button-secondary"
-                    aria-label={`Call NWS about ${product.name}`}
-                  >
-                    Call the team
-                  </a>
-                </div>
-                <p className="mt-4 text-xs text-[var(--color-neutral)]">
-                  +91 98765 43210 · Chennai, Tamil Nadu
-                </p>
-              </div>
-              <p className="text-xs leading-6 text-[var(--color-neutral)]">
-                Pricing, dimensions, materials, colour options and availability
-                are confirmed on enquiry.
-              </p>
-            </div>
-          </div>
-          <div className="mt-16 md:mt-24">
-            <section
-              id="specifications"
-              className="grid scroll-mt-28 gap-8 border-t border-[var(--color-border)] pt-10 md:grid-cols-[1fr_1.5fr]"
-            >
-              <div>
-                <p className="eyebrow">A closer look</p>
-                <h2 className="mt-4 text-3xl font-semibold tracking-tight">
-                  The details, clearly.
-                </h2>
-                <p className="mt-4 max-w-sm text-sm leading-7 text-[var(--color-neutral)]">
-                  Use these catalogue details to identify your model. For
-                  measurements and configuration options, speak with our team
-                  before ordering.
-                </p>
-              </div>
-              <div className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-white">
-                <table className="w-full text-left text-sm">
-                  <caption className="sr-only">
-                    {product.name} product specifications
-                  </caption>
-                  <tbody>
-                    {[
-                      ["Model", product.name],
-                      ["Category", product.cat],
-                      ["Catalogue style", product.sub],
-                      ["Dimensions & materials", "Confirm with our team"],
-                      ["Colours & configuration", "Confirm with our team"],
-                      ["Price & availability", "Contact us for details"],
-                    ].map(([label, value]) => (
-                      <tr
-                        key={label}
-                        className="border-b border-[var(--color-border)] last:border-0"
-                      >
-                        <th
-                          scope="row"
-                          className="w-[42%] bg-[var(--color-light-base)] px-4 py-5 align-top font-medium text-[var(--color-neutral)] sm:px-6"
-                        >
-                          {label}
-                        </th>
-                        <td className="px-4 py-5 align-top font-medium text-[var(--color-secondary)] sm:px-6">
-                          {value}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </section>
-          </div>
-          {related.length > 0 && (
-            <div className="mt-20">
-              <section>
-                <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-                  <div>
-                    <p className="eyebrow">Keep exploring</p>
-                    <h2 className="mt-3 text-3xl font-semibold tracking-tight">
-                      More in {product.cat.toLowerCase()} seating.
-                    </h2>
-                  </div>
-                  <Link
-                    href={`/products?type=${product.cat}`}
-                    className="text-sm font-bold underline underline-offset-4"
-                  >
-                    View collection ↗
-                  </Link>
-                </div>
-                <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                  {related.map((item) => (
-                    <ProductCard key={item.slug} product={item} />
-                  ))}
-                </div>
-              </section>
-            </div>
-          )}
         </div>
+        <div className="grid items-start gap-7 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14">
+          <ProductGallery
+            slug={product.slug}
+            name={product.title}
+            images={product.images}
+          />
+          <div className="md:sticky md:top-24 md:py-2">
+            <Link
+              href={`/products?type=${product.cat}`}
+              className="text-[13px] font-semibold text-[var(--color-text-muted)] underline decoration-[var(--color-gold)] decoration-2 underline-offset-4 hover:text-[var(--color-text)]"
+            >
+              {categoryTitle(product.cat)}
+            </Link>
+            <h1 className="mt-2 text-[clamp(30px,3.6vw,48px)] font-semibold leading-[1.06] tracking-[-0.04em]">
+              {product.name}
+            </h1>
+            <p className="mt-1 text-lg text-[var(--color-text-muted)]">
+              {product.sub}
+            </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href={`/quote?models=${product.slug}`}
+                className="button-primary"
+              >
+                Enquire about this {noun} <span aria-hidden="true">→</span>
+              </Link>
+              <a
+                href="tel:+919876543210"
+                className="button-secondary"
+                aria-label={`Call +91 98765 43210 about ${product.title}`}
+              >
+                Call +91 98765 43210
+              </a>
+            </div>
+            <dl className="mt-7 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-border)] text-sm">
+              {[
+                ["Category", categoryTitle(product.cat)],
+                ["Catalogue style", product.sub],
+              ].map(([label, value]) => (
+                <div key={label} className="bg-[var(--color-page)] p-4">
+                  <dt className="text-xs text-[var(--color-text-muted)]">{label}</dt>
+                  <dd className="mt-1 font-semibold">{value}</dd>
+                </div>
+              ))}
+            </dl>
+            <p className="mt-6 text-[15px] leading-7 text-[var(--color-text-muted)]">
+              {product.description}
+            </p>
+          </div>
+        </div>
+        <section
+          id="specifications"
+          aria-labelledby="specifications-heading"
+          className="mt-16 grid gap-6 border-t border-[var(--color-border)] pt-10 md:mt-20 md:grid-cols-[1fr_1.6fr] md:gap-12"
+        >
+          <div>
+            <h2
+              id="specifications-heading"
+              className="text-2xl font-semibold tracking-[-0.03em]"
+            >
+              Specifications
+            </h2>
+            <p className="mt-3 max-w-sm text-sm leading-6 text-[var(--color-text-muted)]">
+              Verified catalogue details for this model.
+            </p>
+          </div>
+          <div>
+            <table className="w-full border-collapse text-left text-sm">
+              <caption className="sr-only">
+                {product.title} specifications
+              </caption>
+              <tbody>
+                {specRows.map(([label, value]) => (
+                  <tr
+                    key={label}
+                    className="border-b border-[var(--color-border)] first:border-t"
+                  >
+                    <th
+                      scope="row"
+                      className="w-[40%] py-4 pr-4 align-top font-medium text-[var(--color-text-muted)]"
+                    >
+                      {label}
+                    </th>
+                    <td className="py-4 align-top font-semibold">{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {missingSpecs.length > 0 && (
+              <p className="mt-4 text-sm leading-6 text-[var(--color-text-muted)]">
+                {missingSpecs.join(", ").replace(/, ([^,]*)$/, " and $1")} are
+                not yet listed for this model.{" "}
+                <Link
+                  href={`/quote?models=${product.slug}`}
+                  className="font-semibold text-[var(--color-text)] underline decoration-[var(--color-gold)] decoration-2 underline-offset-4"
+                >
+                  Ask our team
+                </Link>{" "}
+                to confirm them, along with pricing and availability.
+              </p>
+            )}
+          </div>
+        </section>
+        {related.length > 0 && (
+          <section aria-labelledby="related-heading" className="mt-16 md:mt-20">
+            <div className="mb-5 flex flex-wrap items-baseline justify-between gap-4 border-b border-[var(--color-border)] pb-3">
+              <h2
+                id="related-heading"
+                className="text-xl font-medium tracking-[-0.02em]"
+              >
+                More {categoryTitle(product.cat).toLowerCase()}
+              </h2>
+              <Link href={`/products?type=${product.cat}`} className="text-link !py-0 text-[13px]">
+                View all <span aria-hidden="true">→</span>
+              </Link>
+            </div>
+            <ul className="catalogue-grid">
+              {related.map((item) => (
+                <li key={item.slug}>
+                  <ProductCard product={item} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </div>
     </>
   );

@@ -46,7 +46,7 @@ export default function Company() {
           />
         </div>
       </section>
-      <section className="bg-[#EAE4F0] section-space">
+      <section className="border-y border-[var(--color-border)] bg-[var(--color-surface)] section-space">
         <div className="site-container grid gap-9 md:grid-cols-2 md:gap-20">
           <h2 className="section-title max-w-lg">
             A thoughtful space begins with the people in it.
