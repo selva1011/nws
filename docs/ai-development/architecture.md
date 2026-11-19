@@ -1,50 +1,38 @@
 # Architecture
 
-Verified 2026-11-07 from source. [Route inventory](routes-and-features.md) owns route details; [Data flow](data-flow.md) owns state and request contracts.
-
-## Boundaries and dependency direction
+Source verified **2026-11-18**. One Next.js App Router application with a shared root shell, local catalogue and focused client interactions. [Routes](routes-and-features.md) owns route details; [Data flow](data-flow.md) owns state.
 
 ```mermaid
 flowchart TD
-  Layout[app/layout.tsx · Server] --> CSS[app/globals.css]
-  Layout --> Header[Header · Client]
-  Layout --> Pages[Matched page]
-  Layout --> Footer[Footer · Server]
-  Pages --> Contact[contact/page.tsx · Server]
-  Contact --> Form[ContactForm · Client]
-  Form -->|POST JSON| API[app/api/contact/route.ts]
-  API --> Log[Server console only]
-  Pages --> Products[products/page.tsx · Server]
-  Products --> Suspense[Suspense → CatalogueBrowser · Client]
-  Pages --> Detail[products/slug/page.tsx · Server]
-  Detail --> Gallery[ProductGallery · Client]
+  Layout[Root layout / Server] --> Header[Header / Client]
+  Layout --> Pages[Page shells / Server]
+  Layout --> Footer[Footer / Server]
+  Pages --> Home[Home]
+  Home --> Finder[SeatFinder / Client]
+  Pages --> Products[Products / Suspense]
+  Products --> Catalogue[CatalogueBrowser / Client]
+  Pages --> Detail[Static product details]
+  Detail --> Gallery[ProductGallery / Client]
+  Pages --> Enquiry[Quote and Contact]
+  Enquiry --> Form[ContactForm / Client]
+  Form --> Draft[Local draft / mailto or clipboard]
 ```
 
-This is a single deployable public marketing application. Layout/page imports point to shared components; ProductCard imports only the catalogue type; Footer imports ScrollReveal. App-local import inspection found no cycles; this is a small graph review, not a formal dependency analyzer run. No package workspace, backend service, service layer, provider, or authentication boundary exists.
+## Rendering boundaries
 
-The root layout owns HTML language, body, CSS, site metadata and Header/Footer. It owns the single `main` landmark and skip link. Pages supply sections within it. Changing layout or CSS affects every page. Catalogue data is shared locally by listing, detail, home and sitemap; other content stays with its owner; do not infer a historical rationale for this arrangement.
+- Root layout owns global CSS, the single main landmark, skip link, metadata, Organization JSON-LD, Header and Footer. Pages must not remount the shell.
+- All page entry files are Server Components. Home uses SeatFinder; products uses query-aware CatalogueBrowser inside Suspense; detail uses ProductGallery; contact/quote use ContactForm.
+- `/quote` reads awaited searchParams and renders on demand to resolve selected catalogue slugs. Other fixed pages prerender; all 32 product routes use generateStaticParams with dynamicParams=false.
+- ProductCard is server-safe and also imported into the catalogue client bundle. No providers, global stores, server actions, CMS or remote content fetches exist.
+- ScrollReveal, ImageCarousel, PageTransition and Experience remain unmounted. No scroll-reveal wrappers run in the redesigned pages.
+- The legacy POST contact endpoint is independent of the current UI. It logs only; it is not a delivery service.
 
-## Rendering
+## Styles and infrastructure
 
-- Server components: root layout, Footer, home, catalogue shell, product details, contact and about.
-- Client entries: CatalogueBrowser, ProductGallery, ScrollReveal, company, services, quote, Header, ContactForm; also three unused components listed in the [registry](component-registry.md).
-- A client directive does not mean an entire route is request-rendered: the successful alternate Webpack build classifies all seven pages as static, and the POST endpoint as dynamic.
-- Products wraps `CatalogueBrowser` in Suspense because it calls `useSearchParams`. Its all-product link fallback is prerendered; catalogue content is client-rendered within that boundary. Preserve this distinction when evaluating indexing/loading.
-- No explicit ISR interval, cache tags, revalidation calls, request-time page data, streaming data fetches, server actions, or `cacheComponents` configuration is present. `next.config.ts` contains an empty options object.
-- Product `[slug]` pages use generateStaticParams and dynamicParams=false. No nested layouts, route groups, middleware/proxy, route-specific loading/error/not-found files, or parallel routes. Default framework handling applies; it is not a bespoke recovery UX.
+Tailwind v4 through PostCSS plus shared global CSS utilities/tokens. No new package, font download, CSS framework, icon library or configuration was introduced. Runtime dependencies remain Next/React/React DOM. TypeScript is strict; direct imports use `@/` or relative paths.
 
-Framework evidence: installed guides under `node_modules/next/dist/docs/`: `01-app/01-getting-started/05-server-and-client-components.md`, `01-app/03-api-reference/04-functions/use-search-params.md`, and `01-app/03-api-reference/08-turbopack.md`. Read relevant local guides before version-specific code changes.
+All mounted images use next/image and local public assets. No new remote image configuration is required. System typography avoids a font-network dependency. Content ownership stays in page-local markup and app/products/catalogue.ts.
 
-## Data, styles, infrastructure
+There is no app auth, database, persistent draft store, automatic email integration, analytics or tracked deployment/CI configuration. Vercel remains the stated target; hosting was not changed. No cache tags, ISR settings or speculative next.config options were added.
 
-Local arrays/JSX are the content source. URL query parameters and local React state drive the catalogue. The sole application `fetch` submits the contact form; no response is used to populate page content. Quote state never crosses a server boundary. [Data flow](data-flow.md) describes both precisely.
-
-Global CSS imports Tailwind v4; PostCSS loads `@tailwindcss/postcss`. Styles mix utility classes and inline values. No CSS Modules, CSS-in-JS dependency, Tailwind config file, theme provider, or icon library is present. See [Design system](design-system.md).
-
-TypeScript is strict, uses bundler resolution and root alias `@/*`. ESLint uses Next core-web-vitals/typescript presets. No environment variable reads are present in app/components. Vercel is a stated project target, not verified hosted infrastructure. No tracked CI workflow, deployment manifest, persistence, email integration, analytics, or operational monitoring is implemented.
-
-## Architectural assessment
-
-Strengths: shallow import graph, few runtime dependencies, explicit content ownership, server shell with isolated contact interactivity, and a query-aware catalogue Suspense boundary. Risks: broad client page boundaries for modest interactivity, repeated styles/content, unverified form success semantics, and no automated behavioral tests. Evidence, severity, confidence and next actions live only in [Known issues](known-issues.md); improvement proposals are not implemented decisions.
-
-The UI refresh uses native IntersectionObserver/Web Animations, with no added dependencies. Motion components wrap server-rendered children rather than making the entire home/detail page a client boundary.
+The request-driven quote boundary is intentional: selected product names are validated on the server before passing to the client form. Personal enquiry fields stay local until the visitor explicitly uses an email/clipboard action. See [Security](security.md) and [decision log](decision-log.md).

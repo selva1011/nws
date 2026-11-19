@@ -1,141 +1,145 @@
-"use client";
-import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
-const SERVICES = [
+export const metadata: Metadata = {
+  title: "Workspace Services | NWS Chennai",
+  description:
+    "Discuss space planning, furniture sourcing, installation and workspace upgrades with Node Workspace Solutions.",
+  alternates: { canonical: "/services" },
+};
+
+const services = [
   {
-    icon: "📐",
-    title: "Space Planning & Design",
-    desc: "Our in-house design team creates optimized floor plans and 3D visualizations tailored to your workspace dimensions, team size, and workflow — before a single chair is ordered.",
-    features: ["AutoCAD floor plans", "3D walkthroughs", "Ergonomic zoning", "Lighting & acoustics advisory"],
+    title: "Space planning & design",
+    text: "Bring your room dimensions, team size and the way you work. Discuss a furniture layout that makes sense for your space.",
+    details:
+      "Useful to share: a floor plan, photographs, seating quantities and the types of work your space supports.",
   },
   {
-    icon: "🪑",
-    title: "Product Supply & Sourcing",
-    desc: "We supply the full spectrum — from task chairs and executive seating to conference tables and reception counters — all ISO-certified and available across 40+ designs.",
-    features: ["40+ furniture designs", "ISO 9001 certified stock", "Custom upholstery options", "Bulk order discounts"],
+    title: "Product supply & sourcing",
+    text: "Build a shortlist across task, executive, visitor, training and lounge seating. Discuss suitable options for individual desks or a wider workspace.",
+    details:
+      "Ask about: model specifications, material and colour options, quantities, price and current availability.",
   },
   {
-    icon: "🔧",
-    title: "Professional Installation",
-    desc: "Our trained install crews handle delivery, assembly, and positioning across any floor area — with zero disruption to your business operations.",
-    features: ["Pan-India install network", "Weekend installations", "Zero-damage guarantee", "Same-day completion"],
+    title: "Delivery & installation",
+    text: "Plan how your furniture will get from a shortlist to its place in the office. Discuss delivery access and assembly requirements before ordering.",
+    details:
+      "Useful to share: location, floor level, lift access, working hours and your preferred installation window. Confirm coverage, timing and charges with the team.",
   },
   {
-    icon: "🔄",
-    title: "After-Sales & Warranty",
-    desc: "Every product ships with a manufacturer warranty backed by our in-house service team. We offer scheduled maintenance contracts for large installations.",
-    features: ["3-year product warranty", "On-site service visits", "Spare parts stocking", "Annual maintenance contracts"],
+    title: "After-sales support",
+    text: "Have a question about an existing chair or a larger seating installation? Discuss the model and the support you need.",
+    details:
+      "Useful to share: product name, purchase information and clear photographs of the issue. Warranty terms and service availability need confirmation for your product.",
   },
   {
-    icon: "🏢",
-    title: "Complete Turnkey Fitouts",
-    desc: "From bare concrete to move-in ready — we manage civil work coordination, furniture, lighting fixtures, and AV integration for your full office fitout project.",
-    features: ["Project management", "Civil coordination", "AV & tech integration", "Handover documentation"],
+    title: "Workspace fitouts",
+    text: "Bring the bigger picture together. Discuss furniture requirements as part of a new office or a wider workspace project.",
+    details:
+      "Useful to share: the project scope, plans, target timeline and any partners already involved. Agree the scope of work before proceeding.",
   },
   {
-    icon: "♻️",
-    title: "Refurbishment & Trade-in",
-    desc: "Upgrading your fleet? We assess your existing furniture, offer fair trade-in valuations, and responsibly recycle or refurbish old pieces — minimizing landfill waste.",
-    features: ["Free site assessment", "Fair trade-in pricing", "Eco-responsible disposal", "Phased upgrade planning"],
+    title: "Refurbishment & upgrades",
+    text: "Make a plan for the space you already have. Discuss what you want to keep, what needs attention and what you would like to change.",
+    details:
+      "Useful to share: an inventory, photographs, condition of existing furniture and your priorities. Repair, refurbishment and replacement options are assessed on enquiry.",
   },
 ];
 
 export default function Services() {
-  const router = useRouter();
-
   return (
-    <div style={{ background: "#ffffff" }}>
-      {/* Header */}
-      <div style={{ background: "#F8FAFC", borderBottom: "1px solid #E2E8F0", padding: "64px 24px 56px" }}>
-        <div className="mx-auto text-center" style={{ maxWidth: 640 }}>
-          <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-3" style={{ color: "#00A7C4" }}>What We Do</span>
-          <h1 className="font-extrabold" style={{ fontSize: "clamp(28px, 4vw, 48px)", color: "#0F172A", letterSpacing: "-0.04em", lineHeight: 1.1 }}>
-            End-to-End Workspace Services
-          </h1>
-          <p className="mt-4 text-base" style={{ color: "#64748B", lineHeight: "28px" }}>
-            From first consultation to long-term support — we handle every stage of your workspace transformation.
+    <>
+      <section className="bg-[#EAE4F0]">
+        <div className="site-container grid items-center gap-10 py-12 md:grid-cols-[1.1fr_1fr] md:py-16">
+          <div>
+            <p className="eyebrow mb-5">Workspace services</p>
+            <h1 className="display-title !text-[clamp(44px,5.5vw,74px)]">
+              The whole space.
+              <br />
+              Considered.
+            </h1>
+            <p className="copy mt-7">
+              Seating is a good beginning. Bring us your plans for the rest,
+              from a fresh layout to a workspace ready for its next chapter.
+            </p>
+            <Link className="button-primary mt-7" href="/quote">
+              Discuss your workspace
+            </Link>
+          </div>
+          <div className="relative h-[320px] overflow-hidden rounded-[100px_12px_12px_12px] md:h-[400px]">
+            <Image
+              src="/images/nws-hero.png"
+              alt="Workspace inspiration with coordinated seating and desks"
+              fill
+              preload
+              sizes="(max-width: 767px) 90vw, 600px"
+              className="object-cover object-right"
+            />
+          </div>
+        </div>
+      </section>
+      <section className="site-container section-space grid items-start gap-10 md:grid-cols-[.7fr_1.3fr] md:gap-20">
+        <div className="md:sticky md:top-28">
+          <p className="eyebrow mb-4">How we can help</p>
+          <h2 className="section-title">
+            From first ideas
+            <br />
+            to next steps.
+          </h2>
+          <p className="copy mt-6">
+            Explore the areas you’d like to discuss. Each project starts by
+            confirming the scope, availability and practical details with our
+            team.
           </p>
         </div>
-      </div>
-
-      {/* Services grid */}
-      <div className="mx-auto" style={{ maxWidth: 1280, padding: "72px 24px 80px" }}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {SERVICES.map((s) => (
-            <div
-              key={s.title}
-              className="rounded-2xl transition-all duration-200"
-              style={{ border: "1px solid #E2E8F0", padding: "32px", background: "#ffffff" }}
-              onMouseEnter={e => e.currentTarget.style.boxShadow = "0 12px 28px -6px rgba(0,167,196,0.12)"}
-              onMouseLeave={e => e.currentTarget.style.boxShadow = "none"}
+        <div>
+          {services.map((service, i) => (
+            <details
+              key={service.title}
+              className="faq-row first:border-t first:border-[var(--color-border)]"
+              open={i === 0}
             >
-              <div className="flex items-center justify-center rounded-2xl mb-5 text-2xl" style={{ width: 56, height: 56, background: "#E6F7FA" }}>
-                {s.icon}
-              </div>
-              <h3 className="font-bold mb-3" style={{ fontSize: 18, color: "#0F172A" }}>{s.title}</h3>
-              <p className="text-sm mb-5" style={{ color: "#64748B", lineHeight: "24px" }}>{s.desc}</p>
-              <ul className="flex flex-col gap-2">
-                {s.features.map((f) => (
-                  <li key={f} className="flex items-center gap-3 text-sm" style={{ color: "#334155" }}>
-                    <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#00A7C4", flexShrink: 0, display: "block" }} />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-            </div>
+              <summary>{service.title}</summary>
+              <p className="copy">{service.text}</p>
+              <p className="copy text-sm">{service.details}</p>
+              <Link href="/quote" className="text-link mt-4">
+                Include this in your enquiry
+              </Link>
+            </details>
           ))}
         </div>
-      </div>
-
-      {/* Process strip */}
-      <div style={{ background: "#F8FAFC", borderTop: "1px solid #E2E8F0", padding: "64px 24px" }}>
-        <div className="mx-auto" style={{ maxWidth: 1280 }}>
-          <div className="text-center mb-12">
-            <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-2" style={{ color: "#00A7C4" }}>How It Works</span>
-            <h2 className="font-extrabold" style={{ fontSize: "clamp(22px, 2.5vw, 34px)", color: "#0F172A", letterSpacing: "-0.03em" }}>
-              Our Process
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-4 gap-0 relative">
+      </section>
+      <section className="bg-[var(--color-light-base)] section-space">
+        <div className="site-container">
+          <h2 className="section-title mb-10">A simple way to get started.</h2>
+          <ol className="grid gap-9 md:grid-cols-3">
             {[
-              { step: "01", label: "Consultation", desc: "We understand your space, budget, and requirements." },
-              { step: "02", label: "Design", desc: "Our team creates a bespoke floor plan and product selection." },
-              { step: "03", label: "Supply", desc: "Products are manufactured, quality-checked, and dispatched." },
-              { step: "04", label: "Install & Hand Over", desc: "Our crew installs and you walk into a ready workspace." },
-            ].map((p, i) => (
-              <div key={p.step} className="flex flex-col items-center text-center gap-3 px-6" style={{ position: "relative" }}>
-                {i < 3 && (
-                  <div className="hidden sm:block absolute right-0 top-6" style={{ width: 1, height: 40, background: "#E2E8F0" }} />
-                )}
-                <span className="font-extrabold text-2xl" style={{ color: "#00A7C4" }}>{p.step}</span>
-                <span className="font-bold text-sm" style={{ color: "#0F172A" }}>{p.label}</span>
-                <span className="text-xs" style={{ color: "#64748B", lineHeight: "20px" }}>{p.desc}</span>
-              </div>
+              [
+                "Share the picture",
+                "Tell us about your space, your team and what you want to change.",
+              ],
+              [
+                "Explore the options",
+                "Review the collection and discuss the details that matter to your project.",
+              ],
+              [
+                "Agree the next steps",
+                "Confirm the product specifications, scope, pricing and timing before proceeding.",
+              ],
+            ].map(([title, copy], i) => (
+              <li key={title}>
+                <span className="mb-5 grid h-10 w-10 place-items-center rounded-full border border-[#BDB2C3] text-sm">
+                  {i + 1}
+                </span>
+                <h3 className="text-xl font-medium">{title}</h3>
+                <p className="copy mt-3 text-sm">{copy}</p>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
-      </div>
-
-      {/* CTA */}
-      <div style={{ background: "#111827", padding: "64px 24px" }}>
-        <div className="mx-auto flex flex-col md:flex-row items-center justify-between gap-6" style={{ maxWidth: 1280 }}>
-          <div>
-            <h2 className="font-extrabold text-white" style={{ fontSize: "clamp(20px, 2.5vw, 30px)", letterSpacing: "-0.03em" }}>
-              Need a service for your workspace?
-            </h2>
-            <p style={{ color: "#94A3B8", marginTop: 6, fontSize: 14 }}>Talk to us — no commitment, free assessment.</p>
-          </div>
-          <button
-            onClick={() => router.push("/quote")}
-            className="font-bold text-sm rounded-lg transition-all flex-shrink-0"
-            style={{ background: "#00A7C4", color: "#0F172A", border: "none", height: 48, padding: "0 28px", cursor: "pointer" }}
-            onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
-            onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
-          >
-            Get a Free Quote
-          </button>
-        </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

@@ -1,53 +1,50 @@
-# Existing design system
+# NWS design system
 
-Source-based inventory, verified 2026-11-07. See Testing for the latest focused visual checks. Values below describe implementation; future quality expectations live in [Frontend guidelines](frontend-guidelines.md).
+Implemented for the user-authorized seating-focused redesign on **2026-11-18**. This replaces the previous cyan/navy UI contract. The NWS name, logo and original product files remain unchanged. [Frontend guidance](frontend-guidelines.md) owns quality requirements; [Testing](testing-and-validation.md) records verification limits.
 
-## Maturity and tokens
+## Visual direction
 
-The visual language uses cyan actions, navy text/dark sections, white product stages and light slate supporting surfaces. A small semantic CSS token layer now covers the established palette and motion timings; Tailwind utilities, inline styles and some repeated literals still coexist. There is no complete typography scale, shared field primitive, theme switch or icon system. Tailwind v4 is imported in [globals.css](../../app/globals.css); no `@theme` override or Tailwind config is present.
+A contemporary furniture catalogue: generous product photography, plum actions, lavender stages, warm white backgrounds, large sans-serif headings and practical selection tools. The homepage leads with a clear seating proposition and workspace imagery, then categories, a guided finder, selected models and common questions. Avoid a dashboard aesthetic, decorative statistics, invented badges and unsupported product claims.
 
-| Role | Actual values / definition | Status |
-|---|---|---|
-| Primary action | `--color-primary: #00A7C4`, `--color-primary-hover: #008CA6`, `--color-primary-soft: #F0FDFE` | Cyan uses navy text for normal-size actions; measured contrast is 6.23:1 on the base cyan and 4.51:1 on hover |
-| Dark/text | `--color-secondary: #0F172A`, `--color-dark-base: #111827`; slate `#334155` | Navy anchors headings, controls and footer hierarchy |
-| Muted | `--color-neutral: #64748B`, plus slate `#94A3B8` on dark surfaces | `#64748B` on white measures 4.76:1; other pairs still require per-component checks |
-| Surface/border | `--color-base: #FFFFFF`, `--color-light-base: #F8FAFC`, `--color-border: #E2E8F0` | White product stages preserve source photography; light slate separates supporting surfaces |
-| Additional existing accents | `#22D3EE` hero eyebrow, `#E6F7FA` icon/success surface, `#F0FDFE` hover surface, `#CBD5E1` pale text/background | Existing exceptions, not permission to expand the palette |
-| Feedback | ContactForm emerald/rose Tailwind colors | Local success/error convention |
-| Motion | `--motion-control: 160ms`, `--motion-content: 220ms`, `--motion-section: 420ms`; standard/emphasized easing | Shared timing baseline for controls, swaps and selected section reveals |
+## Tokens
 
-The formerly unresolved `--color-*` variables now map to the established brand palette, restoring ContactForm, contact/about and unused Experience declarations. Approved new brand values remain constrained by [AGENTS.md](../../AGENTS.md); extend the semantic layer only as part of an authorized design-system change.
+Canonical definitions: [globals.css](../../app/globals.css).
 
-## Typography, spacing and composition
+| Role | Token / value |
+|---|---|
+| Primary action / hover | `--color-primary: #493653`, `--color-primary-hover: #302237`; white foreground |
+| Soft action / finder surface | `--color-primary-soft: #EAE4F0` |
+| Main text | `--color-secondary: #302A34` |
+| Supporting text | `--color-neutral: #685F6E` |
+| Borders | `--color-border: #DDD7DF` |
+| White / light surface | `--color-base: #FFFFFF`, `--color-light-base: #F7F5F8` |
+| Footer / dark surface | `--color-dark-base: #302237`; supporting text `#CDC3D2` |
+| Page / product stage | `#FCFBFC` / `#F2EFF4` |
+| Secondary editorial surface | `#ECE7E2` |
 
-| Concern | Verified pattern | Source / consistency |
-|---|---|---|
-| Font | Arial, Helvetica, sans-serif | globals.css body; no next/font import |
-| Eyebrow | 11px / 800 / uppercase / .18em tracking | `.eyebrow` exists; pages often repeat equivalent styles inline |
-| Section title | `clamp(28px,3vw,42px)` / 800 / -.04em / line-height 1.1 | `.section-title`; headings also use per-page clamps |
-| Hero | Home `clamp(38px,6vw,68px)`; company `clamp(30px,5vw,56px)` | Different intentional compositions, not a formal scale |
-| Body | Frequently text-sm (14px), 24–28px line height; card labels 10–14px | Mixed utility and inline values |
-| Containers | Main marketing/catalogue width 1280px; quote 900px; contact max-w-4xl; about max-w-5xl | Width is contextual, not universally 1280px |
-| Gutters/sections | Often 24px horizontal; 64/72/80px section padding; gaps 4/6/8/12 utilities | Implicit rhythm with exceptions; quote card fixed 48px padding |
-| Layout | Home 1→2→4 columns; catalogue 1→2→3→4; services 1→2→3 | Breakpoint-driven utilities |
-| Breakpoints | sm 40rem, md 48rem, lg 64rem (640/768/1024px at default 16px root) | Installed Tailwind default theme; no override |
-| Radii | CTA/input 8px, product card 12px, service/form rounded-2xl, navigation pills; ContactForm larger rounding | Inconsistent component families; no semantic radius scale |
-| Elevation | Low header shadow/backdrop blur, restrained product-card lift, detail-panel shadow and ContactForm shadow | Per-component values, no elevation tokens |
+The logo retains its original colour artwork. It is rendered white in the footer. Product files are unmodified; CSS multiply blending on tinted stages integrates their white backgrounds. Detail photographs can be inspected through the zoom control. Do not generate alternate product views or imply that the inspirational interior is a delivered NWS project.
 
-Header is sticky at top with a 74px inner row; catalogue filters use matching `top-[74px]` and a translucent white surface. Fixed quote card padding may constrain narrow screens; this is a source-based risk, not a measured overflow failure.
+## Type and composition
 
-## Motion, icons and interaction states
+- System stack: `Avenir Next`, Avenir, `Segoe UI`, sans-serif; no font download or new dependency.
+- `.display-title`: responsive 44–88px, weight 500, 1.02 line height, -.065em tracking. Smaller page-specific limits apply to forms and secondary pages.
+- `.section-title`: responsive 30–50px, weight 500, 1.1 line height. `.copy`: 16px, 1.8 line height, maximum 60ch.
+- `.eyebrow` is a sentence-case supporting label, 13px/600; labels should provide context, not decorate every section.
+- `.site-container`: maximum 1320px, 24px gutters, 18px on narrow screens. `.section-space`: 56–104px vertical space.
+- Buttons/fields: 8px radius and minimum 50px height. Product frames: 12px radius. Editorial photography/form panels: 16px. Rounded arch stages are reserved for the seating finder/about feature.
+- Header: sticky 80px row. Catalogue categories remain in normal flow; comparison selection has a bottom sticky bar. Anchors account for header clearance.
+- Product cards: one column on small phones, two at sm and four at lg. Home categories: two, three, then five columns. Comparison/list tables intentionally scroll inside labeled regions.
 
-Globals define `.nav-link`, `.pattern`, `.product-scroll`, button/card interactions and semantic timing/easing tokens. Phone ring/pulse motion runs once on hover/focus instead of continuously. Controls use roughly 150–160ms feedback, product/result changes 200–220ms, React shared-image route transitions 280ms, and selected section reveals 420ms. Catalogue pagination scrolls smoothly only when reduced motion is not requested. The global reduced-motion override disables animation, positional hover and smooth scrolling. ScrollReveal uses IntersectionObserver and Web Animations with live reduced-motion handling; initial content remains visible.
+## Interaction utilities
 
-Hover styles still mix Tailwind variants and direct `event.currentTarget.style` assignments in older pages. Global focus-visible outlines and a skip link are present. Catalogue filters/pages/view controls expose pressed/current state; its search field is labeled and uses an explicit focus ring. Product thumbnails expose selection, support arrow/Home/End keys and crossfade stacked images without changing the frame. ContactForm now resolves its token-based focus colors. Quote still has no pending state.
+`.button-primary`, `.button-secondary`, `.text-link`, `.field`, `.field-label`, `.filter-chip`, `.product-stage` and `.faq-row` are the common CSS contracts. Shared styles live in Tailwind’s components layer so responsive utilities can override them. Tailwind handles page layout, spacing and breakpoints. Do not reintroduce hard-coded cyan controls or another styling framework.
 
-Icons are inline SVG in Header, emoji in services/quote, text arrows/checkmarks and footer social abbreviations. Sizes vary by use (e.g. header SVG 12/16/20px, services 56px icon container); no icon dependency exists. Dark sections are composition choices within a light site, not a dark-mode theme.
+Filters expose pressed state; checkboxes expose comparison selection; page controls expose current state. Native details/summary handles FAQs and services. Inputs have labels and visible focus. Mobile navigation closes on link selection or Escape and returns focus to its trigger on Escape.
 
-## Applying existing styles
+Motion is tied to action: image hover, gallery zoom, a 220ms result swap and existing React ViewTransition image continuity. No mounted scroll-reveal wrappers or continuous decorative animation remain. Reduced-motion CSS disables transforms/transitions where applicable. Unsupported view-transition browsers navigate normally.
 
-Inspect the closest component and existing utilities before adding styles. Preserve stable aspect-ratio image containers, white product-photo stages, contextual max widths and responsive grid progression. Use semantic variables before repeating the core palette or motion values. Do not normalize all radii, introduce gradients or redesign unrelated pages as incidental maintenance. Any further consolidation should retain visual intent and verify responsive/focus/motion states.
+## Reference research
 
-## 2026-11-07 catalogue refresh
+[Herman Miller office seating](https://www.hermanmiller.com/products/seating/office-chairs/) informed category-first exploration; [Steelcase office chairs](https://www.steelcase.com/products/office-chairs/) informed filter and comparison discovery. These are research references, not copied branding or assets.
 
-Home, catalogue, detail and footer use spacious responsive compositions, navy text, light supporting surfaces, white product stages and rounded cards. Shared `.button-primary` uses cyan with dark text; older company/services/quote cyan actions now use the same readable foreground. ProductCard supplies a subtle 200ms hover/focus scale and React's built-in ViewTransition pairs a selected product image with its detail gallery where supported. Catalogue result swaps use a short opacity/translate animation rather than per-card scroll reveals. Product tables retain row/column headers and the comparison table has a keyboard-focusable horizontal scroll region. No styling or motion dependency was added.
+Reviewed [Anthropic frontend-design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md) for intentional composition and [Vercel agent-skills](https://github.com/vercel-labs/agent-skills) for frontend quality. Existing Find Skills and Sites guidance supported the workflow. No skill package, runtime dependency or external asset was installed.

@@ -1,58 +1,47 @@
 # Data flow and feature behavior
 
-Verified from [home](../../app/page.tsx), [catalogue](../../app/products/page.tsx), [quote](../../app/quote/page.tsx), [ContactForm](../../components/ContactForm.tsx), and [POST handler](../../app/api/contact/route.ts). No fetching/cache library, persistent storage, global state, context, server action, or custom hook exists.
+Verified from source for the **2026-11-18** redesign. No database, CMS, global store, server action or automatic email delivery exists.
 
-## Catalogue and product details
+## Catalogue
 
-The 32 original records live in [catalogue.ts](../../app/products/catalogue.ts), shared by home features, catalogue, details and sitemap. Inferred product shape includes original `name`, `sub`, `cat`, `img` plus a unique `slug`, factual `description`, and `images: { src, alt, label }[]`. Add up to three **real** product photos there. All current records have one photo; gallery slots explicitly mark unavailable photos rather than duplicating or generating angles. Training variants include their descriptor in the slug.
+[Catalogue data](../../app/products/catalogue.ts) owns 32 original records. `PRODUCTS` adds a stable slug, description and one original photo per model. Training variants include their descriptor in the slug. Product files and identifiers were preserved.
 
-[Products](../../app/products/page.tsx) is a Server Component with metadata, hero and ItemList. Its Suspense boundary retains `useSearchParams` in [CatalogueBrowser](../../app/products/CatalogueBrowser.tsx). The fallback includes links to every detail page, making all products discoverable in the server HTML.
+[Products](../../app/products/page.tsx) provides server metadata, ItemList and an all-model link fallback around Suspense. [CatalogueBrowser](../../app/products/CatalogueBrowser.tsx) owns interaction:
 
-1. Category = `resolveCategory(searchParams.get("type") || searchParams.get("category"))`. Existing trimming, case-insensitive prefix matching, nonempty `type` precedence and invalid→All behavior are preserved.
-2. Category changes use router push (without jumping the viewport); guarded render-time state resets pagination when the resolved category changes. Back/forward retain those URL semantics.
-3. Search matches name, descriptor and category, case-insensitively after trimming. Search is local and resets page to 1. Grid/table mode is also local and preserves filters/page.
-4. Filter first, then slice eight per page. Page buttons announce current state and scroll to the collection, instantly under reduced motion. Category/page/view changes remount one keyed result wrapper for a 220ms coordinated swap; search keystrokes update without replaying that animation. The no-results state offers a clear-filters action.
-5. Product cards/table rows link to `/products/[slug]`. Detail routes generate static params, await route params, and reject unknown products. Their tables show known catalogue fields and explicitly ask the buyer to confirm unknown specifications/pricing.
-6. The local ProductGallery keeps up to three photos stacked in one stable frame; changing `selected` retargets short opacity/transform transitions immediately, so rapid input follows the latest state without delayed callbacks. Thumbnails expose pressed state and support ArrowLeft/ArrowRight/Home/End; the main image toggles zoom. Missing slots are noninteractive. ProductCard and the gallery share a React ViewTransition name for route continuity where supported; unsupported browsers navigate normally. New product actions use `tel:` and do not submit the existing non-delivering forms.
+1. Category is `resolveCategory(type || category)`: nonempty type takes precedence; matching trims/case-folds and supports existing prefixes; unknown values resolve to All. Category navigation pushes history with `scroll: false`.
+2. Category changes reset page to 1 through a guarded render-time update. Search matches name, descriptor and category; search and sorting reset pagination. Name sorting uses localeCompare. Search/sort/view/page are local, not encoded in the URL.
+3. Filter and sort before slicing eight per page. Grid and table show the same results. Pagination scroll respects reduced motion. Empty results offer Clear filters.
+4. Comparison stores up to three slugs locally, independently of filters/page/view. At capacity, unchecked boxes are disabled; selected models can still be removed. The bottom bar opens an inline comparison region and moves focus there. Closing restores the trigger. Clear removes the whole selection.
+5. Comparison displays only known fields (category/style); price/specifications say to confirm on enquiry. The shortlist link passes comma-separated slugs to `/quote?models=…`. State is not persisted across route changes or refresh.
 
-Phone links still use the existing repository number `+91 98765 43210`; the user requested calling but has not supplied a verified replacement. Additional photos and detailed specifications remain content dependencies.
+## Product details and finder
 
-## Contact: browser → server → logging
+[Detail routes](../../app/products/[slug]/page.tsx) statically generate all 32 slugs, await params and return 404 for unknown models. Product/BreadcrumbList metadata uses factual catalogue fields. Enquire links pass a single slug to quote; call links use the existing repository phone number.
 
-The server contact page mounts ContactForm. Inputs are uncontrolled HTML fields with `name`/`id` and associated labels. Native validation requires name/email/message and uses email input validation; phone is optional. `FormData.get` values are serialized as JSON. Client constraints are bypassable.
+[ProductGallery](../../app/products/[slug]/ProductGallery.tsx) supports up to three verified photos, selected thumbnail state, ArrowLeft/ArrowRight/Home/End and zoom. Current records have one photograph; no empty photo placeholders or generated angles are rendered. ProductCard and gallery retain named React ViewTransition image continuity.
 
-| Stage | Behavior |
-|---|---|
-| Start | Prevent default; `loading=true`; clear feedback; retain form reference |
-| Send | `fetch('/api/contact', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) })` |
-| Any HTTP 2xx | Set success feedback and `form.reset()`; no response JSON is parsed |
-| Non-2xx/network error | Generic error feedback; inputs retained; server error details are not surfaced |
-| Finally | `loading=false`; button re-enabled |
+[SeatFinder](../../components/SeatFinder.tsx) locally selects one of four work settings and renders category links with explanatory copy. It is a category guide, not an ergonomic assessment or specification recommendation. Changing the setting updates the text/image and polite live region.
 
-Button is disabled while pending and label changes. Feedback uses a conditionally mounted `aria-live="polite"` element; screen-reader announcement reliability has not been tested. There is no timeout, retry, deduplication, delivery tracking, or durable lead state.
+## Enquiries: review → email app or copy
 
-### Current endpoint contract (not a validated schema)
+Both [contact](../../app/contact/page.tsx) and [quote](../../app/quote/page.tsx) mount [ContactForm](../../components/ContactForm.tsx). Props: `mode?: 'contact' | 'quote'`, `models?: string[]`. Quote is request-rendered because it reads awaited searchParams. It accepts the first three comma-separated slugs from a string `models` parameter, resolves against PRODUCTS and ignores unknown IDs; user-provided raw model labels are never trusted.
 
-Expected JSON fields: `name`, `email`, `message` strings, optional `phone` string. The handler does **not** enforce these types, trim whitespace, validate email syntax, or bound lengths.
+Fields: required name/email/message, optional phone/company; quote adds optional seating quantity and timeframe. Inputs have IDs, associated labels and native constraints. Text input limits are 120 characters; message is limited to 1,500. No budget field is required.
 
-| Condition in handler | Response |
-|---|---|
-| Falsy name, email, or message | `400 { "message": "Missing required fields" }` |
-| Truthy required fields | Logs name/email/phone/message; `200 { "success": true }` |
-| JSON parsing/destructuring or other exception | `500 { "message": "Internal server error" }` |
+Submit prevents navigation, reads FormData and prepares a local plain-text draft. The review region receives focus and shows:
 
-Truthy nonstrings/whitespace can pass. JSON `null` or malformed JSON can reach the catch. Unknown fields are not used. No email or database call occurs. A successful response proves only that this handler reached its success return, not that anyone received the enquiry. See [Security](security.md) for the trust boundary.
+- An encoded `mailto:sales@nwsworkspace.com` link. The visitor opens their email app and sends the message themselves.
+- Copy enquiry, with pending/disabled state, success feedback and a failure fallback directing the visitor to selectable text.
+- A read-only textarea containing the complete draft.
 
-## Quote: local state only
+Changing a form field invalidates the draft and copy status. Input is preserved. Refresh/navigation loses local form state. There is no fetch, automatic transmission, durable draft, inbox receipt or delivery callback. Browser/mail-client URI length and clipboard support vary; the copy/select fallback is deliberate. Never display “request received” for draft preparation.
 
-Eight string fields: name, company, email, phone, seats, budget, timeline, message. First four are required HTML inputs; email has native email validation. Options for seats/budget/timeline are inline arrays in the page.
+The phone `+91 98765 43210` and email are retained from the repository and still require owner verification before launch.
 
-`handle` prevents default and sets `sent=true`. Success replaces the form, interpolates the entered name and promises follow-up. “Submit Another Request” sets `sent=false` and **retains** field values. Refresh loses state. There is no fetch, loading/error path, API response, persistence, or integration with ContactForm. Do not silently map quote fields into the contact payload: that would be a new business/API decision.
+## Legacy POST endpoint
 
-## Other state and content
+[POST /api/contact](../../app/api/contact/route.ts) remains public and unchanged, but the redesigned UI does not call it. It parses JSON, checks name/email/message truthiness, logs name/email/phone/message and returns `200 { success: true }`; missing values return 400 and parse/errors return 500. It does not send mail or persist leads. Nonstrings/whitespace are not rejected reliably. [Security](security.md) owns its risk assessment.
 
-Header owns `open` and reads `usePathname`; mobile menu link clicks close it, but there is no pathname effect to reset it for every possible navigation. Product presentation uses CSS hover/focus states and React's built-in ViewTransition for the shared catalogue/detail image. ScrollReveal uses IntersectionObserver and the Web Animations API at section level. Only unused PageTransition uses `useEffect`/`useRef` to observe path changes; unused ImageCarousel holds a scroll-container ref. Content remains local; catalogue.ts is the single shared product-content owner. No application cache or revalidation policy exists beyond framework route rendering described in [Architecture](architecture.md).
+## Other state
 
-## Change guidance
-
-Preserve query precedence, URL history semantics, and payload/response shape unless a task changes them. Before wiring quote delivery, agree on destination, fields, validation and success meaning; new endpoints/env/dependencies need authorization. Follow ContactForm's pending/error/reset structure without treating HTTP success as proven delivery. Update this document and the affected issue entry when behavior changes. Behavioral regression cases are in [Testing](testing-and-validation.md).
+Header tracks the pathname for which the mobile menu is open; link clicks close it and Escape closes/restores trigger focus. Native details own FAQ/service disclosure state. All content remains local. [Testing](testing-and-validation.md) owns regression checks.

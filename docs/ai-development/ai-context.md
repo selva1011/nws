@@ -1,24 +1,24 @@
 # NWS: product and implementation context
 
-Verified from repository source and installed/locked packages on **2026-11-07**. This is orientation, not a requirement to read the entire knowledge base. [Task index](../../AGENTS.md) · [Source map](repository-map.md).
+Product/source context updated **2026-11-18**; the package-version snapshot below retains its original verification date. This is orientation, not a requirement to read the entire knowledge base. [Task index](../../AGENTS.md) · [Source map](repository-map.md).
 
 ## Product and journeys
 
-NWS presents ergonomic office seating and workspace services for a Chennai business. Source copy addresses startups, corporates, hospitals, institutions, and Indian professionals ([home](../../app/page.tsx), [company](../../app/company/page.tsx), [services](../../app/services/page.tsx)). The likely primary users are workplace buyers and project decision makers; that persona is an inference, not user research.
+NWS is a Chennai office-seating catalogue for individuals and teams. The user authorized a complete UI/UX and palette redesign on **2026-11-18**, preserving the NWS name, logo and original product images. [Design system](design-system.md) supersedes the old cyan/navy visual rules.
 
-| Journey | Actual implementation | Boundary |
+| Journey | Current implementation | Boundary |
 |---|---|---|
-| Discover seating | Home category tiles → `/products?type=…` → filter and paginate 32 records | Individual product pages, search and grid/table comparison; no published prices, cart, checkout or inventory |
-| Evaluate company/services | Company mission/certifications and six service cards → `/quote` | Marketing claims are content, not independently verified credentials |
-| Request a quote | Eight controlled fields → local success screen | No network request or durable lead |
-| Contact | `/contact` → ContactForm → POST `/api/contact` | HTTP success acknowledges logging only |
-| Call | Header/footer/product `tel:` anchors | Opens the device's calling handler; actual phone ownership/delivery unverified |
+| Discover seating | Home categories and interactive four-setting finder → collection | Category guidance, not a verified ergonomic assessment |
+| Choose a model | Search, sorting, URL categories, eight-per-page grid/table and up to three-model comparison | No prices, stock, saved account or checkout |
+| Inspect a chair | 32 detail routes, original photo zoom, known catalogue facts and related models | Extra photos/specifications need verified source material |
+| Plan seating | Product/shortlist slugs → quote form → review draft → mailto/copy | Visitor must send the email; no automatic delivery/storage |
+| Contact | Contact form uses the same email-draft flow; phone/email links | Existing contact ownership needs business verification |
 
-The site is public. `/about` is a generic stub separate from `/company`. `/contact` is implemented but not linked by the header/footer. Business metrics, warranty/certification claims, contact details, and response promises require owner confirmation before reuse or expansion.
+Company/services/about are brand-specific server-rendered pages. Unsupported certification, warranty, delivery and business-statistic promises were removed from mounted copy. Service scope and product details are confirmed on enquiry.
 
 ## System in one paragraph
 
-One Next.js App Router application, one root layout, seven fixed page routes, 32 product detail pages and one POST endpoint. Root layout imports global CSS and mounts Header (client) and Footer (server). Company/services/quote are client page entry points; home/catalogue/details use server shells and focused client components; contact and about are server pages. Content stays in local arrays/JSX; products share app/products/catalogue.ts. Products derive category from the URL and pagination from local state; contact is the only application `fetch`. There are no providers, custom hooks, service modules, global stores, server actions, database, CMS, auth, or application cache/revalidation layer. Three standalone components are unmounted. See [Architecture](architecture.md) for boundaries and [Data flow](data-flow.md) for behavior.
+One Next.js App Router app, seven fixed page routes, 32 product details and one legacy POST endpoint. Root layout mounts Header/Footer and owns the main landmark. All page entry files are Server Components with focused clients for navigation, finder, catalogue, gallery and enquiries. Quote reads searchParams and renders on demand; other marketing pages/product details prerender. Content stays local; catalogue.ts owns product records. No database, CMS, auth, global store, server action, automatic email service or application fetch remains in mounted UI. The legacy contact API still logs arbitrary submissions; it has no UI caller. Four standalone components are unmounted. See [Architecture](architecture.md) and [Data flow](data-flow.md).
 
 ## Toolchain snapshot
 
@@ -50,4 +50,4 @@ No separate feature directory is needed for the current small application: Data 
 
 ## High-impact boundaries
 
-Global CSS and root layout affect every page. Header affects all navigation and calling links. Home category values are coupled to catalogue normalization. Catalogue Suspense is required for its query hook in a static build. Contact UI success is not a delivery guarantee. Keep production behavior changes separately authorized from documentation maintenance.
+Global CSS and the root shell affect every route. Preserve the catalogue Suspense/query contract and original model slugs. Quote resolves only known catalogue IDs. Draft preparation is not delivery. Do not revive old palette rules or unsupported business claims. Validation results belong in [Testing](testing-and-validation.md).

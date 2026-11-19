@@ -2,210 +2,106 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 
-const NAV_LINKS = [
-  { label: "Company", href: "/company" },
-  { label: "Products", href: "/products" },
-  { label: "Services", href: "/services" },
+const links = [
+  ["Seating", "/products"],
+  ["Workspace services", "/services"],
+  ["Our story", "/company"],
+  ["Contact", "/contact"],
 ];
 
 export default function Header() {
-  const [open, setOpen] = useState(false);
   const pathname = usePathname();
-
+  const [menuPath, setMenuPath] = useState<string | null>(null);
+  const open = menuPath === pathname;
+  const trigger = useRef<HTMLButtonElement>(null);
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/95 shadow-[0_4px_20px_rgba(15,23,42,0.035)] backdrop-blur-xl">
-      <div className="mx-auto flex h-[74px] max-w-[1280px] items-center justify-between px-5 lg:px-6">
-        
-        {/* Brand Logo */}
-        <Link href="/" className="flex items-center transition-opacity hover:opacity-90" aria-label="NWS home">
+    <header
+      className="sticky top-0 z-50 border-b border-[var(--color-border)] bg-[#FCFBFC]/95 backdrop-blur-lg"
+      onKeyDown={(event) => {
+        if (event.key === "Escape" && open) {
+          setMenuPath(null);
+          trigger.current?.focus();
+        }
+      }}
+    >
+      <div className="site-container flex h-20 items-center justify-between gap-5">
+        <Link
+          href="/"
+          aria-label="NWS home"
+          onClick={() => setMenuPath(null)}
+          className="shrink-0"
+        >
           <Image
             src="/logo.png"
             alt="Node Workspace Solutions"
             width={1390}
             height={420}
-            priority
-            className="h-10 w-auto object-contain"
+            preload
+            className="h-auto w-[132px] sm:w-[150px]"
           />
         </Link>
-
-        {/* Desktop Navigation Links */}
-        <nav className="hidden items-center gap-1.5 lg:flex">
-          {NAV_LINKS.map((link) => {
-            const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
-            return (
-              <Link
-                key={link.label}
-                href={link.href}
-                aria-current={isActive ? "page" : undefined}
-                className={`relative rounded-full px-4 py-2 text-sm font-semibold transition-colors duration-150 ${
-                  isActive
-                    ? "bg-[var(--color-primary-soft)] text-[#008CA6]"
-                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/60"
-                }`}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
+        <nav
+          aria-label="Main navigation"
+          className="hidden items-center gap-7 lg:flex"
+        >
+          {links.map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              aria-current={pathname.startsWith(href) ? "page" : undefined}
+              className={`py-3 text-[13px] font-medium underline-offset-8 hover:underline ${pathname.startsWith(href) ? "underline" : ""}`}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
-
-        {/* Desktop Actions (Call + Get a Quote) */}
-        <div className="hidden items-center gap-3.5 lg:flex">
-          <a
-            href="tel:+919876543210"
-            aria-label="Call +91 98765 43210"
-            className="group flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs font-semibold text-slate-700 transition-colors duration-150 hover:border-[#00A7C4] hover:bg-[var(--color-primary-soft)] hover:text-[#008CA6]"
-          >
-            <span className="relative flex h-5 w-5 items-center justify-center rounded-full bg-[#00A7C4]/10 text-[#008CA6] transition-colors duration-150 group-hover:bg-[#00A7C4] group-hover:text-[#0F172A]">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                className="h-3 w-3 animate-phone-ring"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.251.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </span>
-            <span>+91 98765 43210</span>
-          </a>
-
+        <Link href="/quote" className="button-primary hidden sm:inline-flex">
+          Plan your seating <span aria-hidden="true">↗</span>
+        </Link>
+        <button
+          ref={trigger}
+          type="button"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="mobile-navigation"
+          onClick={() => setMenuPath(open ? null : pathname)}
+          className="grid h-11 w-11 shrink-0 place-items-center rounded-lg border border-[var(--color-border)] lg:hidden"
+        >
+          <span aria-hidden="true" className="text-xl">
+            {open ? "×" : "☰"}
+          </span>
+        </button>
+      </div>
+      {open && (
+        <nav
+          id="mobile-navigation"
+          aria-label="Mobile navigation"
+          className="site-container border-t border-[var(--color-border)] py-5 lg:hidden"
+        >
+          {links.map(([label, href]) => (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setMenuPath(null)}
+              aria-current={pathname.startsWith(href) ? "page" : undefined}
+              className="flex items-center justify-between border-b border-[var(--color-border)] py-4 text-lg"
+            >
+              {label}
+              <span aria-hidden="true">↗</span>
+            </Link>
+          ))}
           <Link
             href="/quote"
-            className="rounded-full bg-[#00A7C4] px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-[#0F172A] transition-[background-color,transform] duration-150 hover:-translate-y-px hover:bg-[#008CA6] active:translate-y-0 active:scale-[.98]"
+            onClick={() => setMenuPath(null)}
+            className="button-primary mt-5 w-full"
           >
-            Get a Quote
+            Plan your seating
           </Link>
-        </div>
-
-        {/* Mobile Action Controls */}
-        <div className="flex items-center gap-2.5 lg:hidden">
-          {/* Animated Phone Call Icon */}
-          <a
-            href="tel:+919876543210"
-            aria-label="Call +91 98765 43210"
-            className="group relative grid h-10 w-10 place-items-center rounded-full bg-[#00A7C4] text-[#0F172A] transition-[background-color,transform] duration-150 hover:bg-[#008CA6] active:scale-95"
-          >
-            <span className="pointer-events-none absolute inset-0 rounded-full bg-[#00A7C4] animate-pulse-ring" />
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="relative z-10 h-5 w-5 animate-phone-ring"
-            >
-              <path
-                fillRule="evenodd"
-                d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.251.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </a>
-
-          {/* Smooth Morphing Hamburger Menu Button */}
-          <button
-            onClick={() => setOpen(!open)}
-            className="relative grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-slate-50 text-slate-800 transition-[background-color,transform] duration-150 hover:bg-slate-100 active:scale-95"
-            aria-label={open ? "Close menu" : "Open menu"}
-            aria-expanded={open}
-            aria-controls="mobile-navigation"
-          >
-            <div className="flex h-4 w-4 flex-col justify-between">
-              <span
-                className={`h-0.5 w-full rounded-full bg-slate-700 transition-all duration-200 ${
-                  open ? "translate-y-[7px] rotate-45" : ""
-                }`}
-              />
-              <span
-                className={`h-0.5 w-full rounded-full bg-slate-700 transition-all duration-200 ${
-                  open ? "opacity-0 scale-x-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`h-0.5 w-full rounded-full bg-slate-700 transition-all duration-200 ${
-                  open ? "-translate-y-[7px] -rotate-45" : ""
-                }`}
-              />
-            </div>
-          </button>
-        </div>
-      </div>
-
-      {/* Modern Mobile Dropdown Drawer */}
-      <div
-        id="mobile-navigation"
-        inert={!open}
-        className={`grid transition-[grid-template-rows,opacity] duration-200 ease-out lg:hidden ${
-          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-        }`}
-      >
-        <div className="overflow-hidden">
-          <nav className="border-t border-slate-100 bg-white/95 backdrop-blur-2xl px-5 pt-3 pb-6 space-y-2">
-            {NAV_LINKS.map((link) => {
-              const isActive = pathname === link.href || pathname.startsWith(`${link.href}/`);
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                aria-current={isActive ? "page" : undefined}
-                  onClick={() => setOpen(false)}
-                  className={`flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold transition-colors ${
-                    isActive
-                      ? "bg-[var(--color-primary-soft)] text-[#008CA6]"
-                      : "text-slate-700 hover:bg-slate-50 hover:text-slate-900"
-                  }`}
-                >
-                  <span>{link.label}</span>
-                  <span className="text-slate-400">→</span>
-                </Link>
-              );
-            })}
-
-            {/* Direct Phone Call Card */}
-            <a
-              href="tel:+919876543210"
-              onClick={() => setOpen(false)}
-              className="group mt-3 flex items-center justify-between rounded-xl border border-[#00A7C4]/40 bg-[var(--color-primary-soft)] p-3.5 transition-colors duration-150 hover:border-[#00A7C4]"
-            >
-              <div className="flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-[#00A7C4] text-[#0F172A]">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="h-4 w-4"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M1.5 4.5a3 3 0 0 1 3-3h1.372c.86 0 1.61.586 1.819 1.42l1.105 4.423a1.875 1.875 0 0 1-.694 1.955l-1.293.97c-.135.101-.164.249-.126.352a11.285 11.285 0 0 0 6.697 6.697c.103.038.251.009.352-.126l.97-1.293a1.875 1.875 0 0 1 1.955-.694l4.423 1.105c.834.209 1.42.959 1.42 1.82V19.5a3 3 0 0 1-3 3h-2.25C8.552 22.5 1.5 15.448 1.5 6.75V4.5Z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-                <div>
-                  <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Call Directly</div>
-                  <div className="text-sm font-bold text-slate-900">+91 98765 43210</div>
-                </div>
-              </div>
-              <span className="text-xs font-bold text-[#008CA6]">Call Now</span>
-            </a>
-
-            {/* Primary Action Button */}
-            <Link
-              href="/quote"
-              onClick={() => setOpen(false)}
-              className="mt-2 block rounded-xl bg-[#00A7C4] py-3.5 text-center text-sm font-bold text-[#0F172A] transition-colors duration-150 hover:bg-[#008CA6]"
-            >
-              Get a Free Quote
-            </Link>
-          </nav>
-        </div>
-      </div>
+        </nav>
+      )}
     </header>
   );
 }

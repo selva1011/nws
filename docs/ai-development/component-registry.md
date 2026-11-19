@@ -1,33 +1,24 @@
 # Component registry
 
-Shared component files export default components. Import directly using `@/components/Name`; no barrels, shared primitive library, variants system, custom hooks, or providers exist. [Frontend contracts](frontend-guidelines.md) · [Styles](design-system.md).
+Updated **2026-11-18**. Direct imports, flat shared components, no barrel files or shared state provider. [Design system](design-system.md) owns CSS primitives; [Data flow](data-flow.md) owns behavior.
 
-## Shared and standalone components
-
-| Component / source | Props | Boundary / consumer | Behavior and reuse constraints |
+| Component | Props | Boundary / consumers | Contract |
 |---|---|---|---|
-| [Header](../../components/Header.tsx) | None | Client; root layout only | Sticky 74px navigation; pathname matching includes nested product routes and aria-current; local open state; phone and quote actions. Mobile disclosure exposes expanded/controls; closed contents are inert. Phone motion runs only on hover/focus. Do not remount inside pages. |
-| [Footer](../../components/Footer.tsx) | None | Server; root layout only | Dark coordinated surface with section-level ScrollReveal CTA, category/company navigation, telephone/email links, logo and copyright. |
-| [ContactForm](../../components/ContactForm.tsx) | None | Client; contact page only | Fixed POST contact contract, HTML inputs, loading/success/error feedback. Reuse for the same contact workflow; not configurable for quote fields. Its semantic CSS variables are defined globally. |
-| [ImageCarousel](../../components/ImageCarousel.tsx) | `{ images?: string[] }` | Client; no current consumer | Horizontal scroll-snap gallery; ref scrolls one viewport per arrow; Previous/Next labels. Generic indexed alt text; no disabled end state. Default `/chairs/chair1.jpg`–`chair3.jpg` and error fallback `/placeholder-chair.jpg` are absent; pass real assets explicitly. Test/fix before mounting. |
-| [PageTransition](../../components/PageTransition.tsx) | `{ children: ReactNode }` | Client; no current consumer | Pathname effect feature-detects `startViewTransition`, invokes empty callback, keys wrapper by pathname, polite live region. `transition-fade` has no project CSS definition; no demonstrated route animation. Do not assume this is active infrastructure. |
-| [Experience](../../components/Experience.tsx) | None | Client directive; no hooks; no current consumer | Three local stats (18 years, 420 projects, 96 clients). Global color variables now resolve, but values differ from marketing page claims; confirm business data before mounting. |
+| [Header](../../components/Header.tsx) | None | Client; root only | Sticky 80px navigation, nested-route current state, mobile disclosure, Escape focus recovery, enquiry CTA |
+| [Footer](../../components/Footer.tsx) | None | Server; root only | Plum footer, category/company/contact navigation, phone/email, enquiry CTA |
+| [ProductCard](../../components/ProductCard.tsx) | `{ product: typeof PRODUCTS[number] }` | Server-safe; home, catalogue, related products | Linked next/image stage, name/category/style and image ViewTransition; comparison checkboxes belong to catalogue, outside card links |
+| [SeatFinder](../../components/SeatFinder.tsx) | None | Client; home | Four workspace choices, local selected state, category suggestions and accessible update |
+| [ContactForm](../../components/ContactForm.tsx) | `{ mode?: 'contact' \| 'quote'; models?: string[] }` | Client; contact and quote | Native labeled fields; prepare/review local draft; mailto link; clipboard feedback and selectable fallback. Does not call API or claim delivery |
+| [CatalogueBrowser](../../app/products/CatalogueBrowser.tsx) | None | Page-local client; products Suspense | Category/search/sort/view/page, up to three comparison selections, inline table and quote handoff |
+| [ProductGallery](../../app/products/[slug]/ProductGallery.tsx) | `{ slug: string; name: string; images: { src, alt, label }[] }` | Detail-local client | Up to three verified photos, keyboard thumbnail selection, zoom, ViewTransition; one current photo per product |
 
-## Product and motion components
+## Retained unmounted components
 
-| Component / source | Contract | Usage |
-|---|---|---|
-| [ProductCard](../../components/ProductCard.tsx) | `{ product: typeof PRODUCTS[number] }` | Linked optimized image card; home, catalogue and related products. Server-safe; included in client catalogue bundle when imported there. React ViewTransition names its image for lightweight catalogue→detail continuity where supported |
-| [ScrollReveal](../../components/ScrollReveal.tsx) | `{ children: ReactNode; className?: string }` | Client boundary for one 420ms IntersectionObserver/Web Animations reveal; home, detail and footer sections. Content stays visible without JS; respects live reduced-motion changes and cleans up observers/animations |
-| [CatalogueBrowser](../../app/products/CatalogueBrowser.tsx) | None | Client query/search/view/page controls, under the server catalogue's Suspense boundary. Sticky category controls and the result region use immediate state with a 220ms coordinated swap |
-| [ProductGallery](../../app/products/[slug]/ProductGallery.tsx) | `{ slug: string; name: string; images: { src, alt, label }[] }` | Detail-local client component; stable stacked image frame for one to three verified photos, opacity/transform switching, arrow/Home/End thumbnail keys, selected state and zoom; missing slots stay noninteractive |
+| Component | Constraint before reuse |
+|---|---|
+| [ScrollReveal](../../components/ScrollReveal.tsx) | Native IntersectionObserver/Web Animations; honors reduced motion. Currently unused; do not assume page-wide reveal infrastructure |
+| [ImageCarousel](../../components/ImageCarousel.tsx) | Optional images; missing default/fallback files and one existing raw-img lint warning. Supply real assets and test before mounting |
+| [PageTransition](../../components/PageTransition.tsx) | Undefined transition-fade class and empty transition callback; not the active product image transition mechanism |
+| [Experience](../../components/Experience.tsx) | Contains unverified business stats. Do not mount without confirming content |
 
-## Reuse decisions
-
-- Need site navigation/footer: already present through layout; edit the existing component.
-- Need same contact form: use ContactForm and inspect its handler contract; its success message does not establish delivery.
-- Need category navigation or product presentation: reuse ProductCard and inspect the local catalogue content contract.
-- Buttons, labels, fields, service cards and badges are inline native markup, not reusable APIs. Preserve the closest appropriate pattern and add focus/loading/disabled semantics as part of authorized UI work.
-- Native catalogue comparison/specification tables exist; no generic table library, dialog, tooltip, toast or dropdown API exists. Quote uses native select controls; Header uses a custom disclosure. Do not invent registry entries for absent UI.
-
-Potential reuse is not permission to mount unused components or alter visible behavior. Update this registry when props, exports, consumers, or reuse limitations change.
+Buttons/fields/chips/FAQ rows are native markup with shared CSS classes, not a generic component framework. There is no modal, toast, tooltip or third-party table system. Use only the necessary interaction for the requested feature.

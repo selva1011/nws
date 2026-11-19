@@ -21,7 +21,7 @@ User instructions and AGENTS.md govern what is allowed. Current source/configura
 ## Scope-specific rules
 
 - New routes, dependencies/scripts/tooling, environment variables, structural extraction and UI behavior need authorization as described in AGENTS.md. Explicit task authorization counts; a large diff alone does not invalidate it.
-- API changes must inspect both producer and consumer. The actual contact request/response shape is in [Data flow](data-flow.md); quote currently has no network contract.
+- API changes must inspect both producer and consumer. The actual contact request/response shape is in [Data flow](data-flow.md); the current forms prepare email drafts and do not call the legacy endpoint.
 - Never edit generated .next/next-env files or the managed AGENTS block manually. Dependency lockfiles are tool-generated, not hand-edited.
 - Do not install tooling just to complete an audit. Disclose unavailable verification. A sandbox-denied required check should be retried through the available approval mechanism, without disguising it as a code failure.
 - Pre-existing lint/test issues are documented, not silently fixed or suppressed. A successful type/build check is not proof of delivery, accessibility, or business correctness.

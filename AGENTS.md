@@ -63,10 +63,10 @@ Repository: `selva1011/nws`. Intended production domain: `nwsworkspace.com`.
 - Imports are direct, without component barrel files. Search existing patterns before introducing abstractions.
 - Tailwind handles layout/spacing/breakpoints; use established inline styles for brand/measurements. No new styling system.
 - Reuse existing CSS utilities; see [Design system](docs/ai-development/design-system.md) for actual tokens and exceptions.
-- Approved brand values: `#00A7C4` / hover `#008CA6`; dark `#0F172A`, `#111827`; light `#F8FAFC`; text `#0F172A`, `#334155`, `#64748B`, `#94A3B8`.
-- Existing `--color-*` references are unresolved. Do not reuse them in new UI without an approved fix.
+- The user-authorized 2026-11-18 redesign replaces the old palette: plum `#493653` / hover `#302237`, soft lavender `#EAE4F0`, text `#302A34` / `#685F6E`, light `#F7F5F8`. [Design system](docs/ai-development/design-system.md) is the canonical palette/layout contract. Keep the NWS brand name, logo and original product images.
+- Semantic `--color-*` tokens are defined in globals.css. Reuse them and the shared button/field/chip utilities; do not restore the superseded cyan UI.
 - Use `next/image` for new images; preserve current paths including `/products images/`. Check installed image docs before new configuration.
-- For submissions, reuse ContactForm's loading/error/reset approach, but verify delivery: the current API only logs. Quote's success-only handler is not a working submission pattern.
+- Enquiries reuse ContactForm's review → email-draft/copy flow. Draft preparation is not delivery; never claim receipt or reset an unsent enquiry. The legacy public API only logs and has no current UI caller.
 - No new visual behavior, copy, or user flow unless authorized by the task. Follow [Frontend quality](docs/ai-development/frontend-guidelines.md).
 
 ## Scope and safety

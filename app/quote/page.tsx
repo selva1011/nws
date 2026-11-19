@@ -1,196 +1,80 @@
-"use client";
-import { useState } from "react";
+import type { Metadata } from "next";
+import Link from "next/link";
+import ContactForm from "@/components/ContactForm";
+import { PRODUCTS } from "@/app/products/catalogue";
 
-export default function Quote() {
-  const [form, setForm] = useState({
-    name: "", company: "", email: "", phone: "",
-    seats: "", budget: "", timeline: "", message: "",
-  });
-  const [sent, setSent] = useState(false);
+export const metadata: Metadata = {
+  title: "Plan Your Seating | NWS Chennai",
+  description:
+    "Prepare an enquiry for your preferred NWS chairs, team seating or workspace project.",
+  alternates: { canonical: "/quote" },
+};
 
-  const handle = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSent(true);
-  };
-
-  if (sent) {
-    return (
-      <div className="flex items-center justify-center" style={{ minHeight: "70vh", padding: 24 }}>
-        <div className="flex flex-col items-center text-center gap-5" style={{ maxWidth: 440 }}>
-          <div className="flex items-center justify-center rounded-full text-3xl" style={{ width: 80, height: 80, background: "#E6F7FA" }}>✓</div>
-          <img src="/logo.png" alt="NWS" style={{ height: 36, objectFit: "contain" }} />
-          <h2 className="font-extrabold" style={{ fontSize: 28, color: "#0F172A", letterSpacing: "-0.03em" }}>
-            Quote Request Received!
-          </h2>
-          <p className="text-sm" style={{ color: "#64748B", lineHeight: "24px" }}>
-            Thank you, <strong>{form.name || "there"}</strong>. Our team will review your requirements and get back to you within one business day.
-          </p>
-          <button
-            onClick={() => setSent(false)}
-            className="text-sm font-bold rounded-lg"
-            style={{ background: "#00A7C4", color: "#0F172A", border: "none", height: 44, padding: "0 24px", cursor: "pointer" }}
-          >
-            Submit Another Request
-          </button>
-        </div>
-      </div>
-    );
-  }
-
+export default async function Quote({
+  searchParams,
+}: {
+  searchParams: Promise<{ models?: string | string[] }>;
+}) {
+  const params = await searchParams;
+  const slugs =
+    typeof params.models === "string"
+      ? params.models.split(",").slice(0, 3)
+      : [];
+  const models = PRODUCTS.filter((product) => slugs.includes(product.slug)).map(
+    (product) => `${product.name} (${product.sub})`,
+  );
   return (
-    <div style={{ background: "#F8FAFC", minHeight: "100vh", padding: "64px 24px 80px" }}>
-      <div className="mx-auto" style={{ maxWidth: 900 }}>
-
-        {/* Header */}
-        <div className="text-center mb-12">
-          <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-2" style={{ color: "#00A7C4" }}>
-            Request a Quote
-          </span>
-          <h1 className="font-extrabold" style={{ fontSize: "clamp(28px, 4vw, 44px)", color: "#0F172A", letterSpacing: "-0.04em", lineHeight: 1.1 }}>
-            Let&rsquo;s Build Your Workspace
-          </h1>
-          <p className="mt-3 text-sm" style={{ color: "#64748B", maxWidth: 480, margin: "12px auto 0", lineHeight: "24px" }}>
-            Fill in the details below and our team will prepare a custom proposal for you within 24 hours — at no cost.
-          </p>
-        </div>
-
-        {/* Form card */}
-        <div className="rounded-2xl" style={{ background: "#ffffff", border: "1px solid #E2E8F0", padding: "48px" }}>
-          <form onSubmit={handle} className="flex flex-col gap-6">
-
-            {/* Row 1 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {[
-                { key: "name", label: "Full Name *", placeholder: "Rajesh Iyer", type: "text", required: true },
-                { key: "company", label: "Company Name *", placeholder: "TechCorp India Pvt. Ltd.", type: "text", required: true },
-              ].map((f) => (
-                <div key={f.key}>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>{f.label}</label>
-                  <input
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    value={form[f.key as keyof typeof form]}
-                    onChange={e => setForm({ ...form, [f.key]: e.target.value })}
-                    required={f.required}
-                    className="w-full text-sm rounded-lg outline-none"
-                    style={{ height: 44, padding: "0 14px", background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A" }}
-                    onFocus={e => (e.currentTarget.style.borderColor = "#00A7C4")}
-                    onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Row 2 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {[
-                { key: "email", label: "Email Address *", placeholder: "rajesh@techcorp.in", type: "email", required: true },
-                { key: "phone", label: "Phone Number *", placeholder: "+91 98765 43210", type: "tel", required: true },
-              ].map((f) => (
-                <div key={f.key}>
-                  <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>{f.label}</label>
-                  <input
-                    type={f.type}
-                    placeholder={f.placeholder}
-                    value={form[f.key as keyof typeof form]}
-                    onChange={e => setForm({ ...form, [f.key]: e.target.value })}
-                    required={f.required}
-                    className="w-full text-sm rounded-lg outline-none"
-                    style={{ height: 44, padding: "0 14px", background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A" }}
-                    onFocus={e => (e.currentTarget.style.borderColor = "#00A7C4")}
-                    onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
-                  />
-                </div>
-              ))}
-            </div>
-
-            {/* Row 3 */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Number of Seats</label>
-                <select
-                  value={form.seats}
-                  onChange={e => setForm({ ...form, seats: e.target.value })}
-                  className="w-full text-sm rounded-lg outline-none"
-                  style={{ height: 44, padding: "0 14px", background: "#F8FAFC", border: "1px solid #E2E8F0", color: form.seats ? "#0F172A" : "#94A3B8" }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "#00A7C4")}
-                  onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
-                >
-                  <option value="">Select range</option>
-                  {["1–10", "11–50", "51–100", "101–250", "250+"].map(o => <option key={o} value={o}>{o} seats</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Budget Range</label>
-                <select
-                  value={form.budget}
-                  onChange={e => setForm({ ...form, budget: e.target.value })}
-                  className="w-full text-sm rounded-lg outline-none"
-                  style={{ height: 44, padding: "0 14px", background: "#F8FAFC", border: "1px solid #E2E8F0", color: form.budget ? "#0F172A" : "#94A3B8" }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "#00A7C4")}
-                  onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
-                >
-                  <option value="">Select range</option>
-                  {["Under ₹1L", "₹1L – ₹5L", "₹5L – ₹20L", "₹20L – ₹50L", "₹50L+"].map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
-              </div>
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Timeline</label>
-                <select
-                  value={form.timeline}
-                  onChange={e => setForm({ ...form, timeline: e.target.value })}
-                  className="w-full text-sm rounded-lg outline-none"
-                  style={{ height: 44, padding: "0 14px", background: "#F8FAFC", border: "1px solid #E2E8F0", color: form.timeline ? "#0F172A" : "#94A3B8" }}
-                  onFocus={e => (e.currentTarget.style.borderColor = "#00A7C4")}
-                  onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
-                >
-                  <option value="">Select timeline</option>
-                  {["Immediately", "1–3 months", "3–6 months", "6+ months"].map(o => <option key={o} value={o}>{o}</option>)}
-                </select>
-              </div>
-            </div>
-
-            {/* Message */}
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider mb-2" style={{ color: "#64748B" }}>Project Details</label>
-              <textarea
-                placeholder="Tell us about your workspace — location, type of chairs needed, any specific features (lumbar support, headrest, mesh back), installation requirements..."
-                value={form.message}
-                onChange={e => setForm({ ...form, message: e.target.value })}
-                rows={5}
-                className="w-full text-sm rounded-lg outline-none resize-none"
-                style={{ padding: "12px 14px", background: "#F8FAFC", border: "1px solid #E2E8F0", color: "#0F172A", lineHeight: "24px" }}
-                onFocus={e => (e.currentTarget.style.borderColor = "#00A7C4")}
-                onBlur={e => (e.currentTarget.style.borderColor = "#E2E8F0")}
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="w-full rounded-lg text-sm font-bold text-[#0F172A] transition-colors"
-              style={{ height: 52, background: "#00A7C4", border: "none", cursor: "pointer", fontSize: 15 }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
-              onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
-            >
-              Submit Quote Request
-            </button>
-          </form>
-        </div>
-
-        {/* Trust row */}
-        <div className="flex flex-wrap justify-center gap-8 mt-10">
+    <section className="site-container section-space grid items-start gap-10 lg:grid-cols-[.85fr_1.15fr] lg:gap-20">
+      <div className="lg:sticky lg:top-28">
+        <p className="eyebrow mb-5">Your next workspace starts here</p>
+        <h1 className="display-title !text-[clamp(42px,5vw,66px)]">
+          A better seat.
+          <br />A clearer plan.
+        </h1>
+        <p className="copy mt-7">
+          One chair or a whole workspace. Share what you’re looking for and
+          prepare an enquiry for the NWS team.
+        </p>
+        <ol className="mt-9 space-y-6">
           {[
-            { icon: "⚡", label: "Response within 24 hrs" },
-            { icon: "🔒", label: "100% confidential" },
-            { icon: "📞", label: "Free consultation call" },
-          ].map((t) => (
-            <div key={t.label} className="flex items-center gap-2">
-              <span>{t.icon}</span>
-              <span className="text-xs font-medium" style={{ color: "#64748B" }}>{t.label}</span>
-            </div>
+            [
+              "Choose your seating",
+              "Have a model in mind? Your selection will be included below.",
+            ],
+            [
+              "Share your plans",
+              "Tell us about quantities, timing and the space.",
+            ],
+            [
+              "Send your enquiry",
+              "Review your email draft and send it from your email app.",
+            ],
+          ].map(([title, copy], i) => (
+            <li key={title} className="flex gap-4">
+              <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-[var(--color-primary-soft)] text-xs">
+                {i + 1}
+              </span>
+              <div>
+                <h2 className="text-sm font-semibold">{title}</h2>
+                <p className="mt-1 text-sm leading-6 text-[var(--color-neutral)]">
+                  {copy}
+                </p>
+              </div>
+            </li>
           ))}
+        </ol>
+        <div className="mt-10 border-t border-[var(--color-border)] pt-6">
+          <p className="text-sm">Prefer a conversation?</p>
+          <a className="text-link mt-2" href="tel:+919876543210">
+            Call +91 98765 43210
+          </a>
+          <br />
+          <Link href="/products" className="text-link mt-3">
+            Keep exploring the collection
+          </Link>
         </div>
       </div>
-    </div>
+      <ContactForm mode="quote" models={models} />
+    </section>
   );
 }

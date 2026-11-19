@@ -1,103 +1,105 @@
-"use client";
-import { useRouter } from "next/navigation";
+import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 
-const TEAM = [
-  { name: "Arjun Mehta", role: "Founder & CEO", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&auto=format", alt: "Arjun Mehta" },
-  { name: "Priya Nair", role: "Head of Design", img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&fit=crop&auto=format", alt: "Priya Nair" },
-  { name: "Karan Shetty", role: "VP — Projects", img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&auto=format", alt: "Karan Shetty" },
-  { name: "Meena Choudhury", role: "National Sales Head", img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&fit=crop&auto=format", alt: "Meena Choudhury" },
-];
-
-const MILESTONES = [
-  { year: "2010", event: "Founded in Chennai with a single showroom and a team of 6." },
-  { year: "2014", event: "Expanded to Bangalore and Hyderabad. First 500-seat corporate project delivered." },
-  { year: "2017", event: "Achieved ISO 9001 certification. Launched in-house upholstery unit." },
-  { year: "2020", event: "GreenGuard certification. Launched eco-range made from recycled materials." },
-  { year: "2023", event: "Crossed 5,000 workspace installations. Now operating across 18 Indian states." },
-];
+export const metadata: Metadata = {
+  title: "Our Story | Node Workspace Solutions",
+  description:
+    "Meet NWS, a Chennai office seating and workspace solutions business. Explore our approach to choosing furniture for your working day.",
+  alternates: { canonical: "/company" },
+};
 
 export default function Company() {
-  const router = useRouter();
-
   return (
-    <div style={{ background: "#ffffff" }}>
-      {/* Header */}
-      <div
-        className="relative flex items-end"
-        style={{ minHeight: 380, background: "#0F172A", padding: "0 24px 56px" }}
-      >
-        <img
-          src="https://images.unsplash.com/photo-1772001936267-b6058748eff4?w=1400&h=500&fit=crop&auto=format"
-          alt="NWS office interior"
-          className="absolute inset-0 w-full h-full object-cover"
-          style={{ opacity: 0.3 }}
-        />
-        <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(15,23,42,0.85) 0%, rgba(15,23,42,0.2) 100%)" }} />
-        <div className="relative z-10 mx-auto w-full" style={{ maxWidth: 1280 }}>
-          <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-3" style={{ color: "#22D3EE" }}>About Us</span>
-          <h1 className="font-extrabold text-white" style={{ fontSize: "clamp(30px, 5vw, 56px)", letterSpacing: "-0.04em", lineHeight: 1.05 }}>
-            Shaping Indian Workspaces<br />Since 2010
-          </h1>
+    <>
+      <section className="site-container section-space">
+        <div className="grid items-end gap-8 md:grid-cols-[1.3fr_1fr]">
+          <div>
+            <p className="eyebrow mb-5">Node Workspace Solutions</p>
+            <h1 className="display-title">
+              Work is personal.
+              <br />
+              Your space
+              <br />
+              should be, too.
+            </h1>
+          </div>
+          <div>
+            <p className="copy">
+              We’re NWS, an office seating and workspace solutions business in
+              Chennai. We help people explore furniture for the places where
+              their working day happens.
+            </p>
+            <Link href="/products" className="text-link mt-6">
+              Get to know our collection
+            </Link>
+          </div>
         </div>
-      </div>
-
-      {/* Mission */}
-      <div className="mx-auto grid lg:grid-cols-2 gap-12 items-center" style={{ maxWidth: 1280, padding: "80px 24px" }}>
-        <div>
-          <span className="block text-[11px] font-extrabold tracking-[0.18em] uppercase mb-3" style={{ color: "#00A7C4" }}>Our Mission</span>
-          <h2 className="font-extrabold mb-5" style={{ fontSize: "clamp(24px, 3vw, 36px)", color: "#0F172A", letterSpacing: "-0.04em", lineHeight: 1.15 }}>
-            To make ergonomic design accessible to every Indian professional.
-          </h2>
-          <p className="text-sm mb-4" style={{ color: "#64748B", lineHeight: "28px" }}>
-            We started NWS because we saw a gap — between the premium ergonomic furniture available globally and what Indian businesses could actually access. Our goal has always been to bridge that gap: bringing world-class seating standards to startups, corporates, hospitals, and institutions at prices that make sense.
-          </p>
-          <p className="text-sm" style={{ color: "#64748B", lineHeight: "28px" }}>
-            Today, with 15 years of experience and 5,000+ installations behind us, we remain committed to that original mission — one chair, one workspace, one team at a time.
-          </p>
-        </div>
-        <div className="rounded-2xl overflow-hidden" style={{ height: 380, background: "#CBD5E1" }}>
-          <img
-            src="https://images.unsplash.com/photo-1631193816258-28b44b21e78b?w=800&h=500&fit=crop&auto=format"
-            alt="NWS team at work"
-            className="w-full h-full object-cover"
+        <div className="relative mt-12 h-[320px] overflow-hidden rounded-2xl md:h-[500px]">
+          <Image
+            src="/images/nws-hero.png"
+            alt="Inspiration for an open, naturally lit workspace"
+            fill
+            preload
+            sizes="(max-width: 1370px) 100vw, 1320px"
+            className="object-cover object-right"
           />
         </div>
-      </div>
-
-      {/* Timeline */}
-      
-
-    
-
-      {/* Certifications */}
-      <div style={{ background: "#111827", padding: "64px 24px" }}>
-        <div className="mx-auto" style={{ maxWidth: 1280 }}>
-          <div className="text-center mb-10">
-            <h2 className="font-extrabold text-white" style={{ fontSize: "clamp(20px, 2.5vw, 30px)", letterSpacing: "-0.03em" }}>
-              Certified for Quality & Sustainability
-            </h2>
-          </div>
-          <div className="flex flex-wrap justify-center gap-4 mb-10">
-            {["ISO 9001", "ISO 14001", "BIFMA", "GreenGuard", "MAKE IN INDIA"].map((c) => (
-              <div key={c} className="rounded-xl flex flex-col items-center justify-center gap-1"
-                style={{ background: "#ffffff", padding: "16px 24px", minWidth: 140, height: 72 }}>
-                <span className="text-sm font-extrabold" style={{ color: "#334155" }}>{c}</span>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center">
-            <button
-              onClick={() => router.push("/quote")}
-              className="font-bold text-sm rounded-lg"
-              style={{ background: "#00A7C4", color: "#0F172A", border: "none", height: 48, padding: "0 28px", cursor: "pointer" }}
-              onMouseEnter={e => (e.currentTarget.style.background = "#008CA6")}
-              onMouseLeave={e => (e.currentTarget.style.background = "#00A7C4")}
-            >
-              Work With Us
-            </button>
+      </section>
+      <section className="bg-[#EAE4F0] section-space">
+        <div className="site-container grid gap-9 md:grid-cols-2 md:gap-20">
+          <h2 className="section-title max-w-lg">
+            A thoughtful space begins with the people in it.
+          </h2>
+          <div>
+            <p className="copy">
+              A focused morning at your own desk. A room full of new ideas. A
+              welcoming place for the next conversation. Every setting asks
+              something different of its furniture.
+            </p>
+            <p className="copy mt-5">
+              Our collection brings together task, executive, visitor and
+              training seating, alongside sofas for shared spaces. Start with
+              the way you work, then explore the options with us.
+            </p>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
+      <section className="site-container section-space">
+        <h2 className="section-title mb-10">Choose with a clearer picture.</h2>
+        <div className="grid gap-8 md:grid-cols-3">
+          {[
+            [
+              "Start with your space",
+              "Think about the room, who uses it and how many seats it needs. Those practical details shape a useful shortlist.",
+            ],
+            [
+              "See the actual model",
+              "Browse original product photos and catalogue styles. Compare your preferred models side by side before you enquire.",
+            ],
+            [
+              "Ask the right questions",
+              "Confirm dimensions, materials, adjustments, availability and price with our team before making a decision.",
+            ],
+          ].map(([title, copy]) => (
+            <div
+              key={title}
+              className="border-t border-[var(--color-border)] pt-6"
+            >
+              <h3 className="text-xl font-medium">{title}</h3>
+              <p className="copy mt-4 text-sm">{copy}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-12 flex flex-wrap gap-3">
+          <Link href="/products" className="button-primary">
+            Explore seating
+          </Link>
+          <Link href="/contact" className="button-secondary">
+            Meet us in a conversation
+          </Link>
+        </div>
+      </section>
+    </>
   );
 }

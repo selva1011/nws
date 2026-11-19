@@ -31,28 +31,30 @@ npm run build
 npm run start
 ```
 
-`start` serves the production build. There is no configured test runner or formatter. See [validation results and manual checks](docs/ai-development/testing-and-validation.md).
+`start` serves an existing production build: run `npm run build` successfully first. For everyday editing, use `npm run dev`. There is no configured test runner or formatter. See [validation results and manual checks](docs/ai-development/testing-and-validation.md).
 
 ## Routes
 
 | Route | Purpose |
 |---|---|
-| `/` | Home page and category navigation |
-| `/products` | Filterable, paginated chair catalogue |
-| `/company` | Company mission and certifications |
+| `/` | Home, categories, guided seating finder and FAQs |
+| `/products` | Searchable/sortable catalogue and three-model comparison |
+| `/company` | NWS story and selection approach |
 | `/services` | Workspace services and process |
-| `/quote` | Quote request form |
-| `/contact` | Contact form |
-| `/about` | Placeholder about page |
-| `/api/contact` | POST handler used by the contact form |
+| `/quote` | Product-aware enquiry draft and email handoff |
+| `/contact` | Contact details and enquiry draft |
+| `/about` | Brand introduction |
+| `/api/contact` | Legacy logging-only POST; no current UI caller |
 
 The root layout mounts the shared header and footer for every page. Product filtering uses `type` or `category` query parameters, for example `/products?type=Executive`.
+
+The 2026-11-18 redesign replaces the old visual system with plum/lavender surfaces and a seating-first journey. The NWS logo and all original product photos are retained. See the [design contract](docs/ai-development/design-system.md).
 
 ## Implementation and limitations
 
 Pages and page-local content live in `app/`; shared components live in `components/`; images live in `public/`. The root layout owns navigation and footer. No database, CMS, authentication, or checkout is implemented.
 
-**Lead delivery is incomplete:** the quote form only changes local state, and the contact API logs submissions without sending email or storing records. Do not treat either success message as proof that a lead was delivered. See the [prioritized issue register](docs/ai-development/known-issues.md).
+**Enquiries use an email handoff:** visitors review a locally prepared draft, then open their email app or copy the text and send it themselves. There is no automatic delivery or storage. The legacy contact API remains public and logs only; the UI does not call it. Existing phone/email details need owner verification before launch. See the [prioritized issue register](docs/ai-development/known-issues.md).
 
 ## Repository documentation
 

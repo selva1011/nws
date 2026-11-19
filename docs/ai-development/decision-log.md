@@ -6,6 +6,16 @@ Records intentional documentation/architecture decisions. Older entries below ar
 
 ---
 
+## 2026-11-18 — Seating-focused UI and enquiry redesign
+
+The user requested a complete redesign of the current VS Code repository and documentation, preserving the brand name/product imagery while replacing colours and UX. The implementation uses a plum/lavender furniture-catalogue direction, new layouts across all public pages, a work-setting finder, sorting and up-to-three-model comparison. [Design system](design-system.md) owns the visual contract; previous design entries below are historical.
+
+The existing forms could not deliver enquiries. The new shared form prepares an email with review, mailto and copy/select fallback, using the existing repository email. It does not report receipt or silently map new fields into the logging-only API. That endpoint remains unchanged and public. Contact ownership and automatic delivery are still unresolved business/integration dependencies.
+
+Company/services became Server Components after removing navigation/hover handlers. Quote became a request-rendered server shell to validate selected model slugs. No dependency, config, route, image file or hosting change was introduced. No fabricated product angles or certification/warranty promises were added. [Testing](testing-and-validation.md) records successful build checks and the browser-access limitation.
+
+---
+
 ## 2026-11-07 — Searchable catalogue and static product details
 
 The user authorized a modern UI, clearer product information, three-image galleries, calling and search discoverability. Home/catalogue/detail content now uses server components with focused client controls. Product records moved into one local catalogue module because home cards, listings, detail metadata and sitemap need the same identifiers. No service/data fetching layer or new package was added.
